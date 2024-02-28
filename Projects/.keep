@@ -1,0 +1,23 @@
+#!/bin/bash
+
+scriptDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+repoDir="$(dirname $scriptDIR)"
+
+if [[ $# -ne 3 ]] ; then
+    echo 'You must specify 3 arguments!'
+    exit 0
+fi
+
+for i in $( ls ); do
+    echo item: $i
+done
+
+for i in `seq 1 10`; do
+  echo $i
+done  
+
+
+cd $repoDir/FORMScripts
+
+
+tform -w"$3" -M -q -d PROCESSNAME="$1" -d FAMILYNAME="$2" -d NPROPS="5" -d DFPROPS="3" formToj.frm

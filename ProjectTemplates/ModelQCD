@@ -1,0 +1,18 @@
+[ model = 'QCD' ]
+
+% Propagators:
+[Q, Qbar, -; mass='QGMassQ', pid='Q',
+pattr=', fontsize=3, color=gray']
+[Gh, Ghbar, -; mass='0', pid='Gh',
+pattr=', fontsize=3, color=purple']
+[Gl, Gl, +, notadpole;  mass='0',  pid='Gl',
+pattr=', fontsize=3, color=red']
+% [Ga, Ga, +, notadpole external; mass='0',  pid='Ga',
+% pattr=', fontsize=3, color=orange']
+
+% Vertices:
+[Qbar, Q, Gl; gvattrib=', fontsize=3, color=black']
+[Gl, Gl, Gl, Gl; gvattrib=', fontsize=3, color=black']
+[Gl, Gl, Gl; gvattrib=', fontsize=3, color=black']
+[Ghbar, Gl, Gh; gvattrib=', fontsize=3, color=black']
+

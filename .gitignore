@@ -1,0 +1,15 @@
+Projects/*
+*.tmp
+*.m
+*.nb
+FeynCalc
+Spares/
+Binaries/
+Logs/
+ClusterLogs/
+QGRAF/qgraf
+*.tbl
+env-cluster-*.sh
+environment.sh
+env-elektron.sh
+form.set
