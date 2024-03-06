@@ -87,6 +87,11 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+     --time)
+      export LSCL_CLUSTER_REQUESTED_TIME=${2}
+      shift
+      shift
+      ;; 
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")
