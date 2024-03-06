@@ -18,16 +18,16 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 
 
 (*For debugging purposes*)
-(*
+
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
 lsclProject="BToEtaC";
 lsclProcessName="QbQubarToWQQubar";
 lsclModelName="BToEtaC";
 lsclNLoops="3";
-lsclTopology="topology5725";
+lsclTopology="topology6116";
 ];
-*)
+
 
 
 lsclScriptName="lsclFireImportResults";
@@ -140,13 +140,21 @@ aux=Transpose[reductionRulesRaw/.Rule->List];
 reductionRules=Rule@@@Transpose[{aux[[1]],aux[[2]]/.Dispatch[miRules[[1]]]}]/.ExtraReplacementsForTheReduction;
 
 
+lhsIntegrals=First/@reductionRules;
+
+
+mastersToMasterRules=Map[If[FreeQ[lhsIntegrals,#],#->#,Unevaluated[Sequence[]]]&,miRules[[2]]];
+
+
+reductionRules=Join[reductionRules,mastersToMasterRules];
+
+
 tmp=FCLoopTopologyNameToSymbol[miRules[[2]]]//ReplaceAll[#,GLI[s_Symbol,inds_List]:>s@@inds]&;
 tmp2=StringReplace[ToString[#,InputForm],{"=="->"=","["->"(","]"->")","formAnything"->"?a"}]&/@tmp;
 formMIs="*--#[ lsclMasterIntegrals:\n"<>StringRiffle[ToString/@(tmp2),",\n"]<>"\n*--#] lsclMasterIntegrals:\n";
 
 
 WriteString["stdout",lsclScriptName,": Saving the results ... "];
-
 
 
 file=OpenWrite[FileNameJoin[{DirectoryName[fileReductionTable],"FireMasterIntegrals.frm"}]];
