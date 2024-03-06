@@ -129,6 +129,27 @@ swapFromTo () {
 
 case ${lsclSyncWhat} in
 
+  All)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=environment.sh --exclude=Logs --exclude=ClusterLogs --exclude=ClusterErrors"
+    lsclSyncFrom=${lsclClusterProjectDir}/
+    lsclSyncTo=${lsclRepoDir}/
+    swapFromTo
+    ;;
+    
+  OnlyProjects)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh"
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/
+    lsclSyncTo=${lsclRepoDir}/Projects/
+    swapFromTo
+    ;;  
+    
+  OnlyProjectsNoLiteRed)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=env-*.tmp --exclude=LR"
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/
+    lsclSyncTo=${lsclRepoDir}/Projects/
+    swapFromTo
+    ;;    
+
   OnlyCode)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=environment.sh --exclude=Projects/ --exclude=Logs --exclude=ClusterLogs --exclude=ClusterErrors --exclude=FeynCalc"
     lsclSyncFrom=${lsclClusterProjectDir}/
@@ -174,6 +195,14 @@ case ${lsclSyncWhat} in
     lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/
     swapFromTo
     ;;
+    
+  OnlyMasterIntegrals)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=loopint --exclude=memory*.txt"
+    checkProjectProcessModelNLoops
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
+    swapFromTo
+    ;;  
 
   OnlyReductions)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp --exclude=memory.txt"
@@ -199,6 +228,13 @@ case ${lsclSyncWhat} in
     swapFromTo
     ;;
 
+  OnlyExtractedTopologies)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp"
+    checkProjectProcessModelNLoops
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
+    swapFromTo
+    ;;
 
   OnlyPySecDec)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=environment.sh --exclude=ClusterLogs --exclude=ClusterErrors --exclude=loopint"
