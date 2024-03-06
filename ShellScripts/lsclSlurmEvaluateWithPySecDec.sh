@@ -4,81 +4,172 @@
 # Loopscalla is covered by the GNU General Public License 3.
 # Copyright (C) 2019-2023 Vladyslav Shtabovenko
 
-if [[ $# -lt 2 ]] ; then
-    echo 'You must specify the path to the integrals and the partition!'
-    exit 0
-fi
+# Examples:
+# Notice that numbers are related to the positions of the entries in the TopologyList.txt file
+# ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --fromto 1 all
+# ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force
+# ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --nodes 2 --slices 1000
+# ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --clearlogs --nodes 2 --slices 1000
+# ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 1000 --fromto 1 all --nodes 2 --slices 5 --clearlogs
 
-################################################################################
+
 # Stop if any of the commands fails
 set -e
+
+export LSCL_SLURM_SCRIPT_NAME="lsclSlurmEvaluateWithPySecDec"
+
+if [[ $# -lt 5 ]] ; then
+    echo "${LSCL_SLURM_SCRIPT_NAME}: You must specify the project, the process name, the model, the number of the loops and the partition!"
+    echo "${LSCL_SLURM_SCRIPT_NAME}: Current command line arguments: ${@}"
+    exit 1
+fi
+
 
 export lsclScriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 export lsclRepoDir="$(dirname $lsclScriptDir)"
 
-if [ -z "${lsclEnvSourced}" ]; then
+if [[ -z "${lsclEnvSourced}" ]]; then
   . "$lsclRepoDir"/environment.sh
 fi
 
-################################################################################
 
-lsclIntegralsDir=${1}
-lsclSlurmPartition=${2}
+export LSCL_CLUSTER_SCRIPT_NAME="lsclEvaluateWithPySecDec.sh"
+export LSCL_CLUSTER_CORES_PER_JOB="${lsclPySecDecNumThreads}"
+export LSCL_CLUSTER_MEM_PER_JOB=2000
 
-if [ ${3} ]; then
-    echo "Setting the minimal required amount of memory to ${3} MB"
-    lsclMinMem=${3}
-else
-    echo "Setting the minimal required amount of memory to 2000 MB"
-    lsclMinMem=2000
+export LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES=1
+export LSCL_CLUSTER_NUMBER_OF_SLICES=100
+export LSCL_CLUSTER_CLEAR_LOGS=0
+
+
+lsclProjectName="$1"
+lsclProcessName="$2"
+lsclModelName="$3"
+lsclNLoops="$4"
+
+lsclExtraFormScriptArguments=()
+lsclBasicArguments=()
+
+if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
+  LSCL_FLAG_FORCE=0
+fi
+
+lsclOptFromTo=0
+
+while [[ ${#} -gt 0 ]]; do
+  case ${1} in
+    --fromto)
+      export lsclOptFromTo=1
+      lsclDiaNumberFrom=${2}
+      lsclDiaNumberTo=${3}
+      shift
+      shift
+      shift
+      ;;
+    #Extra shell script parameters
+    --force)
+      export LSCL_FLAG_FORCE=1
+      shift
+      ;;
+    #Remove all existing logs for this job type
+    --clearlogs)
+      export LSCL_CLUSTER_CLEAR_LOGS=1
+      shift
+      ;;
+    #Number of requested GNU parallel jobs
+    --pjobs)
+      export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
+      shift
+      shift
+      ;;
+    #Memory request for each job
+    --mem)
+      export LSCL_CLUSTER_MEM_PER_JOB=${2}
+      shift
+      shift
+      ;;
+    #Number of requested nodes for the jobs
+    --nodes)
+      export LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES=${2}
+      shift
+      shift
+      ;;
+    #Number of requested cores for the jobs
+    --cores)
+      export LSCL_CLUSTER_CORES_PER_JOB=${2}
+      shift
+      shift
+      ;;
+    #Number of requested slices per node
+    --slices)
+      export LSCL_CLUSTER_NUMBER_OF_SLICES=${2}
+      shift
+      shift
+      ;;
+    #SLURM time
+    --time)
+      export LSCL_CLUSTER_REQUESTED_TIME=${2}
+      shift
+      shift
+      ;;
+    #SLURM time
+    --resultFile)
+      export LSCL_RESULT_FILE_TO_CHECK=${2}
+      shift
+      shift
+      ;;        
+    #Basic input parameters
+    *)
+      lsclBasicArguments+=("$1")
+      shift;
+      ;;
+  esac
+done
+
+export LSCL_DIAGRAM_RANGE="1"
+export LSCL_RUN_IN_PARALLEL="1"
+export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralsList.txt"
+
+
+
+if [[ ${#lsclBasicArguments[@]} -eq 6 ]] ; then
+  lsclIntegralName=${lsclBasicArguments[5]}
+  lsclIntegralIndex=-1
+  readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};
+#  echo "${lsclTasksAll[*]}"
+  for i in "${!lsclTasksAll[@]}"; do
+    if [[ "${lsclTasksAll[$i]}" = "${lsclIntegralName}" ]]; then
+      lsclIntegralIndex=${i}
+      break;
+   fi
+  done
+  if [[ ${lsclIntegralIndex} -lt 0 ]] ; then
+      echo "${LSCL_SLURM_SCRIPT_NAME}: Failed to found the specified integral ${lsclIntegralName} in the list."
+      exit 1
+  fi
+  echo "${LSCL_SLURM_SCRIPT_NAME}: Index for $lsclIntegralName: ${lsclIntegralIndex}."
+  : "$((lsclIntegralIndex+=1))"
+  lsclDiaNumberFrom=${lsclIntegralIndex}
+  lsclDiaNumberTo=${lsclIntegralIndex}
+  export lsclOptFromTo=1
+
+
+fi
+
+# Slurm must always be given a range of diagrams, even for a single diagram
+if [[ ${lsclOptFromTo} -ne 1 ]] ; then
+      echo "${LSCL_SCRIPT_NAME}: You must specify a range of diagrams to process"
+      exit 1
 fi
 
 
-if [[ $(readlink -f environment.sh) != $(readlink -f env-cluster.sh) ]] ; then
-echo Cannot submit to the grid! environment.sh is not linked to env-cluster.sh! Use lsclSwitchEnv.sh
-  exit 0
+if [[ ${lsclDiaNumberTo} == "all" ]]; then
+  readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};
+  lsclDiaNumberTo=${#lsclTasksAll[@]}
+  if [[ ${lsclDiaNumberTo} -eq "0" ]]; then
+    echo "$LSCL_SLURM_SCRIPT_NAME}: There are no input files to process!"
+    exit 1;
+  fi
 fi
 
-echo
-echo
-echo "=========================================================="
-echo "lsclSlurmFindTopologies: Submitting the job(s) to the cluster (${lsclSlurmPartition}) using ${lsclTformNumWorkers} nodes."
-echo "=========================================================="
-echo
-echo
-
-
-
-cd ${lsclScriptDir}
-
-readarray -d '' lsclPySecDecDirs < <(find ${lsclIntegralsDir} -maxdepth 1 -mindepth 1 -type d -name "*" -print0);
-
-for i in "${lsclPySecDecDirs[@]}"; do
-
-  lsclIntName=$(basename ${i})  
-  echo "Submitting 3 jobs (generate, make, integrate) for ${lsclIntName}"
-
-  rm -rf ${lsclRepoDir}/ClusterLogs/lsclPySecDecGenerate.${lsclIntName};
-  mkdir -p ${lsclRepoDir}/ClusterLogs/lsclPySecDecGenerate.${lsclIntName};
-
-  
-  lsclJobIdGenerate=$(sbatch -c ${lsclPySecDecNumThreads} -p ${lsclSlurmPartition} --mem=${lsclMinMem} --export=ALL --job-name=lsclPySecDecGenerate.${lsclIntName} -o ${lsclRepoDir}/ClusterLogs/lsclPySecDecGenerate.${lsclIntName}/%a.log --parsable ./lsclPySecDecGenerate.sh ${i});
-
-  rm -rf ${lsclRepoDir}/ClusterLogs/lsclPySecDecMake.${lsclIntName};
-  mkdir -p ${lsclRepoDir}/ClusterLogs/lsclPySecDecMake.${lsclIntName};
-
-  lsclJobIdMake=$(sbatch -c ${lsclPySecDecNumThreads} -p ${lsclSlurmPartition} --mem=${lsclMinMem} --export=ALL --job-name=lsclPySecDecMake.${lsclIntName} -o ${lsclRepoDir}/ClusterLogs/lsclPySecDecMake.${lsclIntName}/%a.log --dependency=afterany:${lsclJobIdGenerate} --parsable ./lsclPySecDecMake.sh ${i});
-
-  rm -rf ${lsclRepoDir}/ClusterLogs/lsclPySecDecIntegrate.${lsclIntName};
-  mkdir -p ${lsclRepoDir}/ClusterLogs/lsclPySecDecIntegrate.${lsclIntName};
-
-  sbatch -c ${lsclPySecDecNumThreads} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${lsclMinMem} --export=ALL --job-name=lsclPySecDecIntegrate.${lsclIntName} -o ${lsclRepoDir}/ClusterLogs/lsclPySecDecIntegrate.${lsclIntName}/%a.log --dependency=afterany:${lsclJobIdMake} ./lsclPySecDecIntegrate.sh ${i}
-done;
-
-echo
-echo
-echo "=========================================================="
-echo "Job(s) sumitted."
-echo "=========================================================="
-echo
-echo
+${lsclScriptDir}/lsclTemplateScriptSlurm.sh ${lsclBasicArguments[@]:0:5} ${lsclDiaNumberFrom} ${lsclDiaNumberTo}
