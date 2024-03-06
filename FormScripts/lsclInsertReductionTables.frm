@@ -179,7 +179,7 @@ Apply;
 
 #message lsclInsertReductionTables: ... done.
 
-
+#message lsclInsertReductionTables: Checking if all integrals were reduced : `time_' ...
 if(occurs(
 lsclS,
 #do i=1, `LSCLNTOPOLOGIES'
@@ -188,7 +188,7 @@ tabIBP`LSCLTOPOLOGY`i'',
 #enddo
 #enddo
 ));
-print "lsclInsertReductionTables: Error: Some loop integrals were not reduced, e.g.: %t";
+print "lsclInsertReductionTables: Warning: Possibly some loop integrals were not reduced, e.g.: %t";
 endif;
 
 *if(occurs(
@@ -234,17 +234,37 @@ repeat id lsclNum(lsclS?)*lsclDen(lsclS?) = 1;
 #message lsclInsertReductionTables: Running with disabled polyratfun and factarg
 #endif
 *********************************************************************
-* #message HERE
+
 .sort
-b, lsclNum,lsclDen,
+
+#message lsclInsertReductionTables: Inserting mappings between master integrals : `time_' ...
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/MasterIntegralMappings.frm #lsclMasterIntegralMappings
+#message lsclInsertReductionTables: ... done.
+
+.sort
+b, 
+#if (`LSCLVERBOSITY'>0)
+lsclNum,lsclDen,
+#endif
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
 ;
 print[];
 
-
 .sort
+
+
+
+
+
+
+
+
+
+
+
+
 #message delete storage
 delete storage;
 .sort
