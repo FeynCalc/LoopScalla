@@ -62,7 +62,7 @@ fi
 if [ ! -f ${lsclFullProjectName}/QGRAF/Models/${lsclModelName}.h ]
 then
   echo Creating a template for ${lsclProjectName}/QGRAF/Models/${lsclModelName}
-  cp ${lsclRepoDir}/ProjectTemplates/ModelQCD ${lsclFullProjectName}/QGRAF/Models/${lsclModelName}
+  cp ${lsclRepoDir}/ProjectTemplates/ModelTwoFlavorQCD ${lsclFullProjectName}/QGRAF/Models/${lsclModelName}
 fi
 
 for styleFile in "feyncalc.sty" "form.sty" "graphviz.sty"

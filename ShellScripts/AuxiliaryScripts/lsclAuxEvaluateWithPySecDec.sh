@@ -29,9 +29,19 @@ else
   TMPDIR=/tmp
 fi
 
+if [[ ! -z "${LSCL_SET_ULIMIT_TO+x}" ]]; then
+	echo "lsclEvaluateWithPySecDec: Setting a max memory limit via ulimit."
+	ulimit -v ${LSCL_SET_ULIMIT_TO}
+	echo "lsclEvaluateWithPySecDec: Current ulimit values:"
+	ulimit -a
+fi
+
+
 cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}
 
-
+if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
+  LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
+fi
 
 echo "lsclEvaluateWithPySecDec: Cluster temporary directory: $TMPDIR"
 
@@ -44,6 +54,13 @@ cd $TMPDIR/${lsclIntegralName};
 echo "lsclEvaluateWithPySecDec: Running generate_int.py"
 
 ${lsclPythonPath} generate_int.py & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/memory_generate.txt;
+
+if [[ ${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE} -eq 1 ]] ; then
+	echo "lsclEvaluateWithPySecDec: Copying loopint_integral.json back"
+	cp $TMPDIR/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}
+	echo "lsclEvaluateWithPySecDec: Leaving"
+	exit
+fi
 
 echo "lsclEvaluateWithPySecDec: Running make"
 

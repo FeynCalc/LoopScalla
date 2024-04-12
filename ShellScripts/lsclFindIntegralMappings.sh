@@ -64,7 +64,7 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/topologyMappings.frm"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/MasterIntegralMappings.m"
 fi
 
 lsclNumDias=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops} -type f -name "dia*L${lsclNLoops}.frm" | wc -l)

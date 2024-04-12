@@ -55,10 +55,8 @@ fi
 
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
-  export LSCL_PARALLEL_JOBLOG_PATH="/dev/null"
+  export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
 fi
-
-
 
 lsclOptFromTo=0
 
@@ -108,10 +106,6 @@ export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectNa
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
       export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/topos_dia${lsclDiaNumber}L${lsclNLoops}.m"
 fi
-
-echo flag force: ${LSCL_FLAG_FORCE}
-echo from to: ${lsclOptFromTo}
-echo ${LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT}
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     # Process multiple diagrams in parallel

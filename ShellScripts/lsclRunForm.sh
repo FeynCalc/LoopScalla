@@ -27,5 +27,6 @@ if [ -z ${lsclTformTmpDir} ]; then
     lsclTformTmpDir="/tmp"
     #exit 1;
 fi
+echo "$*"
 
 time -p ${lsclTformPath} -M -q -Z -t ${lsclTformTmpDir} -w${lsclTformNumWorkers} $*

@@ -117,7 +117,16 @@ while [[ ${#} -gt 0 ]]; do
       export LSCL_RESULT_FILE_TO_CHECK=${2}
       shift
       shift
-      ;;        
+      ;;  
+    --setUlimit)
+      export LSCL_SET_ULIMIT_TO=${2}
+      shift
+      shift
+      ;;
+    --onlyPoleStructures)
+      export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
+      shift
+      ;;    
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")

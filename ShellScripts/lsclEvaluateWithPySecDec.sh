@@ -57,6 +57,10 @@ fi
 
 lsclOptFromTo=0
 
+if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
+  LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
+fi
+
 while [[ ${#} -gt 0 ]]; do
   case ${1} in
 	#Extra config suffix
@@ -92,6 +96,11 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;    
+    --onlyPoleStructures)
+      export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
+      shift
+      ;;      
+            
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")
@@ -114,7 +123,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclEvaluateWithPySecDec.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralsList.txt"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};

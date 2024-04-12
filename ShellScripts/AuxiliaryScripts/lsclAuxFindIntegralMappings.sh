@@ -19,14 +19,14 @@ lsclNLoops="$4"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFindTopologies.m -run lsclProject="\"${lsclProjectName}\"" -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclNKernels="\"{$lsclFeynCalcNumKernels}\""
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFindIntegralMappings.m -run lsclProject="\"${lsclProjectName}\"" -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclNKernels="\"{$lsclFeynCalcNumKernels}\""
 
 lsclStatus=$?
 
 if [[ $lsclStatus -eq 0 ]] ; then
-      echo "lsclAuxFindTopologies: Topology identification completed successfully."
+      echo "lsclAuxFindIntegralMappings: Topology identification completed successfully."
 else
-      echo "lsclAuxFindTopologies: Topology identification failed."
+      echo "lsclAuxFindIntegralMappings: Topology identification failed."
 fi
 
 exit $lsclStatus

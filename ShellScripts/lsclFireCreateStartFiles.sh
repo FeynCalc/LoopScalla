@@ -89,11 +89,7 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
-# Check if the precondition is met
-if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ]; then
-	echo "${LSCL_SCRIPT_NAME}: The LR directory is missing, aborting the calculation."
-	exit 1;
-fi
+
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
       export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.sbases"
@@ -123,5 +119,13 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     ${lsclScriptDir}/lsclTemplateScriptShell.sh ${lsclBasicArguments[@]:0:4} ${lsclDiaNumberFrom} ${lsclDiaNumberTo}
  else
     echo "${LSCL_SCRIPT_NAME}: Processing a single topology."
+    
+    # Check if the precondition is met
+	if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ]; then
+		echo "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR"
+		echo "${LSCL_SCRIPT_NAME}: The LR directory is missing, aborting the calculation."
+		exit 1;
+	fi
+    
     ${lsclScriptDir}/lsclTemplateScriptShell.sh ${lsclBasicArguments[@]:0:4} ${lsclTopologyName}
 fi
