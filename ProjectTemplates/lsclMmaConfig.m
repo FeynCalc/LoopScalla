@@ -13,5 +13,7 @@
   as GFADs. For the sake of topology identification they should be mapped back to SFADs or CFADs.
   The following rules facilitate the process of finind proper mappings.
 *)
-"FromGFAD$InitialSubstitutions"->{}
+"FromGFAD$InitialSubstitutions"->{},
+"NumberOfCoresForReduction"->8,
+"ExtraReplacementsForTheReduction"->{}
 }

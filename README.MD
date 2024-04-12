@@ -48,7 +48,7 @@ Can add `-d LSCLVERBOSITY=1` to the bash scripts to have a more verbose output
 
 # Creating new project
 
-./ShellScripts/lsclExtractTopologyAll.sh MyProject MyModel MyProcess1 MyProcess2 ...
+./ShellScripts/lsclAddNewProject.sh MyProject MyModel MyProcess1 MyProcess2 ...
 
 # Script naming
 

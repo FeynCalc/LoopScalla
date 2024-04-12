@@ -6,8 +6,8 @@
 
  model = 'xxx' ;
 
- in = Q, Qbar;
- out = Q, Qbar;
+ in = Qi, Qibar;
+ out = Qj, Qjbar;
 
  loops = xxx;
 
