@@ -81,7 +81,7 @@ WriteString["stdout"," done\n"];
 
 fcVariables="FCVariables"/.fcConfig;
 If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
-	WriteString["stdout","lsclFindTopologies: Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
+	WriteString["stdout",lsclScriptName,": Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
 	(DataType[#,FCVariable]=True)&/@fcVariables;
 ];
 

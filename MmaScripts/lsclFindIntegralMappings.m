@@ -121,6 +121,10 @@ Put[mappings[[2]],FileNameJoin[{Directory[],"Projects",lsclProject,
 	"Diagrams","Output",lsclProcessName,lsclModelName,lsclNLoops,"LoopIntegrals","FinalMasterIntegrals.m"}]];
 
 
+Quiet[CreateDirectory[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName,
+lsclNLoops,"MasterIntegrals"}]]];
+
+
 WriteString[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName,
 lsclNLoops,"MasterIntegrals","IntegralsList.txt"}],StringRiffle[ToString/@FCLoopGLIToSymbol/@mappings[[2]],"\n"]]
 

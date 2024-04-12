@@ -20,11 +20,11 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubar";
-lsclModelName="BToEtaC";
-lsclNLoops="3";
-lsclNDiagrams="20729";
+lsclProject="QCDTests";
+lsclProcessName="GlToGl";
+lsclModelName="TwoFlavorQCD";
+lsclNLoops="1";
+lsclNDiagrams="4";
 ];
 *)
 
@@ -109,7 +109,8 @@ WriteString["stdout",lsclScriptName,": Number of loaded preferred topologies: ",
 preferredTopologies={};
 
 
-rawTopologiesFC=FromGFAD[(rawTopologies/.{lsclSPD->SPD,lsclGFAD->GFAD}/.lsclRawTopology->Times),LoopMomenta->lmoms,InitialSubstitutions->FromGFAD$InitialSubstitutions];
+rawTopologiesFC=FromGFAD[(rawTopologies/.{lsclSPD->SPD,lsclGFAD->GFAD,
+lsclFAD[x__]:>FAD[{x}]}/.lsclRawTopology->Times),LoopMomenta->lmoms,InitialSubstitutions->FromGFAD$InitialSubstitutions];
 
 
 rawTopologiesFC$2=SelectNotFree[#,FeynAmpDenominator]&/@rawTopologiesFC;
@@ -125,7 +126,7 @@ rawTopologiesFC$3=loopHead/@(rawTopologiesFC$2);
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologies.","\n\n"];
 aux1=FCLoopFindTopologies[rawTopologiesFC$3,lmoms,FCLoopIsolate->loopHead,FCLoopBasisOverdeterminedQ->True,FinalSubstitutions->finalSubstitutions,
-Names->"preTopoDia",Head->Identity,FCVerbose->1,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False];
+Names->"preTopoDia",Head->Identity,FCVerbose->0,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False];
 
 
 WriteString["stdout","\n",lsclScriptName,": Done applying FCLoopFindTopologies.","\n\n"];
@@ -386,7 +387,7 @@ tmp2=MapIndexed[{
 "*--#[ lsclScalarProductRulesFor"<>ToString[ruGLI[[First[#2]]][[1]]]<>" : \n\n",#1,"*--#] lsclScalarProductRulesFor"<>ToString[ruGLI[[First[#2]]][[1]]]<>" : \n\n",
 #
 }&,tmp1];(*tmp2=tmp1;*)
-gliRuleFin=Flatten[tmp2]//FCE//ReplaceAll[#,SPD[a_,b_]:>a[b]]&;
+gliRuleFin=Flatten[tmp2]//FCE//ReplaceAll[#,finalSubstitutions]&//ReplaceAll[#,SPD[a_,b_]:>a[b]]&;
 
 
 formRuleGLIRaw=If[Head[#]=!=String,StringReplace["id "<>ToString[#[[1]],InputForm]<>" = ("<>ToString[#[[2]],InputForm]<>");\n",{"->"->"=","["->"(","]"->")","formAnything"->"?a",

@@ -18,16 +18,16 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 
 
 (*For debugging purposes*)
-
+(*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubar";
-lsclModelName="BToEtaC";
-lsclNLoops="3";
-lsclTopology="topology6116";
+lsclProject="QCDTests";
+lsclProcessName="GlToGl";
+lsclModelName="TwoFlavorQCD";
+lsclNLoops="1";
+lsclTopology="topology1";
 ];
-
+*)
 
 
 lsclScriptName="lsclFireImportResults";
@@ -79,7 +79,7 @@ WriteString["stdout"," done\n"];
 
 
 ExtraReplacementsForTheReduction="ExtraReplacementsForTheReduction"/.fcConfig;
-If[MatchQ[ExtraReplacementsForTheReduction,{__}],
+If[MatchQ[ExtraReplacementsForTheReduction,{___}],
 	WriteString["stdout",lsclScriptName,": Extra replacements for the reduction: ", ExtraReplacementsForTheReduction,".\n\n"],
 	WriteString["stdout",lsclScriptName,": Error, something went wrong when loading the additional replacements for the reduction."];
 	QuitAbort[]

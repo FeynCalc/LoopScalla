@@ -21,11 +21,11 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubar";
-lsclModelName="BToEtaC";
-lsclNLoops="3";
-lsclTopologyName="topology2930";
+lsclProject="QCDTests";
+lsclProcessName="GlToGl";
+lsclModelName="TwoFlavorQCD";
+lsclNLoops="1";
+lsclTopologyName="topology1";
 ];
 *)
 
@@ -59,10 +59,10 @@ If[ToString[lsclNLoops]==="lsclTopologyName",
 
 WriteString["stdout","Loading the integrals ..."];
 filesLoaded=Catch[
-	(*file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopologyName<>".m"}];*)
+	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopologyName<>".m"}];
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
 	lsclSymbolicTopologyName=ToExpression[lsclTopologyName];
-	(*integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopologyName,{inds}];*)True;
+	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopologyName,{inds}];
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
 	,
 	$Failed
@@ -85,7 +85,7 @@ If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
 
 
 ExtraReplacementsForTheReduction="ExtraReplacementsForTheReduction"/.fcConfig;
-If[MatchQ[ExtraReplacementsForTheReduction,{__}],
+If[MatchQ[ExtraReplacementsForTheReduction,{___}],
 	WriteString["stdout","lsclFindTopologies: Extra replacements for the reduction: ", ExtraReplacementsForTheReduction,".\n\n"],
 	WriteString["stdout","lsclFindTopologies: Error, something went wrong when loading the additional replacements for the reduction."];
 	QuitAbort[]
@@ -125,9 +125,9 @@ FinalSubstitutions->ExtraReplacementsForTheReduction
 WriteString["stdout","done\n"];
 
 
-(*WriteString["stdout","Preparing integral files ...","\n\n"];
+WriteString["stdout","Preparing integral files ...","\n\n"];
 FIRECreateIntegralFile[integrals,currentTopology,dirReductions,Check->False];
-WriteString["stdout","done\n"];*)
+WriteString["stdout","done\n"];
 
 
 (*TODO: This should be done via the config files...*)
