@@ -1,0 +1,2 @@
+{j[topology, (n1_)?Positive, (n2_)?Positive, (n3_)?Positive, (n4_)?Positive, 
+    (n5_)?NonPositive] /; True :> Expand[j[topology, n5, n3, n2, n4, n1]]}

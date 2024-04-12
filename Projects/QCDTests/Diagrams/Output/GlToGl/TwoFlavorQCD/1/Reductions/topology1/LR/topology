@@ -1,0 +1,61 @@
+BasisDirectory[topology] = StringDrop[DirectoryName[$Input], -1]
+topology /: BasisSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/BasisSectors[topology]"]]
+topology /: CutDs[topology] := {0, 0}
+topology /: Definitions[topology] := {Hold[MetricTensor[] === d, SetDim[d]], 
+   Hold[VecQ[k1], Declare[k1, Vector]], Hold[VecQ[p1], Declare[p1, Vector]], 
+   Hold[ExpressionType[p1] === Vector, Declare[p1, Vector]], 
+   Hold[ExpressionType[pp] === Number, Declare[pp, Number]], 
+   Hold[sp[p1, p1] === pp, sp[p1, p1] = pp]}
+topology /: Ds[topology] := {sp[k1, k1], pp + sp[k1, k1] + sp[k1, -2*p1]}
+topology /: EMs[topology] := {p1}
+topology /: IBP[topology] := Get[StringJoin[BasisDirectory[topology], 
+    "/IBP[topology]"]]
+topology /: Information[topology] := 
+  (If[ValueQ[topology::usage], Information[topology, LongForm -> False]]; 
+   Print[Grid[Partition[Union[Replace[Replace[First /@ UpValues[topology] /. 
+          HoldPattern -> HoldForm, 
+         {HoldPattern[HoldForm[(LiteRed`Private`f$_)[topology, __]]] :> 
+           HoldForm[LiteRed`Private`f$[topology, "\[Ellipsis]"]]}, {1}], 
+        {HoldPattern[LiteRed`Private`x$:HoldForm[(LiteRed`Private`f$_)[
+              topology, ___]]] :> Button[LiteRed`Private`x$, 
+           (SelectionMove[ButtonNotebook[], All, GeneratedCell]; 
+             NotebookDelete[]; Information[Evaluate[LiteRed`Private`x$[[1,
+                0]]], LongForm -> False]; Print[TableForm[Cases[UpValues[
+                  topology], HoldPattern[LiteRed`Private`a$_ :> 
+                    LiteRed`Private`b$_] /; MatchQ[LiteRed`Private`a$[[1,0]], 
+                   LiteRed`Private`x$[[1,0]]]] /. HoldPattern -> 
+                 HoldForm]]) & , Appearance -> "Frameless", 
+           BaseStyle -> "InformationLink"]}, {1}]], 5], 
+     DefaultBaseStyle -> "InfoGrid"]])
+topology /: jSymmetries[topology, 1, 1] := 
+  Get[StringJoin[BasisDirectory[topology], "/jSymmetries[topology, 1, 1]"]]
+topology /: LI[topology] := Get[StringJoin[BasisDirectory[topology], 
+    "/LI[topology]"]]
+topology /: LMs[topology] := {k1}
+topology /: MappedSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/MappedSectors[topology]"]]
+topology /: MIs[topology] := {}
+topology /: NonZeroSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/NonZeroSectors[topology]"]]
+topology /: SimpleSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/SimpleSectors[topology]"]]
+topology /: SPs[topology] := {sp[k1, k1], sp[k1, p1]}
+topology /: SR[topology] := Get[StringJoin[BasisDirectory[topology], 
+    "/SR[topology]"]]
+topology /: Toj[topology] := {sp[k1, k1] -> j[topology, -1, 0], 
+   sp[k1, p1] -> (pp + j[topology, -1, 0] - j[topology, 0, -1])/2}
+topology /: UniqueSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/UniqueSectors[topology]"]]
+topology /: ZerojRule[topology] := LiteRed`Private`jjj:j[topology, __] :> 
+   0 /; Module[{LiteRed`Private`jjs = 
+       Rest[List @@ jSector[LiteRed`Private`jjj]]}, 
+     Or @@ (BitOr[LiteRed`Private`jjs, #1] === #1 & ) /@ {{0, 1}, {1, 0}}]
+topology /: ZeroSectors[topology] := 
+  Get[StringJoin[BasisDirectory[topology], "/ZeroSectors[topology]"]]
+topology::usage = "1-loop basis with 1 external momenta.\nUse \
+Information[topology] to get basis summary.\nThis string can be redefined by \
+setting topology::usage=\"\[Ellipsis]\""; Information[topology, 
+  LongForm -> False]; 
+LiteRed`Private`CheckDefs[topology]
+BasisDirectory[topology]

@@ -1,0 +1,56 @@
+Null
+ProblemNumber = 0
+ 
+ExampleDimension[0] = 2
+ 
+SBasis0L[0] = 2
+ 
+SBasis0C[0, 1, {-1, 1}] = {{-1, 2}}
+ 
+SBasis0C[0, 1, {0, 0}] = {{-2, 1}, {-1, 2}, {d, 0}}
+ 
+SBasis0C[0, 1, {0, 1}] = {{pp, 2}}
+ 
+SBasis0C[0, 2, {-1, 1}] = {{-1, 2}}
+ 
+SBasis0C[0, 2, {0, 0}] = {{-1, 1}, {1, 2}}
+ 
+SBasis0C[0, 2, {0, 1}] = {{pp, 2}}
+ 
+SBasis0C[0, 2, {1, -1}] = {{1, 1}}
+ 
+SBasis0C[0, 2, {1, 0}] = {{-pp, 1}}
+ 
+SBasis0D[0, 1] = {{-1, 1}, {0, 0}, {0, 1}}
+ 
+SBasis0D[0, 2] = {{-1, 1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}}
+ 
+SBasisL[0, {-1, -1}] = 0
+ 
+SBasisL[0, {-1, 1}] = 0
+ 
+SBasisL[0, {1, -1}] = 0
+ 
+SBasisL[0, {1, 1}] = 0
+ 
+SBasisS[0] = {{{1, 2}, {1, 1}, {0, 0}}}
+ 
+SBasisR[0, {-1, -1}] = True
+ 
+SBasisR[0, {-1, 1}] = True
+ 
+SBasisR[0, {1, -1}] = True
+ 
+SBasisR[0, {1, 1}] = False
+ 
+SBasisRL[0] = 0
+ 
+HPI[0] = {}
+ 
+SBasisN[0, {-1, -1}] = {}
+ 
+SBasisN[0, {-1, 1}] = {}
+ 
+SBasisN[0, {1, -1}] = {}
+ 
+SBasisN[0, {1, 1}] = {}

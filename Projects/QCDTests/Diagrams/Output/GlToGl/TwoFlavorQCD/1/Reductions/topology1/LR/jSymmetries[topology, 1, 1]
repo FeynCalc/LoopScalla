@@ -1,0 +1,4 @@
+{{j[topology, (n1_)?Positive, (n2_)?Positive] /; True :> 
+   Expand[j[topology, n1, n2]]}, 
+ {j[topology, (n1_)?Positive, (n2_)?Positive] /; True :> 
+   Expand[j[topology, n2, n1]]}}
