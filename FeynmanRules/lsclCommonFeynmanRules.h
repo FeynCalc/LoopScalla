@@ -23,6 +23,9 @@ argument;
 * Dirac matrices are inside Dirac chains!s
   id lsclDiracMatrix(lsclLorentzIndex(`k')) = g_(100,lsclMu`k');
   id lsclDiracMatrix(lsclLorentzIndex(-`k')) = g_(100,lsclNu`k');
+  id lsclDiracMatrix(5) = g5_(100);
+  id lsclDiracMatrix(6) = g6_(100);
+  id lsclDiracMatrix(7) = g7_(100);
 
 
 * For stuff wrapped into holds
@@ -45,6 +48,9 @@ argument;
 
     id lsclDiracMatrix(lsclLorentzIndex(`k')) = g_(100,lsclMu`k');
     id lsclDiracMatrix(lsclLorentzIndex(-`k')) = g_(100,lsclNu`k');
+    id lsclDiracMatrix(5) = g5_(100);
+    id lsclDiracMatrix(6) = g6_(100);
+    id lsclDiracMatrix(7) = g7_(100);
   endargument;
 
   #enddo
@@ -100,7 +106,7 @@ endrepeat;
 
 
 * Quark-gluon vertex
-id lsclQGVertex(lsclF1?{Qbar,Qbbar,Qubar}(lsclS1?,lsclP1?), lsclF2?{Q,Qb,Qu}(lsclS2?,lsclP2?), Gl(lsclS3?,lsclP3?)) = 
+id lsclQGVertex(lsclF1?lsclAntiQuarkFields(lsclS1?,lsclP1?), lsclF2?lsclQuarkFields(lsclS2?,lsclP2?), Gl(lsclS3?,lsclP3?)) = 
  i_*gs*lsclDiracChain(lsclDiracMatrix(lsclLorentzIndex(lsclS3)),lsclDiracIndex(lsclS1),lsclDiracIndex(lsclS2))*
  lsclSUNTF(lsclAdjColorIndex(lsclS3),lsclFunColorIndex(lsclS1),lsclFunColorIndex(lsclS2));
  
@@ -161,7 +167,7 @@ endrepeat;
 *--#[ lsclFeynmanRulesQCDPropagators:
 
 * Quark propagator
-id lsclQGPropagator(lsclF1?{Q,Qb,Qu}(lsclS1?,lsclP1?), lsclF2?{Qbar,Qbbar,Qubar}(lsclS2?,lsclP2?)) = 
+id lsclQGPropagator(lsclF1?lsclQuarkFields(lsclS1?,lsclP1?), lsclF2?lsclAntiQuarkFields(lsclS2?,lsclP2?)) = 
  i_*lsclSUNFDelta(lsclFunColorIndex(lsclS1),lsclFunColorIndex(lsclS2))*
  lsclDiracChain(lsclNCHold(g_(100,lsclP1))+lsclMass(lsclF1),lsclDiracIndex(lsclS1),lsclDiracIndex(lsclS2))*lsclFAD(lsclP1,lsclMass(lsclF1));
 
@@ -184,12 +190,12 @@ id lsclQGPropagator(Gh(lsclS1?,lsclP1?), Ghbar(lsclS2?,lsclP2?)) =
 
 * Polarization vectors
 #if (`LSCLTRUNCATEPOLVECTORS' == 1)
-id lsclQGPolarization(lsclF?{W,Gl}(?a)) = 1;
+id lsclQGPolarization(lsclF?lsclVectorBosons(?a)) = 1;
 #else	
-id lsclQGPolarization(lsclF?{W,Gl}(lsclS1?even_,lsclP1?)) = 
+id lsclQGPolarization(lsclF?lsclVectorBosons(lsclS1?even_,lsclP1?)) = 
 	lsclPolVector(lsclP1,lsclLorentzIndex(lsclS1),-1);
 	
-id lsclQGPolarization(lsclF?{W,Gl}(lsclS1?odd_,lsclP1?)) = 
+id lsclQGPolarization(lsclF?lsclVectorBosons(lsclS1?odd_,lsclP1?)) = 
 	lsclPolVector(lsclP1,lsclLorentzIndex(lsclS1),1);	
 #endif
 
@@ -199,13 +205,13 @@ id lsclQGPolarization(lsclF?{W,Gl}(lsclS1?odd_,lsclP1?)) =
 
 * Spinors
 #if (`LSCLTRUNCATESPINORS' == 1)
-id lsclQGPolarization(lsclF?{Q,Qb,Qu,Qbar,Qbbar,Qubar}(?a)) = 1;
+id lsclQGPolarization(lsclF?lsclQuarkAndAntiQuarkFields(?a)) = 1;
 #else
-id lsclQGPolarization(lsclF?{Q,Qb,Qu}(lsclS1?odd_,lsclP1?)) = lsclDiracChain(lsclDiracIndex(lsclS1),lsclDiracU(lsclP1,lsclMass(lsclF)));
-id lsclQGPolarization(lsclF?{Q,Qb,Qu}(lsclS1?even_,lsclP1?)) = lsclDiracChain(lsclDiracUBar(lsclP1,lsclMass(lsclF)),lsclDiracIndex(lsclS1));
+id lsclQGPolarization(lsclF?lsclQuarkFields(lsclS1?odd_,lsclP1?)) = lsclDiracChain(lsclDiracIndex(lsclS1),lsclDiracU(lsclP1,lsclMass(lsclF)));
+id lsclQGPolarization(lsclF?lsclQuarkFields(lsclS1?even_,lsclP1?)) = lsclDiracChain(lsclDiracUBar(lsclP1,lsclMass(lsclF)),lsclDiracIndex(lsclS1));
 
-id lsclQGPolarization(lsclF?{Qbar,Qbbar,Qubar}(lsclS1?even_,lsclP1?)) = lsclDiracChain(lsclDiracIndex(lsclS1),lsclDiracV(lsclP1,lsclMass(lsclF)));
-id lsclQGPolarization(lsclF?{Qbar,Qbbar,Qubar}(lsclS1?odd_,lsclP1?)) = lsclDiracChain(lsclDiracVBar(lsclP1,lsclMass(lsclF)),lsclDiracIndex(lsclS1));
+id lsclQGPolarization(lsclF?lsclAntiQuarkFields(lsclS1?even_,lsclP1?)) = lsclDiracChain(lsclDiracIndex(lsclS1),lsclDiracV(lsclP1,lsclMass(lsclF)));
+id lsclQGPolarization(lsclF?lsclAntiQuarkFields(lsclS1?odd_,lsclP1?)) = lsclDiracChain(lsclDiracVBar(lsclP1,lsclMass(lsclF)),lsclDiracIndex(lsclS1));
 #endif
 
 

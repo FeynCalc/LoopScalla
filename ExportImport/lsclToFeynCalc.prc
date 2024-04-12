@@ -4,13 +4,11 @@
 * such, that it can be loaded into FeynCalc for further investigations
 
 .sort
-*on names;
-#system mkdir -p Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclNLoops'/MmaOutput
 
 F lsclDiracGammaOpenHold;
 CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND, lsclDiracGammaClosed;
 F GAD,GSD;
-S I, SUNN, D;
+S I, SUNN, D, GaugeXi;
 
 repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
@@ -27,12 +25,15 @@ id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclSUNF(?a) = SUNF(?a);
 id lsclSUND(?a) = SUND(?a);
 id lsclSUNTF(?a) = SUNTF(?a);
-
+id lsclGaugeXi = GaugeXi;
 endrepeat;
 
 argument;
 repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
+id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
+id lsclD^lsclS?!{,0} = D^lsclS;
+id lsclGaugeXi = GaugeXi;
 endrepeat;
 endargument;
 
@@ -72,7 +73,7 @@ if (occurs(lsclDiracGamma,g_)) exit "Something went wrong here!";
 print;
 
 format Mathematica;
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclNLoops'/MmaOutput/`FILE'> "(%E)", `EXPR'
+#write <`FILE'> "(%E)", `EXPR'
 
 
 .end

@@ -18,7 +18,7 @@ on HighFirst;
 #endif
 
 Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
-G s1dia`lsclDiaNumber'L`lsclNLoops' = dia`lsclDiaNumber'L`lsclNLoops';
+G s1dia`lsclDiaNumber'L`lsclNLoops' = s0dia`lsclDiaNumber'L`lsclNLoops';
 
 .sort
 
@@ -108,7 +108,8 @@ argtoextrasymbol  lsclWrapFun2;
 #message lsclTopologyIdentification: Calling sort : `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
-CF
+* lsclF1 is needed for cases where the fold #lsclTopologyNames in partialFractioning.frm is empty
+CF lsclF1,
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
 ;
 

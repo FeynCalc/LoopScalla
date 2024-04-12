@@ -12,8 +12,6 @@ on HighFirst;
 #include lsclDefinitions.h
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 #include Projects/`lsclProjectName'/FeynmanRules/lsclParticles_`lsclModelName'.h
-* #system pwd
-* #system mkdir -p Projects/`lsclProjectName'/Diagrams/Input/`lsclProcessName'/`lsclModelName'/`lsclNLoops'
 
 
 #message lsclProcessStage0: Project: `lsclProjectName'
@@ -21,8 +19,6 @@ on HighFirst;
 #message lsclProcessStage0: Model: `lsclModelName'
 #message lsclProcessStage0: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
-* #do i=`lsclDiaFrom', `lsclDiaTo'
-* #message lsclInsertFeynmanRules: Processing diagram `i'
 L origDiag = 
 #include Projects/`lsclProjectName'/QGRAF/Output/`lsclProcessName'.`lsclModelName'.`lsclNLoops'.amps # d`lsclDiaNumber'
 ;
@@ -57,7 +53,7 @@ endif;
 if (occurs(lsclQGVertex,lsclQGPropagator,lsclQGPolarization,lsclLorentzIndex,lsclPolVector,lsclVector)) exit "Missing some Feynman rules!";
 
 #if (`LSCLVERBOSITY'>0)
-#message Diagram `i':
+#message Diagram `lsclDiaNumber':
 print;
 #endif
 
