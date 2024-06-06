@@ -9,7 +9,7 @@ F lsclDiracGammaOpenHold;
 CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND, lsclDiracGammaClosed;
 F GAD,GSD;
 S I, SUNN, D, GaugeXi;
-
+Auto S dummyI;
 repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclFAD(?a) = FAD(List(?a));
@@ -34,6 +34,7 @@ id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclD^lsclS?!{,0} = D^lsclS;
 id lsclGaugeXi = GaugeXi;
+id N1_? = dummyI1;
 endrepeat;
 endargument;
 
