@@ -45,7 +45,7 @@ argument lsclGFAD,lsclFAD;
 id lsclP1?.lsclP2?^lsclS?!{,0} = lsclSPD(lsclP1,lsclP2)^lsclS;
 endargument;
 
-* lsclRawTopology is container for propagators
+* lsclRawTopology is a container for propagators
 multiply lsclRawTopology(1);
 
 
@@ -104,6 +104,17 @@ argtoextrasymbol  lsclWrapFun2;
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
 
+
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+;
+print[];
+.sort
+#endif
+
+
 * partial fraction decomposition for overdetermined sets of propagators
 #message lsclTopologyIdentification: Calling sort : `time_' ...
 .sort
@@ -121,6 +132,17 @@ CF lsclF1,
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
  
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
+;
+print[];
+.sort
+#endif 
+ 
 * mappings between unique topologies
 #message lsclTopologyIdentification: Calling sort : `time_' ...
 .sort
@@ -137,6 +159,17 @@ CF
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyMappings
 #message lsclTopologyIdentification: ... done: `time_'
 
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
+;
+print[];
+.sort
+#endif 
+
+
+
 * completion of topologies that do not have enough propagators to form a basis
 #message lsclTopologyIdentification: Calling sort : `time_' ...
 .sort
@@ -152,6 +185,17 @@ CF
 #message lsclTopologyIdentification: Calling the lsclTopologyMappings fold from augmentedTopologies.frm: `time_' ...
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyMappings
 #message lsclTopologyIdentification: ... done: `time_'
+
+
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+;
+print[];
+.sort
+#endif 
+
 
 * Check for dangling FADs and GFADs
 if (occurs(lsclFAD,lsclGFAD));
@@ -238,6 +282,16 @@ moduleoption notinparallel;
 #message lsclTopologyIdentification: ... done: `time_'
 
 
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+;
+print;
+.sort
+#endif
+.end
+
 #do i=`lsclToposFrom',`lsclToposTo'
 #message lsclTopologyIdentification: Calling the #lsclScalarProductRulesFor`$lsclTopoName`i'' fold from scalarProductRules.frm: `time_' ...
 repeat;
@@ -245,10 +299,22 @@ repeat;
 endrepeat;
 #message lsclTopologyIdentification: ... done: `time_'
 
+
+#if (`LSCLVERBOSITY'>0)
+#message lsclTopologyIdentification: Structure of the amplitude at this stage
+b,
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+;
+print;
+.sort
+#endif 
+
 #message lsclTopologyIdentification: Calling sort for this topology: `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 #enddo
+
+
 
 if (occurs(lsclWrapFun3,lsclWrapFun4));
 print "Error, something went wrong in the previous steps.";
