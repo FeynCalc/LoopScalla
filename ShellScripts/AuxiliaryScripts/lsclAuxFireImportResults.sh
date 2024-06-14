@@ -20,10 +20,13 @@ lsclTopologyName="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFireImportResults.m -run lsclProject="\"${lsclProjectName}\"" -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclTopology="\"${lsclTopologyName}\""
-
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFireImportResults.m -run lsclProject="\"${lsclProjectName}\"" \
+-run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" \
+-run lsclTopology="\"${lsclTopologyName}\"" -run lsclExpandInEp="${LSCL_FLAG_EXPAND_IN_EP}" -run lsclEpExpandUpTo=${LSCL_EP_EXPANSION_ORDER} \
+-run lsclNKernels=${lsclFeynCalcNumKernels}
 lsclStatus=$?
 
+echo
 if [[ $lsclStatus -eq 0 ]] ; then
       echo "lsclFireImportResults: Import of reduction tables completed successfully."
 else

@@ -5,17 +5,17 @@
 # Copyright (C) 2019-2023 Vladyslav Shtabovenko
 
 # Examples:
-# Notice that numbers are related to the positions of the entries in the TopologyList.txt file
-# ./ShellScripts/lsclKiraRunReduction.sh MyProject MyProject MyModel 3 topology1
-# ./ShellScripts/lsclKiraRunReduction.sh MyProject MyProject MyModel 3 topology1 --force
-# ./ShellScripts/lsclKiraRunReduction.sh MyProject MyProject MyModel 3 --fromto 1 2
-# ./ShellScripts/lsclKiraRunReduction.sh MyProject MyProject MyModel 3 --fromto 1 all --force
+# Notice that numbers are related to the positions of the entries in the IntegralList.txt file
+# ./ShellScripts/lsclEvaluateWithFiesta.sh MyProject MyProject MyModel 3 topology1
+# ./ShellScripts/lsclEvaluateWithFiesta.sh MyProject MyProject MyModel 3 topology1 --force
+# ./ShellScripts/lsclEvaluateWithFiesta.sh MyProject MyProject MyModel 3 --fromto 1 2
+# ./ShellScripts/lsclEvaluateWithFiesta.sh MyProject MyProject MyModel 3 --fromto 1 all --force
 
 # Stop if any of the commands fails
 set -e
 
-export LSCL_SCRIPT_NAME="lsclKiraRunReduction"
-export LSCL_SHELL_SCRIPT_NAME="AuxiliaryScripts/lsclAuxKiraRunReduction.sh"
+export LSCL_SCRIPT_NAME="lsclEvaluateWithFiesta"
+export LSCL_SHELL_SCRIPT_NAME="AuxiliaryScripts/lsclAuxEvaluateWithFiesta.sh"
 
 echo
 echo
@@ -35,7 +35,7 @@ lsclProjectName="$1"
 lsclProcessName="$2"
 lsclModelName="$3"
 lsclNLoops="$4"
-lsclTopologyName="$5"
+lsclIntegralName="$5"
 
 if [ ${SLURM_CLUSTER_NAME} ]; then
   :
@@ -57,25 +57,23 @@ fi
 
 lsclOptFromTo=0
 
+if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
+  LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
+fi
+
 while [[ ${#} -gt 0 ]]; do
-  case ${1} in
-	#Extra config suffix
-    --configsuffix)
-      export LSCL_CONFIG_SUFFIX=${2}
-      echo "$LSCL_SLURM_SCRIPT_NAME}: Suffix for FIRE config files: ${LSCL_CONFIG_SUFFIX}"
-      shift
-      ;;  
+  case ${1} in	    
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1
-      echo "${LSCL_SCRIPT_NAME}: Forcing reevaluation of already computed diagrams."
+      echo "${LSCL_SCRIPT_NAME}: Forcing reevaluation of already computed integrals."
       shift
       ;;
     --fromto)
       lsclOptFromTo=1
       lsclDiaNumberFrom=${2}
       lsclDiaNumberTo=${3}
-      echo "${LSCL_SCRIPT_NAME}: Processing diagrams in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."
+      echo "${LSCL_SCRIPT_NAME}: Processing integrals in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."
       echo $lsclOptFromTo
       shift
       shift
@@ -87,6 +85,16 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    --resultFile)
+      export LSCL_RESULT_FILE_TO_CHECK=${2}
+      shift
+      shift
+      ;;    
+    --onlyPoleStructures)
+      export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
+      shift
+      ;;      
+            
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")
@@ -95,8 +103,10 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
-if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/results/${lsclTopologyName}/kira_KiraLoopIntegrals.m"
+if [[ ! -z "${LSCL_RESULT_FILE_TO_CHECK+x}" ]]; then
+	if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
+		  export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/FIESTA/${lsclIntegralName}/${LSCL_RESULT_FILE_TO_CHECK}"
+	fi
 fi
 
 
@@ -104,10 +114,10 @@ fi
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     # Process multiple diagrams in parallel
 
-    export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclKiraRunReduction.sh"
+    export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclEvaluateWithFiesta.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralsList.txt"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};
@@ -123,5 +133,5 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     ${lsclScriptDir}/lsclTemplateScriptShell.sh ${lsclBasicArguments[@]:0:4} ${lsclDiaNumberFrom} ${lsclDiaNumberTo}
  else
     echo "${LSCL_SCRIPT_NAME}: Processing a single topology."
-    ${lsclScriptDir}/lsclTemplateScriptShell.sh ${lsclBasicArguments[@]:0:4} ${lsclTopologyName}
+    ${lsclScriptDir}/lsclTemplateScriptShell.sh ${lsclBasicArguments[@]:0:4} ${lsclIntegralName}
 fi

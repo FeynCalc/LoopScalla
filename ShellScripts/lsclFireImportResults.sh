@@ -8,6 +8,7 @@
 # Notice that numbers are related to the positions of the entries in the TopologyList.txt file
 # ./ShellScripts/lsclFireImportResults.sh MyProject MyProject MyModel 3 topology1
 # ./ShellScripts/lsclFireImportResults.sh MyProject MyProject MyModel 3 topology1 --force
+# ./ShellScripts/lsclFireImportResults.sh MyProject MyProject MyModel 3 topology1 --epexpand
 # ./ShellScripts/lsclFireImportResults.sh MyProject MyProject MyModel 3 --fromto 1 2
 # ./ShellScripts/lsclFireImportResults.sh MyProject MyProject MyModel 3 --fromto 1 all --force
 
@@ -50,6 +51,13 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
+  export LSCL_FLAG_EXPAND_IN_EP=0
+fi
+
+if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
+  export LSCL_EP_EXPANSION_ORDER=999
+fi
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -81,12 +89,26 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Expansion in ep
+    --epexpand)
+      export LSCL_FLAG_EXPAND_IN_EP=1
+      export LSCL_EP_EXPANSION_ORDER=${2}
+      echo "${LSCL_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
+      shift
+      shift
+      ;;    
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
       shift
       shift
       ;;
+     #Number of requested cores for the jobs
+    --cores)
+      export LSCL_CLUSTER_CORES_PER_JOB=${2}
+      shift
+      shift
+      ;;  
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")
@@ -96,7 +118,11 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/FireReductionRules.m"
+      if [[ ${LSCL_FLAG_EXPAND_IN_EP} -eq 0 ]]; then
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/FireReductionRules.m"
+      else
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/FireReductionRulesExpanded.m"
+      fi     
 fi
 
 

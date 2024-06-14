@@ -124,7 +124,7 @@ CF lsclTopoConvert;
 CF lsclNum, lsclDen, lsclRat;
 
 
-S lsclEpHelpFlag;
+CF lsclEpHelpFlag;
 
 * Must go to FeynCalc Definitions!
 CF lsclSPD,lsclGLI;

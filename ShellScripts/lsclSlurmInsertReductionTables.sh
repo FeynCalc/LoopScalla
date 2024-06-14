@@ -70,6 +70,12 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Expansion in ep
+    --epexpand)      
+      echo "${LSCL_CLUSTER_SCRIPT_NAME}: Using reduction tables expanded in ep."
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      shift
+      ;;    
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1
@@ -145,4 +151,4 @@ fi
 
 #echo "${LSCL_SLURM_SCRIPT_NAME}: Processing diagrams in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."
 
-${lsclScriptDir}/lsclTemplateScriptSlurm.sh ${lsclBasicArguments[@]:0:5} ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
+${lsclScriptDir}/lsclTemplateScriptSlurm.sh ${lsclBasicArguments[@]:0:5} ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments[@]}

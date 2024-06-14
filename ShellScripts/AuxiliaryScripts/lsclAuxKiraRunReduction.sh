@@ -26,15 +26,22 @@ if [[ -z "${LSCL_CONFIG_SUFFIX+x}" ]]; then
   LSCL_CONFIG_SUFFIX=""
 fi
 
+echo "lsclAuxKiraRunReduction: Cluster temporary directory: $TMPDIR"
 
-${lsclKiraPath} --parallel=${lsclKiraNumThreads} job.yaml & psrecord $! --include-children --interval 5 --log memory.txt
+mkdir -p $TMPDIR/KIRA_${lsclTopologyName}
+echo $pwd
+cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/* $TMPDIR/KIRA_${lsclTopologyName};
 
-lsclStatus=$?
+cd $TMPDIR/KIRA_${lsclTopologyName};
 
-if [[ $lsclStatus -eq 0 ]] ; then
-      echo "lsclAuxKiraRunReduction: IBP reduction for ${lsclTopologyName} completed successfully."
-else
-      echo "lsclAuxKiraRunReduction: IBP reduction for ${lsclTopologyName} failed."
-fi
-#rm -rf ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tmp;
-exit $lsclStatus
+echo "lsclAuxKiraRunReduction: Running KIRA"
+
+${lsclKiraPath} --parallel=${lsclKiraNumThreads} job.yaml & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/memory.txt
+
+echo "lsclAuxKiraRunReduction: Copying results back"
+cp -a $TMPDIR/KIRA_${lsclTopologyName}/results  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/results
+cp -a $TMPDIR/KIRA_${lsclTopologyName}/sectormappings  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/sectormappings
+
+echo "lsclAuxKiraRunReduction: Leaving"
+exit
+

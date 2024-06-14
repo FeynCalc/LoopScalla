@@ -13,10 +13,20 @@ on HighFirst;
 #message lsclCreateTableBase: `lsclNLoops'
 #message lsclCreateTableBase: `lsclTopologyName'
 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/fillStatements.frm #lsclCurrentTopologyDefinitions
+#ifdef `LSCLEPEXPAND'
+#message lsclCreateTableBase: Using reduction tables expanded in ep
+#define LSCLFILLSTATEMENTSFILENAME "fillStatementsExpanded.frm"
+#define LSCLTBLFILENAME "tablebaseExpanded.tbl"
+#else
+#message lsclCreateTableBase: Using ep-exact reduction tables
+#define LSCLFILLSTATEMENTSFILENAME "fillStatements.frm"
+#define LSCLTBLFILENAME "tablebase.tbl"
+#endif
+
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLFILLSTATEMENTSFILENAME' #lsclCurrentTopologyDefinitions
 
 CF 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/fillStatements.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLFILLSTATEMENTSFILENAME' #lsclTopologyNames
 ;
 
 #ifndef `LSCLCURRENTNPROPS'
@@ -27,11 +37,11 @@ exit;
 Table,sparse,zerofill,strict,tabIBP`lsclTopologyName'(`LSCLCURRENTNPROPS');
 
 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/fillStatements.frm #lsclFillStatements
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLFILLSTATEMENTSFILENAME' #lsclFillStatements
 .sort 
 
-TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/tablebase.tbl" create;
-TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/tablebase.tbl" addto tabIBP`lsclTopologyName';
+TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLTBLFILENAME'" create;
+TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLTBLFILENAME'" addto tabIBP`lsclTopologyName';
 
 
 .sort

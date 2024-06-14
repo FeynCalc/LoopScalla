@@ -36,3 +36,4 @@ echo Original number of input diagrams: ${lsclNumDiasInput}
 echo Number of processed diagrams at stage ${lsclStage}: ${lsclNumDiasOutput}
 
 
+

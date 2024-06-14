@@ -54,7 +54,6 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
-
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
 fi
@@ -85,6 +84,12 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Expansion in ep
+    --epexpand)      
+      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      shift
+      ;;   
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
@@ -100,7 +105,7 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tablebase.tbl"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tablebaseExpanded.tbl"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then

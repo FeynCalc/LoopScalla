@@ -50,6 +50,10 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
+  export LSCL_FLAG_EXPAND_IN_EP=0
+fi
+
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -75,6 +79,12 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Expansion in ep
+    --epexpand)
+      export LSCL_FLAG_EXPAND_IN_EP=1
+      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
+      shift
+      ;;     
     #FORM script arguments
     -d|-D)
       lsclExtraFormScriptArguments+=("${1} ${2}")
@@ -96,7 +106,11 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatements.frm"
+      if [[ ${LSCL_FLAG_EXPAND_IN_EP} -eq 0 ]]; then
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatements.frm"
+      else
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatementsExpanded.frm"
+      fi     
 fi
 
 

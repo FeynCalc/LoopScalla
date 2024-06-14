@@ -45,8 +45,8 @@ id lsclDiracGammaOpen(lsclI?,?a) = lsclDiracGammaOpenHold(?a);
 endif;
 
 .sort
-print;
-.sort
+*print;
+*.sort
 
 if (occurs(lsclDiracGamma));
 repeat id lsclDiracSpinor(?a)*lsclDiracGamma(?b)*lsclDiracSpinor(?c) = lsclDiracGammaClosed(lsclDiracSpinor(?a),?b,lsclDiracSpinor(?c));
@@ -71,7 +71,7 @@ if (occurs(lsclDiracGamma,g_)) exit "Something went wrong here!";
 
 .sort
 
-print;
+*print;
 
 format Mathematica;
 #write <`FILE'> "(%E)", `EXPR'

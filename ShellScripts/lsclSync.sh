@@ -151,7 +151,7 @@ case ${lsclSyncWhat} in
     ;;    
 
   OnlyCode)
-    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=environment.sh --exclude=Projects/ --exclude=Logs --exclude=ClusterLogs --exclude=ClusterErrors --exclude=FeynCalc"
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=environment.sh --exclude=Projects/*/Diagrams --exclude=Projects/*/QGRAF --exclude=Logs --exclude=ClusterLogs --exclude=ClusterErrors --exclude=FeynCalc"
     lsclSyncFrom=${lsclClusterProjectDir}/
     lsclSyncTo=${lsclRepoDir}/
     swapFromTo

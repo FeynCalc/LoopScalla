@@ -20,7 +20,8 @@ lsclTopologyName="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFirePrepareReduction.m -run lsclProject="\"${lsclProjectName}\"" -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclTopologyName="\"${lsclTopologyName}\""
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFirePrepareReduction.m -run lsclProject="\"${lsclProjectName}\"" \
+-run lsclProcessName="\"${lsclProcesName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclTopologyName="\"${lsclTopologyName}\""
 
 lsclStatus=$?
 

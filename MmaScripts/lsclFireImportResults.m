@@ -21,11 +21,13 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="QCDTests";
-lsclProcessName="GlToGl";
-lsclModelName="TwoFlavorQCD";
-lsclNLoops="1";
-lsclTopology="topology1";
+lsclProject="BToEtaC";
+lsclProcessName="QbQubarToWQQubar";
+lsclModelName="BToEtaC";
+lsclNLoops="3";
+lsclTopology="topology6267";
+lsclExpandInEp=1;
+lsclNKernels=8;
 ];
 *)
 
@@ -63,8 +65,54 @@ If[ToString[lsclTopology]==="lsclTopology",
 	QuitAbort[]
 ];
 
+If[ToString[lsclExpandInEp]==="lsclExpandInEp",
+	WriteString["stdout",lsclScriptName,": Error! You did not specify whether the tables should be expanded in ep."];
+	QuitAbort[]
+];
 
-WriteString["stdout","Loading the topologies ..."];
+
+If[ !MatchQ[lsclNKernels,_Integer?Positive],
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the ","number of parallel kernels."];	
+	QuitAbort[]
+];
+
+
+If[ (lsclExpandInEp===1) && (!MatchQ[lsclEpExpandUpTo,_Integer] || lsclEpExpandUpTo===999),
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the desired order of the ep-expansion."];	
+	QuitAbort[],
+	WriteString["stdout",lsclScriptName,": Desired ep-expansion order: ", lsclEpExpandUpTo];
+];
+
+
+WriteString["stdout",lsclScriptName,": Launching ", lsclNKernels, " parallel kernels ..."];
+CloseKernels[Kernels[]];
+LaunchKernels[ToExpression[lsclNKernels]];
+WriteString["stdout"," done\n"];
+WriteString["stdout",lsclScriptName,": Available kernels: ", Kernels[]];
+If[Kernels[]==={},
+	Print["ERROR! Something went wrong when launching parallel kernels."];
+	QuitAbort[]
+];
+$ParallelizeFeynCalc=True;
+WriteString["stdout"," done\n"];
+
+
+WriteString["stdout",lsclScriptName,": Loading the integrals ..."];
+filesLoaded=Catch[
+	lsclSymbolicTopologyName=ToExpression[lsclTopology];
+	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopology<>".m"}];	
+	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopology,{inds}];	
+	,
+	$Failed
+];
+If[filesLoaded===$Failed,
+	Print["ERROR! Cannot load the integrals file."];
+	QuitAbort[]
+];
+WriteString["stdout"," done\n"];
+
+
+WriteString["stdout",lsclScriptName,": Loading the topologies ..."];
 filesLoaded=Catch[
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
@@ -98,40 +146,56 @@ fileExtra2ReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagr
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"extra2-"<>lsclTopology<>".tables"}];
 
 
+WriteString["stdout",lsclScriptName,": Loading the reduction tables ..."];
+
+
 reductionRulesRaw=FIREImportResults[lsclTopology,fileReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
 
 
-WriteString["stdout","Number of reduction rules: ", Length[reductionRulesRaw] ,".\n"];
+WriteString["stdout"," done\n"];
+
+
+WriteString["stdout",lsclScriptName,": Number of reduction rules: ", Length[reductionRulesRaw] ,".\n"];
 
 
 If[FileExistsQ[fileExtraReductionTable],
-	WriteString["stdout","Loading extra reduction tables ..."];
+	WriteString["stdout",lsclScriptName,": Loading extra reduction tables ..."];
 	reductionRulesExtraRaw=FIREImportResults[lsclTopology,fileExtraReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
 	WriteString["stdout"," done\n"];
-	WriteString["stdout","Number of extra reduction rules: ", Length[reductionRulesExtraRaw] ,".\n"];
+	WriteString["stdout",lsclScriptName,": Number of extra reduction rules: ", Length[reductionRulesExtraRaw] ,".\n"];
 	reductionRulesRaw=Join[reductionRulesRaw,reductionRulesExtraRaw]	
 ];
 
 
 If[FileExistsQ[fileExtra2ReductionTable],
-	WriteString["stdout","Loading extra 2 reduction tables ..."];
+	WriteString["stdout",lsclScriptName,": Loading extra 2 reduction tables ..."];
 	reductionRulesExtraRaw=FIREImportResults[lsclTopology,fileExtra2ReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
 	WriteString["stdout"," done\n"];
-	WriteString["stdout","Number of extra reduction rules: ", Length[reductionRulesExtraRaw] ,".\n"];
+	WriteString["stdout",lsclScriptName,": Number of extra reduction rules: ", Length[reductionRulesExtraRaw] ,".\n"];
 	reductionRulesRaw=Join[reductionRulesRaw,reductionRulesExtraRaw]	
 ];
+
+
+checkLHS=Union[integrals];
+checkRHS=Union[First/@reductionRulesRaw];
+
+
+If[Complement[checkLHS,checkRHS]=!={},
+	Print["ERROR! Some of the original integrals were not reduced:", Complement[checkLHS,checkRHS]];
+	QuitAbort[]
+]
 
 
 glisRaw=Cases2[Last/@reductionRulesRaw,GLI];
 
 
-WriteString["stdout","Number of preliminary master integrals: ", Length[glisRaw] ,".\n"];
+WriteString["stdout",lsclScriptName,": Number of preliminary master integrals: ", Length[glisRaw] ,".\n"];
 
 
 miRules=FCLoopFindIntegralMappings[glisRaw,fcTopologies];
 
 
-WriteString["stdout","Number of final master integrals: ", Length[miRules[[2]]] ,".\n"];
+WriteString["stdout",lsclScriptName,": Number of final master integrals: ", Length[miRules[[2]]] ,".\n"];
 
 
 aux=Transpose[reductionRulesRaw/.Rule->List];
@@ -147,6 +211,40 @@ mastersToMasterRules=Map[If[FreeQ[lhsIntegrals,#],#->#,Unevaluated[Sequence[]]]&
 
 
 reductionRules=Join[reductionRules,mastersToMasterRules];
+
+
+If[lsclExpandInEp===1,
+	WriteString["stdout",lsclScriptName,": Extracting unique prefactors of master integrals ... "];
+	AbsoluteTiming[aux1=Collect2[reductionRules,GLI,Factoring->pref];];
+	ClearAll[pref];
+	pref[x_Integer]:=x;
+	uniquePrefs=Cases2[aux1,pref];
+	WriteString["stdout","done.\n"];
+	WriteString["stdout",lsclScriptName,": Number of prefactors: ", Length[uniquePrefs],".\n"];
+	WriteString["stdout",lsclScriptName,": Their leafcount: ", LeafCount[uniquePrefs],".\n"];
+	
+	WriteString["stdout",lsclScriptName,": Expanding each prefactor using Series ... "];
+	uniquePrefsEval = uniquePrefs/.pref->Identity/. lsclD-> 4- 2 lsclEp;
+	DistributeDefinitions[lsclEpExpandUpTo];
+	AbsoluteTiming[uniquePrefsEval=ParallelMap[(Normal[Series[#,{lsclEp,0,lsclEpExpandUpTo}]]+lsclEpHelpFlag[lsclEpExpandUpTo+1]*lsclEp^(lsclEpExpandUpTo+1))&,
+	uniquePrefsEval,DistributedContexts -> None,Method->"ItemsPerEvaluation"->Ceiling[N[Length[uniquePrefsEval]/ToExpression[lsclNKernels]]/10]];];
+	
+	WriteString["stdout","done.\n"];
+	WriteString["stdout",lsclScriptName,": New leafcount: ", LeafCount[uniquePrefsEval],".\n"];
+	
+	WriteString["stdout",lsclScriptName,": Inserting the replacement rule ... "];
+(*	
+	AbsoluteTiming[reductionRulesExpanded=aux1/.Dispatch[repRule];];	
+*)	
+repRule=Thread[Rule[uniquePrefs,uniquePrefsEval]];
+With[{xxx = Compress[repRule]}, ParallelEvaluate[compressedRule = xxx;, DistributedContexts -> None]];
+AbsoluteTiming[ParallelEvaluate[repRuleParallel = Dispatch[Uncompress[compressedRule]];, DistributedContexts -> None];];
+reductionRulesExpanded=ParallelMap[(#/. repRuleParallel)&,aux1,
+					DistributedContexts->None, Method->"ItemsPerEvaluation"->Ceiling[N[Length[aux1]/Length[Kernels[]]]/10]];
+WriteString["stdout","done.\n"];
+	
+	Put[reductionRulesExpanded,FileNameJoin[{DirectoryName[fileReductionTable],"FireReductionRulesExpanded.m"}]]
+];
 
 
 tmp=FCLoopTopologyNameToSymbol[miRules[[2]]]//ReplaceAll[#,GLI[s_Symbol,inds_List]:>s@@inds]&;
@@ -167,4 +265,4 @@ Put[miRules[[2]],FileNameJoin[{DirectoryName[fileReductionTable],"FireMasterInte
 WriteString["stdout","done.\n"];
 
 
-WriteString["stdout","All done.\n"];
+WriteString["stdout",lsclScriptName,": All done.\n"];

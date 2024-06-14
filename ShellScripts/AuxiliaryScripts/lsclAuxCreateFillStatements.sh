@@ -20,14 +20,16 @@ lsclTopologyName="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclCreateFillStatements.m -run lsclProject="\"$lsclProjectName\"" -run lsclProcessName="\"$lsclProcessName\"" -run lsclModelName="\"$lsclModelName\"" -run lsclNLoops="\"$lsclNLoops\""  -run lsclTopology="\"$lsclTopologyName\""
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclCreateFillStatements.m -run lsclProject="\"$lsclProjectName\"" \
+-run lsclProcessName="\"$lsclProcessName\"" -run lsclModelName="\"$lsclModelName\"" -run lsclNLoops="\"$lsclNLoops\""  \
+-run lsclTopology="\"$lsclTopologyName\"" -run lsclExpandInEp="${LSCL_FLAG_EXPAND_IN_EP}" 
 
 lsclStatus=$?
 
 if [[ $lsclStatus -eq 0 ]] ; then
-      echo "lsclAuxCreateFillStatements: Creation of fill statements for ${lsclTopologyName} completed successfully."
+      echo "lsclCreateFillStatements: Creation of fill statements for ${lsclTopologyName} completed successfully."
 else
-      echo "lsclAuxCreateFillStatements: Creation of fill statements for ${lsclTopologyName} failed."
+      echo "lsclCreateFillStatements: Creation of fill statements for ${lsclTopologyName} failed."
 fi
 
 exit $lsclStatus

@@ -1,4 +1,4 @@
-off statistics;
+on stats;
 on HighFirst;
 
 #include lsclDeclarations.h
@@ -15,6 +15,15 @@ on HighFirst;
 
 
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+
+#ifdef `LSCLEPEXPAND'
+#message lsclInsertReductionTables: Using reduction tables expanded in ep
+#define LSCLTBLFILENAME "tablebaseExpanded.tbl"
+#else
+#message lsclInsertReductionTables: Using ep-exact reduction tables
+#define LSCLTBLFILENAME "tablebase.tbl"
+#endif
+
 
 CF
 #do i=1, `LSCLNTOPOLOGIES'
@@ -56,6 +65,9 @@ print[];
 .sort
 #endif
 
+*#call lsclToFeynCalc(s2dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumber'To`lsclDiaNumber'.m)
+
+*.end
 *********************************************************************
 #if (`LSCLNOFACTORIZATION'!=1)
 * Put all coefficients multyiplying loop integrals into lsclWrapFun1 (and lsclWrapFun2 is they are too big)
@@ -151,6 +163,25 @@ print[];
 #endif
 *********************************************************************
 
+#message lsclInsertReductionTables: Structure of the amplitude:
+
+b,
+#do i=1, `LSCLNTOPOLOGIES'
+`LSCLTOPOLOGY`i'',
+#enddo
+;
+print[];
+.sort
+
+#ifdef `LSCLONLYSHOWSTRUCTURE'
+.end
+#endif
+
+#message lsclInsertReductionTables: Isolating prefactors of loop integrals:
+
+Collect lsclWrapFun1000, lsclWrapFun1001;
+argtoextrasymbol lsclWrapFun1000, lsclWrapFun1001;
+
 #message lsclInsertReductionTables: Inserting reduction tables : `time_' ...
 
 
@@ -164,19 +195,54 @@ moduleoption notinparallel;
 
 #do i=1, `LSCLNTOPOLOGIES'
 #do j=1,$topoPresent`i'
-#message Loading reduction tables for the topology `LSCLTOPOLOGY`i''
-TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/tablebase.tbl" open;
-TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/tablebase.tbl" enter;
+#message lsclInsertReductionTables: Loading reduction tables for the topology `LSCLTOPOLOGY`i''
+TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/`LSCLTBLFILENAME'" open;
+TableBase "Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/`LSCLTBLFILENAME'" enter;
 .sort
-id `LSCLTOPOLOGY`i''(?a) = tabIBP`LSCLTOPOLOGY`i''(?a);
+
+#message lsclInsertReductionTables: Starting with integrals containing high powers of numerators
+#do k=1,5
+#message lsclInsertReductionTables: Negative power {-(5+1-`k')}
+id ifmatch->integralInserted1 `LSCLTOPOLOGY`i''(?a,{-(5+1-`k')},?b) = tabIBP`LSCLTOPOLOGY`i''(?a,{-(5+1-`k')},?b);
+label integralInserted1;
 TestUse tabIBP`LSCLTOPOLOGY`i'';
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+On shortstats;
+#message lsclInsertReductionTables: ... done.
 Apply;
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+On shortstats;
+#message lsclInsertReductionTables: ... done.
+#enddo
+
+#message lsclInsertReductionTables: Handling the remaining integrals
+
+id ifmatch->integralInserted2 `LSCLTOPOLOGY`i''(?a) = tabIBP`LSCLTOPOLOGY`i''(?a);
+label integralInserted2;
+TestUse tabIBP`LSCLTOPOLOGY`i'';
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+On shortstats;
+#message lsclInsertReductionTables: ... done.
+Apply;
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+On shortstats;
+#message lsclInsertReductionTables: ... done.
+
 #enddo
 #enddo
 
 
+*#message lsclInsertReductionTables: Inserting mappings between master integrals : `time_' ...
+*#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/MasterIntegralMappings.frm #lsclMasterIntegralMappings
+*#message lsclInsertReductionTables: ... done.
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+On shortstats;
 #message lsclInsertReductionTables: ... done.
 
 #message lsclInsertReductionTables: Checking if all integrals were reduced : `time_' ...
@@ -191,27 +257,81 @@ tabIBP`LSCLTOPOLOGY`i'',
 print "lsclInsertReductionTables: Warning: Possibly some loop integrals were not reduced, e.g.: %t";
 endif;
 
-*if(occurs(
-*lsclS,
-*#do i=1, `LSCLNTOPOLOGIES'
-*#do j=1,$topoPresent`i'
-*tabIBP`LSCLTOPOLOGY`i'',
-*#enddo
-*#enddo
-*)) exit;
+if(occurs(
+lsclS,
+#do i=1, `LSCLNTOPOLOGIES'
+#do j=1,$topoPresent`i'
+tabIBP`LSCLTOPOLOGY`i'',
+#enddo
+#enddo
+)) exit;
 
 #do i=1, `LSCLNTOPOLOGIES'
 #do j=1,$topoPresent`i'
 id tabIBP`LSCLTOPOLOGY`i''(?a) = `LSCLTOPOLOGY`i''(?a);
 #enddo
 #enddo
+#message lsclInsertReductionTables: ... done.
+
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+#message lsclInsertReductionTables: ... done.
+
+#message lsclInsertReductionTables: Inserting mappings between master integrals : `time_' ...
+*#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/MasterIntegralMappings2.frm #lsclMasterIntegralMappings
+#do i=1, `LSCLNTOPOLOGIES'
+#do j=1,$topoPresent`i'
+#message Loading mappings for the topology `LSCLTOPOLOGY`i''
+repeat;
+#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/MasterIntegralMappings.frm #lsclMasterIntegralMappings
+endrepeat;
+.sort
+#enddo
+#enddo
+#message lsclInsertReductionTables: ... done.
+
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+#message lsclInsertReductionTables: ... done.
+
+
+#message lsclInsertReductionTables: Structure of the amplitude :
+b, 
+#if (`LSCLVERBOSITY'>0)
+lsclNum,lsclDen,
+#endif
+#do i=1, `LSCLNTOPOLOGIES'
+`LSCLTOPOLOGY`i'',
+#enddo
+;
+print[];
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+#message lsclInsertReductionTables: ... done.
+
+
+#message lsclInsertReductionTables: Unisolating prefactors of loop integrals:
+
+id lsclWrapFun1000(lsclS?) = lsclS;
+id lsclWrapFun1001(lsclS?) = lsclS;
+FromPolynomial;
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+#message lsclInsertReductionTables: ... done.
 
 *********************************************************************
-#if (`LSCLNOFACTORIZATION'!=1)
+#ifndef `LSCLEPEXPAND'
+#message lsclInsertReductionTables: Factorizing the expression ...
 factarg lsclNum,lsclDen;
 chainout lsclNum;
 chainout lsclDen;
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+#message lsclInsertReductionTables: done.
 
 id lsclNum(lsclS?) = lsclRat(lsclS,1);
 id lsclDen(lsclS?) = lsclRat(1,lsclS);
@@ -230,40 +350,27 @@ repeat id lsclNum(lsclS?number_) = lsclS;
 repeat id lsclDen(lsclS?number_) = 1/lsclS;
 repeat id lsclNum(1/lsclS?) = lsclDen(lsclS);
 repeat id lsclNum(lsclS?)*lsclDen(lsclS?) = 1;
-#else
-#message lsclInsertReductionTables: Running with disabled polyratfun and factarg
-#endif
-*********************************************************************
 
+#message lsclInsertReductionTables: ... done factorizing the expression.
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
-
-#message lsclInsertReductionTables: Inserting mappings between master integrals : `time_' ...
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/MasterIntegralMappings.frm #lsclMasterIntegralMappings
 #message lsclInsertReductionTables: ... done.
 
-.sort
-b, 
-#if (`LSCLVERBOSITY'>0)
-lsclNum,lsclDen,
+
+#else
+#message lsclInsertReductionTables: Skipping the factorization at this stage
 #endif
-#do i=1, `LSCLNTOPOLOGIES'
-`LSCLTOPOLOGY`i'',
-#enddo
-;
-print[];
+*******************************************************************
+
+
+#message lsclInsertReductionTables: Calling the ProcessReducedAmplitude fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclProcessReducedAmplitude
+#message lsclInsertReductionTables: ... done.
+
+* #call lsclToFeynCalc(s2dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumber'To`lsclDiaNumber'.m)
 
 .sort
-
-
-
-
-
-
-
-
-
-
-
 
 #message delete storage
 delete storage;

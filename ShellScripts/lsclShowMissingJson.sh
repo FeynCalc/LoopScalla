@@ -27,11 +27,19 @@ lsclProcessName="$2"
 lsclModelName="$3"
 lsclNLoops="$4"
 
-lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "*.tables" ! -name '*extra*.tables' | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "FireReductionRulesExpanded.m" | wc -l)
+lsclAllReductions=()
+lsclCompletedReductions=()
+readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/MasterIntegrals/pySecDec/  -type f -name "generate_int.py" -print0);
 
-# TODO: find ./* -maxdepth 0 -type d '!' -exec test -f '{}/FireReductionRulesExpanded.m' ';' -print
-echo
-echo Original number of reduced topologies: ${lsclNumDiasInput}
-echo Number of imported reduction tables: ${lsclNumDiasOutput}
-echo Number of remaining imports: $((lsclNumDiasInput-lsclNumDiasOutput))
+
+echo Unfinished imports:
+for i in "${lsclAllReductions[@]}"; do
+
+  lsclTopoDirName=$(dirname ${i})  
+  lsclTopoName=$(basename ${lsclTopoDirName})  
+   
+  if [ ! -f ${lsclTopoDirName}/loopint_integral.json ]; then
+   echo "${lsclTopoName}"
+  fi
+  
+done;

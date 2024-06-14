@@ -11,7 +11,7 @@
 # ./ShellScripts/lsclSlurmFireImportResults.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --nodes 2 --slices 1000
 # ./ShellScripts/lsclSlurmFireImportResults.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --clearlogs --nodes 2 --slices 1000
 # ./ShellScripts/lsclSlurmFireImportResults.sh MyProject MyProject MyModel 1 clusterPartitions --mem 1000 --fromto 1 all --nodes 2 --slices 5 --clearlogs
-
+# ./ShellScripts/lsclSlurmFireImportResults.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --epexpand 2
 
 # Stop if any of the commands fails
 set -e
@@ -53,6 +53,14 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
+  export LSCL_FLAG_EXPAND_IN_EP=0
+fi
+
+if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
+  export LSCL_EP_EXPANSION_ORDER=999
+fi
+
 lsclOptFromTo=0
 
 while [[ ${#} -gt 0 ]]; do
@@ -76,6 +84,14 @@ while [[ ${#} -gt 0 ]]; do
       export LSCL_FLAG_FORCE=1
       shift
       ;;
+    #Expansion in ep
+    --epexpand)
+      export LSCL_FLAG_EXPAND_IN_EP=1
+      export LSCL_EP_EXPANSION_ORDER=${2}
+      echo "${LSCL_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
+      shift
+      shift
+      ;;  
     #Remove all existing logs for this job type
     --clearlogs)
       export LSCL_CLUSTER_CLEAR_LOGS=1
