@@ -20,13 +20,12 @@ lsclRepoDir="$(dirname $lsclScriptDir)"
 export FORMPATH=${lsclModules};
 #export lsclTformTmpDir="$TMP";
 echo lsclRunForm: FORM\'s TempDir is: ${lsclTformTmpDir}
-
+echo
 if [ -z ${lsclTformTmpDir} ]; then
     echo lsclRunForm: The directory for FORM\'s temporary files does not exist!
     echo lsclRunForm: Setting it to /tmp
     lsclTformTmpDir="/tmp"
     #exit 1;
 fi
-echo "$*"
-
+# echo "$*"
 time -p ${lsclTformPath} -M -q -Z -t ${lsclTformTmpDir} -w${lsclTformNumWorkers} $*

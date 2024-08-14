@@ -9,30 +9,30 @@ on HighFirst;
 
 #ifdef `LSCLADDDIAFILES'
 
-#message lsclCreateIntegralFiles: `lsclDiaNumberFrom'
-#message lsclCreateIntegralFiles: `lsclDiaNumberTo'
+	#message lsclCreateIntegralFiles: `lsclDiaNumberFrom'
+	#message lsclCreateIntegralFiles: `lsclDiaNumberTo'
 
-#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`i'L`lsclNLoops'.res;
-#enddo
+	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
+	load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`i'L`lsclNLoops'.res;
+	#enddo
 
 
-#message lsclCreateIntegralFiles: All integral files loaded `time_'
+	#message lsclCreateIntegralFiles: All integral files loaded `time_'
 
-#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-G ts1dia`i'L`lsclNLoops' = s1dia`i'L`lsclNLoops';
-#enddo
+	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
+	G ts1dia`i'L`lsclNLoops' = s1dia`i'L`lsclNLoops';
+	#enddo
 
-#message lsclCreateIntegralFiles: All defined `time_'
+	#message lsclCreateIntegralFiles: All defined `time_'
 
 #else
 
-#message lsclCreateIntegralFiles: `lsclTopologyName'
+	#message lsclCreateIntegralFiles: `lsclTopologyName'
 
-load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
-G ampL`lsclNLoops' = tampL`lsclNLoops';
+	load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
+	G ampL`lsclNLoops' = tampL`lsclNLoops';
 
-#message lsclCreateIntegralFiles: Joint integral file loaded `time_'
+	#message lsclCreateIntegralFiles: Joint integral file loaded `time_'
 
 #endif
 
@@ -79,6 +79,7 @@ G ampL`lsclNLoops' = tampL`lsclNLoops';
 	#message lsclTopologyIdentification: Creation of the joint integral file for the process completed successfully.
 
 #else
+
 	#message lsclCreateIntegralFiles: Creating separate files containing loop integals for each topology	
 	CF `lsclTopologyName';
  	if (occurs(`lsclTopologyName')==0) discard;
@@ -86,6 +87,7 @@ G ampL`lsclNLoops' = tampL`lsclNLoops';
 	format Mathematica;
 	#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Mma/`lsclTopologyName'.m> "(%E)", ampL`lsclNLoops'
 	#message lsclTopologyIdentification: Creation of the integral file for the topology `lsclTopologyName' completed successfully.
+	
 #endif
 
 .end
