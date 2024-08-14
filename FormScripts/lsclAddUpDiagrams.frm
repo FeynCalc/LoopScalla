@@ -71,13 +71,25 @@ CF
 ;
 #endif
 
+if (occurs(lsclEpHelpFlag));
+print "lsclAddUpDiagramsCode: Error, missing some contributions to the ep-expansion, e.g.: %t";
+endif;
+
 #message lsclAddUpDiagrams: Calling sort : `time_' ...
 .sort
+off statistics;
 #message lsclAddUpDiagrams: ... done: `time_'
+
+if (occurs(lsclEpHelpFlag)) exit;
+#message lsclAddUpDiagrams: Missing ep-orders check passed: `time_' ...
 
 #message lsclAddUpDiagrams: Calling the lsclAddUpDiagramsCode fold : `time_' ...
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAddUpDiagramsCode
 #message lsclAddUpDiagrams: ... done: `time_'
+
+.sort
+on statistics;
+
 
 
 #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
