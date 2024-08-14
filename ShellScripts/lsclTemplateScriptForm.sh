@@ -25,6 +25,9 @@ else
 fi
 
 
+# Starting time
+echo "${LSCL_SCRIPT_NAME}: Starting time: $(date)"
+
 # the standard entry is the diagram number, but for reduction related
 # scripts we work with topologies, not diagrams
 if [[ -z "${LSCL_FORM_SCRIPT_INPUT_VARIABLE+x}" ]]; then
@@ -202,7 +205,6 @@ else
       ${lsclScriptDir}/lsclRunForm.sh -S form.set -d lsclProjectName=${lsclProjectName} -d lsclProcessName=${lsclProcessName} -d lsclModelName=${lsclModelName} -d lsclNLoops=${lsclNLoops} -d ${lsclInputVariableFromName}=${lsclInputVariableFrom} -d ${lsclInputVariableToName}=${lsclInputVariableTo} ${lsclExtraFormScriptArguments} ${LSCL_FORM_SCRIPT_NAME}
     }
   else
-
     # LSCL_RUN_IN_PARALLEL is set, evaluation of multiple diagrams using GNU parallel
     if [ ${SLURM_CLUSTER_NAME} ]; then
 
@@ -224,7 +226,6 @@ else
            ${lsclParallelPath} --results ${LSCL_PARALLEL_JOBLOG_PATH}/Parallel/{}.log -j ${LSCL_NUMBER_OF_PARALLEL_FORM_JOBS} --joblog ${LSCL_PARALLEL_JOBLOG_PATH}/joblog.${lsclInputVariableFrom}-${lsclInputVariableTo}.log --lb --eta --bar ${lsclScriptDir}/${LSCL_SCRIPT_TO_RUN_IN_PARALLEL} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} {} ${lsclExtraFormScriptArguments} ::: $(seq ${lsclInputVariableFrom} ${lsclInputVariableTo})
         }
       else
-
         lsclRunScript () {
            ${lsclParallelPath} --results ${LSCL_PARALLEL_JOBLOG_PATH}/Parallel/{}.log -j ${LSCL_NUMBER_OF_PARALLEL_FORM_JOBS} --joblog ${LSCL_PARALLEL_JOBLOG_PATH}/joblog.${lsclInputVariableFrom}-${lsclInputVariableTo}.log --lb --eta --bar ${lsclScriptDir}/${LSCL_SCRIPT_TO_RUN_IN_PARALLEL} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} {} ${lsclExtraFormScriptArguments} ::: ${lsclTasks[@]}
         }

@@ -24,6 +24,9 @@ else
   fi
 fi
 
+# Starting time
+echo "${LSCL_SCRIPT_NAME}: Starting time: $(date)"
+
 # the standard entry is the diagram number, but for reduction related
 # scripts we work with topologies, not diagrams
 
