@@ -35,5 +35,6 @@ argument `WRAP';
 chainin `POW';
 id `POW'(lsclS1?,?a) = `POW'(min_(lsclS1,?a));
 endargument;
-
+* this is for expressions that don't contain any DENs or the DENs are free of LA
+id `WRAP'() = 1;
 #endprocedure

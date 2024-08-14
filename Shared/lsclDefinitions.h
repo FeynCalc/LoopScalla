@@ -68,12 +68,15 @@ S lsclGaugeXi;
 F lsclQGPropagator, lsclQGVertex, lsclQGPolarization, lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
 
 CF lsclMass, lsclHold, lsclDiracChain, lsclSUNDelta(S), lsclSUNFDelta(S), lsclFAD, lsclDiracIndex, lsclLorentzIndex, lsclFunColorIndex, 
-lsclAdjColorIndex, lsclVector, lsclMetricTensor(S),  lsclSUNTF, lsclSUNF, lsclSUND, lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD;
+lsclAdjColorIndex, lsclVector, lsclMetricTensor(S),  lsclSUNTF, lsclSUNF, lsclSUND, lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
+lsclIntegralNumber, lsclIntegral;
 
 F lsclNCHold;
 
 * When we need to wrap something into something else
 Auto CF lsclWrapFun;
+
+Auto CF lsclIsoFun;
 
 Auto S lsclFlag;
 
@@ -115,13 +118,15 @@ S lsclEp;
 * SU(N) algebra functions
 
 S lsclSUNN;
-
+S lsclIsolateFlag;
 CF lsclRawTopology,lsclTopoID;
 
 S lsclFlagSPRule;
 CF lsclTopoConvert;
 
 CF lsclNum, lsclDen, lsclRat;
+
+CF lsclHoldNum, lsclHoldDen, lsclHoldRat;
 
 
 CF lsclEpHelpFlag;

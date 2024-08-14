@@ -29,4 +29,16 @@
 #define LSCLMAXPROPAGATORS "16"
 #endif
 
+#ifndef `lsclPprApplyPolyRatFunVerbosity'
+#define lsclPprApplyPolyRatFunVerbosity "0"
+#endif
+
+#ifndef `lsclPprNumDenFactorizeVerbosity'
+#define lsclPprNumDenFactorizeVerbosity "0"
+#endif
+
+#ifndef `lsclPprExportToMathematicaSuffix'
+#define lsclPprExportToMathematicaSuffix ""
+#endif
+
 #endif
