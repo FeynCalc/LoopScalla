@@ -13,15 +13,19 @@ on HighFirst;
 #message lsclCreateTableBase: `lsclNLoops'
 #message lsclCreateTableBase: `lsclTopologyName'
 
+
+
+
 #ifdef `LSCLEPEXPAND'
-#message lsclCreateTableBase: Using reduction tables expanded in ep
-#define LSCLFILLSTATEMENTSFILENAME "fillStatementsExpanded.frm"
-#define LSCLTBLFILENAME "tablebaseExpanded.tbl"
+        #message lsclCreateTableBase: Using the fill statements expanded in ep up to `LSCLEPEXPAND'        
+        #define LSCLFILLSTATEMENTSFILENAME "fillStatementsExpanded`LSCLEPEXPAND'.frm"
+        #define LSCLTBLFILENAME "tablebaseExpanded`LSCLEPEXPAND'.tbl"        
 #else
-#message lsclCreateTableBase: Using ep-exact reduction tables
-#define LSCLFILLSTATEMENTSFILENAME "fillStatements.frm"
-#define LSCLTBLFILENAME "tablebase.tbl"
+    #message lsclCreateTableBase: Using ep-exact reduction tables
+    #define LSCLFILLSTATEMENTSFILENAME "fillStatements.frm"
+    #define LSCLTBLFILENAME "tablebase.tbl"
 #endif
+
 
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`lsclTopologyName'/`LSCLFILLSTATEMENTSFILENAME' #lsclCurrentTopologyDefinitions
 

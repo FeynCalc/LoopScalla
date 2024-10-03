@@ -23,6 +23,7 @@ on HighFirst;
 
 #message lsclAddUpDiagrams: All loaded `time_'
 
+* TODO FIX ME!!!
 #do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
 G ts2dia`i'L`lsclNLoops' = s2dia`i'L`lsclNLoops';
 #enddo
@@ -90,9 +91,20 @@ if (occurs(lsclEpHelpFlag)) exit;
 .sort
 on statistics;
 
+* Before inserting the reduction tables it is a good idea to simplify the coefficients
+* multiplying loop integrals
+collect lsclWrapFun1,lsclWrapFun2;
+#call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
+.sort: After lsclApplyPolyRatFun;
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+.sort: After lsclNumDenFactorize;
 
 
-#call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
+#if (`LSCLADDDIAFLAG'==1)
+	#call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
+#else
+	#call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
+#endif
 
 .sort
 #message delete storage
