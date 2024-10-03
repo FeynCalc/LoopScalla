@@ -25,9 +25,10 @@ lsclProject="BToEtaC";
 lsclProcessName="QbQubarToWQQubar";
 lsclModelName="BToEtaC";
 lsclNLoops="3";
-lsclTopology="topology6267";
+lsclTopology="topology101";
 lsclExpandInEp=1;
-lsclNKernels=8;
+lsclNKernels=4;
+lsclEpExpandUpTo=0;
 ];
 *)
 
@@ -80,10 +81,14 @@ If[ !MatchQ[lsclNKernels,_Integer?Positive],
 If[ (lsclExpandInEp===1) && (!MatchQ[lsclEpExpandUpTo,_Integer] || lsclEpExpandUpTo===999),
 	WriteString["stdout",lsclScriptName,": Error! You did not specify the desired order of the ep-expansion."];	
 	QuitAbort[],
-	WriteString["stdout",lsclScriptName,": Desired ep-expansion order: ", lsclEpExpandUpTo];
+	If[lsclExpandInEp===1,
+		WriteString["stdout",lsclScriptName,": Desired ep-expansion order: ", lsclEpExpandUpTo,"\n\n"];
+		WriteString["stdout",lsclScriptName,": No ep-expansion of the reduction tables.\n\n"];
+	]
 ];
 
 
+If[lsclExpandInEp===1,
 WriteString["stdout",lsclScriptName,": Launching ", lsclNKernels, " parallel kernels ..."];
 CloseKernels[Kernels[]];
 LaunchKernels[ToExpression[lsclNKernels]];
@@ -95,6 +100,7 @@ If[Kernels[]==={},
 ];
 $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
+];
 
 
 WriteString["stdout",lsclScriptName,": Loading the integrals ..."];
@@ -150,6 +156,17 @@ WriteString["stdout",lsclScriptName,": Loading the reduction tables ..."];
 
 
 reductionRulesRaw=FIREImportResults[lsclTopology,fileReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
+
+
+(*reductionRulesRaw=KiraImportResults[lsclTopology,
+"/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/topology5645/results/topology5645/kira_KiraLoopIntegrals.m",FCReplaceD->{d->lsclD}]//Flatten;*)
+
+
+(*aux1=StringSplit[Import["/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/topology5645/results/topology5645/masters","Text"],"\n"];
+masters=ToExpression/@StringReplace[aux1,"#"~~__->""]/.id_[ints__Integer]:>GLI[ToString[id],{ints}];*)
+
+
+(*reductionRulesRaw=Join[reductionRulesRaw,Thread[Rule[masters,masters]]];*)
 
 
 WriteString["stdout"," done\n"];
@@ -242,8 +259,8 @@ AbsoluteTiming[ParallelEvaluate[repRuleParallel = Dispatch[Uncompress[compressed
 reductionRulesExpanded=ParallelMap[(#/. repRuleParallel)&,aux1,
 					DistributedContexts->None, Method->"ItemsPerEvaluation"->Ceiling[N[Length[aux1]/Length[Kernels[]]]/10]];
 WriteString["stdout","done.\n"];
-	
-	Put[reductionRulesExpanded,FileNameJoin[{DirectoryName[fileReductionTable],"FireReductionRulesExpanded.m"}]]
+	WriteString["stdout","Saving results to ","FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m",".\n"];
+	Put[reductionRulesExpanded,FileNameJoin[{DirectoryName[fileReductionTable],"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
 ];
 
 

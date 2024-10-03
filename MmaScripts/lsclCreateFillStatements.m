@@ -25,8 +25,9 @@ lsclProject="BToEtaC";
 lsclProcessName="QbQubarToWQQubar";
 lsclModelName="BToEtaC";
 lsclNLoops="3";
-lsclTopology="topology6267";
+lsclTopology="topology3688";
 lsclExpandInEp=1;
+lsclEpExpandUpTo=0;
 ];
 *)
 
@@ -75,7 +76,7 @@ filesLoaded=Catch[
 		WriteString["stdout","Loading the reduction rules (no expansion) ..."];
 		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRules.m"}]],
 		WriteString["stdout","Loading ep-expanded reduction rules ..."];
-		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded.m"}]]
+		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
 	];
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
 	,
@@ -127,37 +128,34 @@ WriteString["stdout",formtabTopoName];
 
 
 WriteString["stdout","Collecting the rules ... "];
-ClearAll[factFun,factFunHold,lsclNum,lsclDen,lsclNumF,lsclDenF];
-factFun[0]:=0;
-factFun[1]:=1;
-lsclNum[0]:=0;
-lsclNum[1]:=1;
-lsclNum[x_Integer y_.]:=x lsclNum[y];
-lsclNum[lsclEp^n_. x_.]:=lsclEp^n lsclNum[x];
-lsclNum[x_ y_]:=lsclNum[x] lsclNum[y];
-lsclNumF[x_]:=lsclNum[Factor2[x]];
-lsclDen[lsclEp^n_. x_.]:=1/lsclEp^n lsclDen[x];
-lsclDen[x_Integer y_.]:=1/x lsclDen[y];
-lsclDen[1]:=1;
-lsclDen[x_ y_]:=lsclDen[x] lsclDen[y];
-lsclDenF[x_]:=lsclDen[Factor2[x]];
-factFun[x_Plus]:=Distribute[factFunHold[x]]/.factFunHold->factFun;
-factFun[x_]:=lsclNum[Numerator[x]]lsclDen[Denominator[x]]/;Head[x]=!=Plus;
-lsclNum[x_Plus]:=Distribute[factFunHold[x]]/.factFunHold->factFun;
-reductionRulesRaw2=Collect2[reductionRulesRaw1,GLI,Factoring->factFun];
+ClearAll[lsclNum,lsclDen,togetherHold,togetherHoldF,factFunHold,factFunHoldF];
+lsclNum[x_Integer]:=x;
+lsclDen[x_Integer]:=1/x;
+lsclNum[lsclEpHelpFlag[x_]]:=lsclEpHelpFlag[x];
+factFunHoldF[x_]:=togetherHold[Together[x]];
+togetherHoldF[x_]:=lsclNumFL[FactorList[Numerator[x]]]*lsclDenFL[FactorList[Denominator[x]]]
+lsclNumF[x_List]:=Apply[Times,lsclNum[#[[1]]]^#[[2]]&/@x]
+lsclDenF[x_List]:=Apply[Times,lsclDen[#[[1]]]^#[[2]]&/@x]
+reductionRulesRaw2=Collect2[reductionRulesRaw1,GLI,lsclEp,Factoring->factFunHold];
 WriteString["stdout","done.\n"];
-WriteString["stdout",lsclScriptName,": Factoring the unique denominators ... "];
-reductionRulesRaw2=reductionRulesRaw2/.lsclDen->lsclDenF;
+WriteString["stdout",lsclScriptName,": Factoring the unique denominators using Togehter ... "];
+reductionRulesRaw3=reductionRulesRaw2/.factFunHold->factFunHoldF;
 WriteString["stdout","done.\n"];
-WriteString["stdout",lsclScriptName,": Factoring the unique numerators ... "];
-reductionRulesRaw2=reductionRulesRaw2/.lsclNum->lsclNumF;
+WriteString["stdout",lsclScriptName,": Factoring the unique denominators using FactorList ... "];
+reductionRulesRaw4=reductionRulesRaw3/.togetherHold->togetherHoldF;
 WriteString["stdout","done.\n"];
-If[!FreeQ[reductionRulesRaw2,factFun],	
+WriteString["stdout",lsclScriptName,": Introducing lsclNum and lsclDen ... "];
+reductionRulesRaw5=reductionRulesRaw4/.lsclNumFL->lsclNumF;
+reductionRulesRaw6=reductionRulesRaw5/.lsclDenFL->lsclDenF;
+WriteString["stdout","done.\n"];
+
+
+If[!FreeQ2[reductionRulesRaw6,{factFunHoldF,togetherHoldF,togetherHold,factFunHold}],	
 	WriteString["stdout",lsclScriptName,": Error! Failed to isolate loop integral prefactors."];
 	QuitAbort[]
 ];
-allNums=Cases2[reductionRulesRaw2,lsclNum];
-allDens=Cases2[reductionRulesRaw2,lsclDen];
+allNums=Cases2[reductionRulesRaw6,lsclNum];
+allDens=Cases2[reductionRulesRaw6,lsclDen];
 If[!MatchQ[Union[Denominator@@@allNums],{}|{1}],
 	WriteString["stdout",lsclScriptName,": Error! Failed to extract numerators of the prefactors."];
 	QuitAbort[]
@@ -168,27 +166,23 @@ If[!MatchQ[Union[Denominator@@@allDens],{}|{1}],
 ];
 
 
-
 allGLIs=Cases2[reductionRulesRaw2,GLI];
 allGLIsConv=Map[#[[1]]@@#[[2]]&,FCLoopTopologyNameToSymbol[allGLIs]];
 convRule=Dispatch[Thread[Rule[allGLIs,allGLIsConv]]];
-reductionRules=reductionRulesRaw2/.convRule;
+reductionRules=reductionRulesRaw6/.convRule;
 
 
-If[First/@reductionRulesRaw1=!=First/@reductionRulesRaw2,
+If[First/@reductionRulesRaw1=!=First/@reductionRulesRaw6,
 WriteString["stdout",lsclScriptName,": Something went wrong when simplifying reduction rules.\n\n"];
 Abort[]
 ];
 
 
 WriteString["stdout",lsclScriptName,": Checking the results ..."];
-
-
-rulePrimes=Map[Rule[#,RandomPrime[10^6]]&,Join[fcVariables,{lsclD}]];
-
-
-If[Union[Together[((Last/@reductionRulesRaw1)/.rulePrimes)-
-(Last/@(reductionRulesRaw2/.{lsclDen[x_]->1/x,lsclNum[x_]:>x})/.rulePrimes)]]=!={0},
+rulePrimes=Map[Rule[#,RandomPrime[10^6]]&,Join[fcVariables,{lsclD,lsclEp}]];
+lhs=((Last/@reductionRulesRaw1)/.rulePrimes);
+rhs=(Last/@(reductionRulesRaw6/.{lsclDen[x_]->1/x,lsclNum[x_]:>x})/.rulePrimes);
+If[Union[Together[lhs-rhs]]=!={0},
 WriteString["stdout",lsclScriptName,": Something went wrong when simplifying reduction rules.\n\n"];
 Abort[]
 ];
@@ -197,8 +191,8 @@ Abort[]
 WriteString["stdout","done.\n"];
 
 
-WriteString["stdout",lsclScriptName,": Complexity of numerators (Leafcount, unfactorized): ",LeafCount[allNums], "\n"];
-WriteString["stdout",lsclScriptName,": Complexity of denominators (Leafcount, unfactorized): ",LeafCount[allDens], "\n"];
+WriteString["stdout",lsclScriptName,": Complexity of numerators (LeafCount, factorized): ",LeafCount[allNums], "\n"];
+WriteString["stdout",lsclScriptName,": Complexity of denominators (LeafCount, factorized): ",LeafCount[allDens], "\n"];
 
 
 tmp=Map["fill tabIBP"<>ToString[#[[1]],InputForm]<>" = "<>ToString[#[[2]],InputForm]<>";"&,reductionRules];
@@ -213,7 +207,7 @@ If[!StringQ[formTopoNames]||!StringQ[formtabTopoName]||!StringQ[formFillStatemen
 
 If[lsclExpandInEp===0,		
 		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatements.frm"}]],		
-		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsExpanded.frm"}]]
+		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
 ];
 WriteString[file,formTopoNames<>"\n"<>formtabTopoName<>"\n"<>formFillStatements<>"\n"];
 Close[file];

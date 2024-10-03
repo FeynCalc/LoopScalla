@@ -21,11 +21,12 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="QCDTests";
-lsclProcessName="GlToGl";
-lsclModelName="TwoFlavorQCD";
+lsclProject="BToEtaC";
+lsclProcessName="QbQubarToWQQubarFull";
+lsclModelName="BToEtaCLCG";
 lsclNLoops="1";
 lsclTopologyName="topology1";
+lsclNoLiteRed="0";
 ];
 *)
 
@@ -34,24 +35,39 @@ If[$FrontEnd===Null && $lsclDEBUG===True,
 	Print["ERROR! Detected debugging during the productive run."];
 	QuitAbort[]
 ];
-
-If[ToString[lsclProject]==="lsclProject",
+Print[ToExpression[lsclNoLiteRed]];
+If[TrueQ[ToExpression[lsclNoLiteRed]=!=0 && ToExpression[lsclNoLiteRed]=!=1],
+	Print["ERROR! You did not specify whether to use LiteRed or not."];
+	QuitAbort[],
+	Switch[lsclNoLiteRed,
+	"0",
+	usingLiteRed=True;
+	WriteString["stdout","lsclFirePrepareReduction: Using LiteRed.\n\n"],
+	"1",
+	usingLiteRed=False;
+	WriteString["stdout","lsclFirePrepareReduction: Not using LiteRed.\n\n"],
+	_,
+	Print["ERROR! Unknown value of the lsclNoLiteRed parameter."];
+	QuitAbort[]
+	]
+];
+If[ToString[lsclProject]==="lsclProject" || lsclProject==="",
 	Print["ERROR! You did not specify the project."];
 	QuitAbort[]
 ];
-If[ToString[lsclProcessName]==="lsclProcessName",
+If[ToString[lsclProcessName]==="lsclProcessName" || lsclProcessName==="",
 	Print["ERROR! You did not specify the process."];
 	QuitAbort[]
 ];
-If[ToString[lsclModelName]==="lsclModelName",
+If[ToString[lsclModelName]==="lsclModelName"|| lsclModelName==="",
 	Print["ERROR! You did not specify the model."];
 	QuitAbort[]
 ];
-If[ToString[lsclNLoops]==="lsclNLoops",
+If[ToString[lsclNLoops]==="lsclNLoops"|| lsclNLoops==="",
 	Print["ERROR! You did not specify the number of loops."];
 	QuitAbort[]
 ];
-If[ToString[lsclNLoops]==="lsclTopologyName",
+If[ToString[lsclNLoops]==="lsclTopologyName"|| lsclTopologyName==="",
 	Print["ERROR! You did not specify the topology."];
 	QuitAbort[]
 ];
@@ -74,35 +90,35 @@ If[filesLoaded===$Failed,
 WriteString["stdout","done\n"];
 
 
-WriteString["stdout","lsclFindTopologies: Working with ", lsclTopologyName,".\n\n"]
+WriteString["stdout","lsclFirePrepareReduction: Working with ", lsclTopologyName,".\n\n"]
 
 
 fcVariables="FCVariables"/.fcConfig;
 If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
-	WriteString["stdout","lsclFindTopologies: Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
+	WriteString["stdout","lsclFirePrepareReduction: Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
 	(DataType[#,FCVariable]=True)&/@fcVariables;
 ];
 
 
 ExtraReplacementsForTheReduction="ExtraReplacementsForTheReduction"/.fcConfig;
 If[MatchQ[ExtraReplacementsForTheReduction,{___}],
-	WriteString["stdout","lsclFindTopologies: Extra replacements for the reduction: ", ExtraReplacementsForTheReduction,".\n\n"],
-	WriteString["stdout","lsclFindTopologies: Error, something went wrong when loading the additional replacements for the reduction."];
+	WriteString["stdout","lsclFirePrepareReduction: Extra replacements for the reduction: ", ExtraReplacementsForTheReduction,".\n\n"],
+	WriteString["stdout","lsclFirePrepareReduction: Error, something went wrong when loading the additional replacements for the reduction."];
 	QuitAbort[]
 ];
 
 
 NumberOfCoresForReduction="NumberOfCoresForReduction"/.fcConfig;
 If[MatchQ[NumberOfCoresForReduction,Integer_?Positive],
-	WriteString["stdout","lsclFindTopologies: Number of cores for the reduction: ", NumberOfCoresForReduction,".\n\n"],
-	WriteString["stdout","lsclFindTopologies: Error, something went wrong when setting the number of cores for the reduction."];
+	WriteString["stdout","lsclFirePrepareReduction: Number of cores for the reduction: ", NumberOfCoresForReduction,".\n\n"],
+	WriteString["stdout","lsclFirePrepareReduction: Error, something went wrong when setting the number of cores for the reduction."];
 	QuitAbort[]
 ]
 
 
 fcVariables="FCVariables"/.fcConfig;
 If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
-	WriteString["stdout","lsclFindTopologies: Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
+	WriteString["stdout","lsclFirePrepareReduction: Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
 	(DataType[#,FCVariable]=True)&/@fcVariables;
 ];
 
@@ -113,13 +129,14 @@ dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Outpu
 currentTopology=SelectNotFree[fcTopologies,lsclTopologyName];
 
 
-(*currentTopology=FCLoopSelectTopology[integrals[[1]],fcTopologies];*)
+Options[FIREPrepareStartFile]
 
 
 WriteString["stdout","Preparing start files ... "];
 FIREPrepareStartFile[currentTopology,dirReductions,Check->False,
 FIREPath:>environment["lsclFireMmaPath"],StringReplace->{"environment"->"Environment"},
 FIREParallel->4,
+FIREUseLiteRed->usingLiteRed,
 FinalSubstitutions->ExtraReplacementsForTheReduction
 ];
 WriteString["stdout","done\n"];
@@ -135,7 +152,9 @@ WriteString["stdout","done\n"];
 
 WriteString["stdout","Preparing config files ... "];
 topoNameAsString=ToString[currentTopology[[1]][[1]]];
-FIRECreateConfigFile[currentTopology,dirReductions,Variables->fcVariables,
+FIRECreateConfigFile[currentTopology,dirReductions,
+Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREFthreads->2 NumberOfCoresForReduction,
 FIRELthreads->8,
 FIRESthreads->NumberOfCoresForReduction,
@@ -143,6 +162,7 @@ FIREThreads->NumberOfCoresForReduction
 ];
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-16c.config"}]},
 Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREFthreads->2*16,
 FIRELthreads->8,
 FIRESthreads->16,
@@ -150,6 +170,7 @@ FIREThreads->16
 ];
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-KIT-16c.config"}]},
 Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREFthreads->2*16,
 FIRELthreads->8,
 FIRESthreads->16,
@@ -158,6 +179,7 @@ FIREDatabase->"/formswap/shtabovenko/"<>topoNameAsString
 ];
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-KIT-8c.config"}]},
 Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREFthreads->2*8,
 FIRELthreads->4,
 FIRESthreads->8,
@@ -166,6 +188,7 @@ FIREDatabase->"/formswap/shtabovenko/"<>topoNameAsString
 ];
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-KIT-8c-extra.config"}]},
 Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREOutput->"extra-"<>topoNameAsString<>".tables",
 FIREIntegrals->"ExtraLoopIntegrals.m",
 FIREFthreads->2*8,
@@ -176,6 +199,7 @@ FIREDatabase->"/formswap/shtabovenko/"<>topoNameAsString
 ];
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-KIT-8c-extra2.config"}]},
 Variables->fcVariables,
+FIREUseLiteRed->usingLiteRed,
 FIREOutput->"extra2-"<>topoNameAsString<>".tables",
 FIREIntegrals->"Extra2LoopIntegrals.m",
 FIREFthreads->2*8,

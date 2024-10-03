@@ -17,45 +17,52 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 
 
 (*For debugging purposes*)
-(*
+
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="QCDTests";
-lsclProcessName="GlToGl";
-lsclModelName="TwoFlavorQCD";
+lsclProject="BToEtaC";
+lsclProcessName="QbQubarToWQQubarFull";
+lsclModelName="BToEtaCLCG";
 lsclNLoops="1";
-lsclNDiagrams="4";
+lsclNDiagrams="29";
+lsclNKernels="8";
 ];
-*)
+
 
 
 lsclScriptName="lsclFindTopologies";
 
 
 If[$FrontEnd===Null && $lsclDEBUG===True,
-	Print["stdout",lsclScriptName,": Error! Detected debugging during the productive run."];
+	WriteString["stdout",lsclScriptName,": Error! Detected debugging during the productive run."];
 	QuitAbort[]
 ];
 
 If[ToString[lsclProject]==="lsclProject",
-	Print["stdout",lsclScriptName,": Error! You did not specify the project."];
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the project."];
 	QuitAbort[]
 ];
 If[ToString[lsclProcessName]==="lsclProcessName",
-	Print["stdout",lsclScriptName,": Error! You did not specify the process."];
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the process."];
 	QuitAbort[]
 ];
 If[ToString[lsclModelName]==="lsclModelName",
-	Print["stdout",lsclScriptName,": Error! You did not specify the model."];
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the model."];
 	QuitAbort[]
 ];
 If[ToString[lsclNLoops]==="lsclNLoops",
-	Print["stdout",lsclScriptName,": Error! You did not specify the number of loops."];
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the number of loops."];
 	QuitAbort[]
 ];
 
 If[ToString[lsclNDiagrams]==="lsclNDiagrams",
-	Print["stdout",lsclScriptName,": Error! You did not specify the number of the diagrams."];
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the number of the diagrams."];
+	QuitAbort[]
+];
+
+
+If[ ToString[lsclNKernels]==="lsclNKernels",
+	WriteString["stdout",lsclScriptName,": Error! You did not specify the ","number of parallel kernels."];	
 	QuitAbort[]
 ];
 
@@ -70,6 +77,13 @@ filesLoaded=Catch[
 	$Failed
 ];
 WriteString["stdout","done.\n\n"];
+
+
+WriteString["stdout",lsclScriptName,": Launching ", lsclNKernels, " parallel kernels ..."];
+CloseKernels[Kernels[]];
+LaunchKernels[ToExpression[lsclNKernels]];
+$ParallelizeFeynCalc=True;
+WriteString["stdout"," done\n"];
 
 
 lmoms=FCMakeSymbols[k,Range[1,ToExpression[lsclNLoops]],List]
@@ -110,7 +124,7 @@ preferredTopologies={};
 
 
 rawTopologiesFC=FromGFAD[(rawTopologies/.{lsclSPD->SPD,lsclGFAD->GFAD,
-lsclFAD[x__]:>FAD[{x}]}/.lsclRawTopology->Times),LoopMomenta->lmoms,InitialSubstitutions->FromGFAD$InitialSubstitutions];
+lsclFAD[x__]:>FAD[{x}]}/.lsclRawTopology->Times),LoopMomenta->lmoms,IntermediateSubstitutions->FRH[finalSubstitutions](*FromGFAD$InitialSubstitutions*)];
 
 
 rawTopologiesFC$2=SelectNotFree[#,FeynAmpDenominator]&/@rawTopologiesFC;
@@ -140,7 +154,7 @@ WriteString["stdout","\n",lsclScriptName,":  Done applying FCLoopFindTopologies.
 WriteString["stdout",lsclScriptName,": Kinematic invariants present in the topologies: ", kinInvs,".\n\n"]
 
 
-If[Union[kinInvs]=!=Union[fcVariables],
+If[Complement[Union[kinInvs],Union[fcVariables]]=!={},
 	Print["ERROR! Detected undeclared kinematic invariants in the topologies."];
 	QuitAbort[]
 ]
@@ -276,9 +290,6 @@ subTopos={};
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologyMappings.","\n\n"];
 mappedTopos=FCLoopFindTopologyMappings[finalPreTopos,PreferredTopologies->subTopos,FCVerbose->1];
-
-
-WriteString["stdout","\n",lsclScriptName,": Done applying FCLoopFindTopologyMappings.","\n\n"];
 
 
 (* An extra rule for introducing new names for the final topologies *)
