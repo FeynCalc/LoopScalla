@@ -57,9 +57,14 @@ lsclModelName="$3"
 lsclNLoops="$4"
 lsclSlurmPartition="$5"
 
-lsclSlurmLogDir=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}
-lsclSlurmJobName=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}
 
+if [[ -z "${LSCL_SLURM_JOB_NAME+x}" ]]; then
+  LSCL_SLURM_JOB_NAME=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}
+fi
+
+if [[ -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then
+  LSCL_SLURM_LOG_DIR=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}
+fi
 
 echo
 echo
@@ -69,7 +74,7 @@ echo "${LSCL_SLURM_SCRIPT_NAME}: Submitting jobs to the cluster."
 if [[ -z "${LSCL_DIAGRAM_RANGE+x}" ]]; then
   # Single diagram
   lsclExtraFormScriptArguments=${@:6}
-  rm -rf ${lsclSlurmLogDir};
+  rm -rf ${LSCL_SLURM_LOG_DIR};
 else
 
   if [[ -z "${LSCL_TASKS_FROM_FILE+x}" ]]; then
@@ -78,15 +83,15 @@ else
     lsclDiaNumberTo=${7}
     lsclExtraFormScriptArguments=${@:8}
     lsclAllDiagrams=($(seq ${lsclDiaNumberFrom} ${lsclDiaNumberTo}))
-    export LSCL_PARALLEL_JOBLOG_PATH=${lsclSlurmLogDir}
+    export LSCL_PARALLEL_JOBLOG_PATH=${LSCL_SLURM_LOG_DIR}
 
     if [[ ${LSCL_CLUSTER_CLEAR_LOGS} -eq 1 ]] ; then
       echo "${LSCL_SLURM_SCRIPT_NAME}: Removing all logs."
-      rm -rf ${lsclSlurmLogDir};
+      rm -rf ${LSCL_SLURM_LOG_DIR};
     else
       echo "${LSCL_SLURM_SCRIPT_NAME}: Removing only relevant logs."
       for((i=0; i < ${#lsclAllDiagrams[@]}; i+=1)); do
-        rm -rf ${lsclSlurmLogDir}/${lsclAllDiagrams[$i]}.log
+        rm -rf ${LSCL_SLURM_LOG_DIR}/${lsclAllDiagrams[$i]}.log
       done
     fi
   else
@@ -99,27 +104,27 @@ else
     # lsclTasks contains names of relevant tasks extracted from ${LSCL_TASKS_FROM_FILE}
     lsclTasks=( "${lsclTasksAll[@]:$((lsclDiaNumberFrom-1)):lsclSliceSize}" )
     lsclAllDiagrams=($(seq $((lsclDiaNumberFrom)) $((lsclDiaNumberTo)) ))
-    export LSCL_PARALLEL_JOBLOG_PATH=${lsclSlurmLogDir}
+    export LSCL_PARALLEL_JOBLOG_PATH=${LSCL_SLURM_LOG_DIR}
 
     if [[ ${LSCL_CLUSTER_CLEAR_LOGS} -eq 1 ]] ; then
       echo "${LSCL_SLURM_SCRIPT_NAME}: Removing all logs."
-      rm -rf ${lsclSlurmLogDir};
+      rm -rf ${LSCL_SLURM_LOG_DIR};
     else
       echo "${LSCL_SLURM_SCRIPT_NAME}: Removing only relevant logs."
       for((i=0; i < ${#lsclTasks[@]}; i+=1)); do
-        rm -rf ${lsclSlurmLogDir}/${lsclTasks[$i]}.log
+        rm -rf ${LSCL_SLURM_LOG_DIR}/${lsclTasks[$i]}.log
       done
     fi
   fi
 fi
 
 
-if [[ ! -e ${lsclSlurmLogDir} ]]; then
-    mkdir -p ${lsclSlurmLogDir};
+if [[ ! -e ${LSCL_SLURM_LOG_DIR} ]]; then
+    mkdir -p ${LSCL_SLURM_LOG_DIR};
 fi
 
-if [[ ! -e ${lsclSlurmLogDir}/Parallel ]]; then
-    mkdir -p ${lsclSlurmLogDir}/Parallel;
+if [[ ! -e ${LSCL_SLURM_LOG_DIR}/Parallel ]]; then
+    mkdir -p ${LSCL_SLURM_LOG_DIR}/Parallel;
 fi
 
 
@@ -134,7 +139,7 @@ echo "${LSCL_SLURM_SCRIPT_NAME}: Requested number of cores per job: ${LSCL_CLUST
 echo "${LSCL_SLURM_SCRIPT_NAME}: Requested memory per job: ${LSCL_CLUSTER_MEM_PER_JOB} MB."
 echo "${LSCL_SLURM_SCRIPT_NAME}: Project: ${lsclProjectName}."
 echo "${LSCL_SLURM_SCRIPT_NAME}: Process: ${lsclProcessName} (${lsclModelName}) at ${lsclNLoops} loops."
-echo "${LSCL_SLURM_SCRIPT_NAME}: Logs: ${lsclSlurmLogDir}"
+echo "${LSCL_SLURM_SCRIPT_NAME}: Logs: ${LSCL_SLURM_LOG_DIR}"
 
 if [[ ! -z "${LSCL_DIAGRAM_RANGE+x}" ]]; then
   if [[ -z "${LSCL_TASKS_FROM_FILE+x}" ]]; then
@@ -155,14 +160,14 @@ if [[ ${lsclSlurmExclusiveNodes} -eq 1 ]] ; then
 
     echo "${LSCL_SLURM_SCRIPT_NAME}: Mode: Single job."
     echo
-    sbatch --exclusive ${lsclTimeOption} -N${LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName} -o ${lsclSlurmLogDir}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclExtraFormScriptArguments}
+    sbatch --exclusive ${lsclTimeOption} -N${LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME} -o ${LSCL_SLURM_LOG_DIR}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclExtraFormScriptArguments}
 
   else
     # Multiple jobs
     if [[ -z "${LSCL_RUN_IN_PARALLEL+x}" ]]; then
       echo "${LSCL_SLURM_SCRIPT_NAME}: Mode: Multiple tasks submitted to a single script."
       # LSCL_RUN_IN_PARALLEL is not set, meaning that the shell script can evaluate multiple diagrams in parallel
-      sbatch --exclusive ${lsclTimeOption} -N${LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName}.${lsclDiaNumberFrom}-${lsclDiaNumberTo} -o ${lsclSlurmLogDir}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
+      sbatch --exclusive ${lsclTimeOption} -N${LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME}.${lsclDiaNumberFrom}-${lsclDiaNumberTo} -o ${LSCL_SLURM_LOG_DIR}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
     else
       # LSCL_RUN_IN_PARALLEL is set, evaluation of multiple diagrams using GNU parallel
       echo "${LSCL_SLURM_SCRIPT_NAME}: Slices per node: ${LSCL_CLUSTER_NUMBER_OF_SLICES}."
@@ -176,8 +181,8 @@ if [[ ${lsclSlurmExclusiveNodes} -eq 1 ]] ; then
         lsclTempArray=( "${lsclAllDiagrams[@]:i:LSCL_CLUSTER_NUMBER_OF_SLICES}" )
         echo "${LSCL_SLURM_SCRIPT_NAME}: Submitting diagrams/tasks from ${lsclTempArray[0]} to ${lsclTempArray[-1]}"
         echo
-        rm -rf ${lsclSlurmLogDir}/${lsclTempArray[0]}-${lsclTempArray[-1]}.log
-        sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName}.${lsclTempArray[0]}-${lsclTempArray[-1]} -o ${lsclSlurmLogDir}/${lsclTempArray[0]}-${lsclTempArray[-1]}.log  ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclTempArray[0]} ${lsclTempArray[-1]} ${lsclExtraFormScriptArguments}
+        rm -rf ${LSCL_SLURM_LOG_DIR}/${lsclTempArray[0]}-${lsclTempArray[-1]}.log
+        sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME}.${lsclTempArray[0]}-${lsclTempArray[-1]} -o ${LSCL_SLURM_LOG_DIR}/${lsclTempArray[0]}-${lsclTempArray[-1]}.log  ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclTempArray[0]} ${lsclTempArray[-1]} ${lsclExtraFormScriptArguments}
       done
     fi
   fi
@@ -190,12 +195,12 @@ else
 
     echo "${LSCL_SLURM_SCRIPT_NAME}: Mode: Single job."
     echo
-    sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName} -o ${lsclSlurmLogDir}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops}
+    sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME} -o ${LSCL_SLURM_LOG_DIR}/output.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops}
   else
     if [[ -z "${LSCL_RUN_IN_PARALLEL+x}" ]]; then
       echo "${LSCL_SLURM_SCRIPT_NAME}: The script will evaluate multiple jobs in parallel."
       # LSCL_RUN_IN_PARALLEL is not set, meaning that the shell script can evaluate multiple diagrams in parallel
-      sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName}.${lsclDiaNumberFrom}-${lsclDiaNumberTo}  -o ${lsclSlurmLogDir}/output.${lsclDiaNumberFrom}-${lsclDiaNumberTo}.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
+      sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME}.${lsclDiaNumberFrom}-${lsclDiaNumberTo}  -o ${LSCL_SLURM_LOG_DIR}/output.${lsclDiaNumberFrom}-${lsclDiaNumberTo}.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} --fromto ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
     else
       # LSCL_RUN_IN_PARALLEL is set, evaluation of multiple diagrams using sbatch
       echo "${LSCL_SLURM_SCRIPT_NAME}: Mode: Jobs from a consecutive set of numbers or a file."
@@ -203,17 +208,17 @@ else
       if [[ -z "${LSCL_TASKS_FROM_FILE+x}" ]]; then
         #Tasks from a consecutive set of numbers
         if [[ ${lsclDiaNumberFrom} -eq ${lsclDiaNumberTo} ]]; then
-                echo "${LSCL_SLURM_SCRIPT_NAME}: Log:" ${lsclSlurmLogDir}/${lsclDiaNumberFrom}.log
+                echo "${LSCL_SLURM_SCRIPT_NAME}: Log:" ${LSCL_SLURM_LOG_DIR}/${lsclDiaNumberFrom}.log
         fi
-        sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName} -o ${lsclSlurmLogDir}/%a.log --array=${lsclDiaNumberFrom}-${lsclDiaNumberTo} ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclExtraFormScriptArguments}
+        sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME} -o ${LSCL_SLURM_LOG_DIR}/%a.log --array=${lsclDiaNumberFrom}-${lsclDiaNumberTo} ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclExtraFormScriptArguments}
       else
         #Tasks from a file
         for((i=0; i < ${#lsclTasks[@]}; i+=1)); do
           echo "${LSCL_SLURM_SCRIPT_NAME}: Submitting job for ${lsclTasks[$i]}."
           if [[ ${#lsclTasks[@]} -le 10 ]] ; then
-            echo "${LSCL_SLURM_SCRIPT_NAME}: Log:" ${lsclSlurmLogDir}/${lsclTasks[$i]}.log
+            echo "${LSCL_SLURM_SCRIPT_NAME}: Log:" ${LSCL_SLURM_LOG_DIR}/${lsclTasks[$i]}.log
           fi
-          sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${lsclSlurmJobName}.${lsclTasks[$i]} -o ${lsclSlurmLogDir}/${lsclTasks[$i]}.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclTasks[$i]} ${lsclExtraFormScriptArguments}
+          sbatch ${lsclTimeOption} -c ${LSCL_CLUSTER_CORES_PER_JOB} -p ${lsclSlurmPartition} --exclude=${lsclExcludeNodes} --mem=${LSCL_CLUSTER_MEM_PER_JOB} --export=ALL --job-name=${LSCL_SLURM_JOB_NAME}.${lsclTasks[$i]} -o ${LSCL_SLURM_LOG_DIR}/${lsclTasks[$i]}.log ./${LSCL_CLUSTER_SCRIPT_NAME} ${lsclProjectName} ${lsclProcessName} ${lsclModelName} ${lsclNLoops} ${lsclTasks[$i]} ${lsclExtraFormScriptArguments}
         done
       fi
     fi

@@ -40,6 +40,7 @@ export LSCL_CLUSTER_MEM_PER_JOB=2000
 export LSCL_CLUSTER_NUMBER_OF_REQUESTED_NODES=1
 export LSCL_CLUSTER_NUMBER_OF_SLICES=100
 export LSCL_CLUSTER_CLEAR_LOGS=0
+export LSCL_FIRE_NO_LITERED=0
 
 lsclProjectName="$1"
 lsclProcessName="$2"
@@ -88,6 +89,11 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Number of requested GNU parallel jobs
+    --noLiteRed)
+      export LSCL_FIRE_NO_LITERED=1
+      shift
+      ;;  
     #Memory request for each job
     --mem)
       export LSCL_CLUSTER_MEM_PER_JOB=${2}

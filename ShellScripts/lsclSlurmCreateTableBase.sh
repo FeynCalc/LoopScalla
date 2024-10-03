@@ -53,6 +53,14 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
+  export LSCL_FLAG_EXPAND_IN_EP=0
+fi
+
+if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
+  export LSCL_EP_EXPANSION_ORDER=999
+fi
+
 lsclOptFromTo=0
 
 while [[ ${#} -gt 0 ]]; do
@@ -72,11 +80,14 @@ while [[ ${#} -gt 0 ]]; do
       shift
       ;;
     #Expansion in ep
-    --epexpand)      
-      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+    --epexpand)
+      export LSCL_FLAG_EXPAND_IN_EP=1
+      export LSCL_EP_EXPANSION_ORDER=${2}
+      echo "${LSCL_SLURM_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
+      lsclExtraFormScriptArguments+=("-d LSCLEPEXPAND=${2}")
       shift
-      ;;    
+      shift
+      ;;      
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1

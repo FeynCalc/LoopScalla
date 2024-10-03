@@ -195,6 +195,7 @@ cd ${lsclRepoDir}
 if [[ -z "${LSCL_DIAGRAM_RANGE+x}" ]]; then
   #Single diagram
   lsclRunScript () {
+    export LSCL_FORM_SCRIPT_INPUT_ID=$lsclInputVariable
      ${lsclScriptDir}/lsclRunForm.sh -S form.set -d lsclProjectName=${lsclProjectName} -d lsclProcessName=${lsclProcessName} -d lsclModelName=${lsclModelName} -d lsclNLoops=${lsclNLoops} -d ${lsclInputVariableName}=${lsclInputVariable} ${lsclExtraFormScriptArguments} ${LSCL_FORM_SCRIPT_NAME}
   }
 else
@@ -202,6 +203,7 @@ else
   if [[ -z "${LSCL_RUN_IN_PARALLEL+x}" ]]; then
    # LSCL_RUN_IN_PARALLEL is not set, meaning that the form script can evaluate multiple diagrams in parallel
     lsclRunScript () {
+      export LSCL_FORM_SCRIPT_INPUT_ID=$lsclInputVariableFrom"-"$lsclInputVariableTo
       ${lsclScriptDir}/lsclRunForm.sh -S form.set -d lsclProjectName=${lsclProjectName} -d lsclProcessName=${lsclProcessName} -d lsclModelName=${lsclModelName} -d lsclNLoops=${lsclNLoops} -d ${lsclInputVariableFromName}=${lsclInputVariableFrom} -d ${lsclInputVariableToName}=${lsclInputVariableTo} ${lsclExtraFormScriptArguments} ${LSCL_FORM_SCRIPT_NAME}
     }
   else

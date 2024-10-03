@@ -58,6 +58,15 @@ if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
 fi
 
+if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
+  export LSCL_FLAG_EXPAND_IN_EP=0
+fi
+
+if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
+  export LSCL_EP_EXPANSION_ORDER=999
+fi
+
+
 lsclOptFromTo=0
 
 while [[ ${#} -gt 0 ]]; do
@@ -86,10 +95,13 @@ while [[ ${#} -gt 0 ]]; do
       ;;
     #Expansion in ep
     --epexpand)      
-      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep up to ${2}."
+      export LSCL_FLAG_EXPAND_IN_EP=1
+      export LSCL_EP_EXPANSION_ORDER=${2}
+      lsclExtraFormScriptArguments+=("-d LSCLEPEXPAND=${2}")
       shift
-      ;;   
+      shift
+      ;;
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
@@ -105,7 +117,12 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tablebaseExpanded.tbl"
+
+  if [[ ${LSCL_FLAG_EXPAND_IN_EP} -eq 0 ]]; then
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tablebase.tbl"
+      else
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/tablebaseExpanded${LSCL_EP_EXPANSION_ORDER}.tbl"
+    fi            
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then

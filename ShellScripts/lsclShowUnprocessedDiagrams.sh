@@ -34,7 +34,7 @@ readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectNa
 
 IFS=$'\n' lsclAllDiagrams=($(sort -V <<<"${lsclAllDiagramsRaw[*]}"))
 unset IFS
-
+counter=0
 echo Unprocessed diagrams:
 for i in "${lsclAllDiagrams[@]}"; do
 	
@@ -42,5 +42,7 @@ for i in "${lsclAllDiagrams[@]}"; do
   
   if [ ! -f $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage}/stage${lsclStage}_$lsclDiaName.res ]; then
    echo $lsclDiaName
+   counter=$((counter + 1))
   fi
 done
+echo Total number of unprocessed diagrams: $counter

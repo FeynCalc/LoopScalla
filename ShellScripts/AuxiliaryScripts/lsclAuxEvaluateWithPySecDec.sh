@@ -37,7 +37,7 @@ if [[ ! -z "${LSCL_SET_ULIMIT_TO+x}" ]]; then
 fi
 
 
-cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}
+cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}
 
 if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
   LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
@@ -47,31 +47,31 @@ echo "lsclEvaluateWithPySecDec: Cluster temporary directory: $TMPDIR"
 
 mkdir -p $TMPDIR/${lsclIntegralName}
 echo $pwd
-cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/* $TMPDIR/${lsclIntegralName};
+cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/* $TMPDIR/${lsclIntegralName};
 
 cd $TMPDIR/${lsclIntegralName};
 
 echo "lsclEvaluateWithPySecDec: Running generate_int.py"
 
-${lsclPythonPath} generate_int.py & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/memory_generate.txt;
+${lsclPythonPath} generate_int.py & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_generate.txt;
 
 if [[ ${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE} -eq 1 ]] ; then
 	echo "lsclEvaluateWithPySecDec: Copying loopint_integral.json back"
-	cp $TMPDIR/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}
+	cp $TMPDIR/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}
 	echo "lsclEvaluateWithPySecDec: Leaving"
 	exit
 fi
 
 echo "lsclEvaluateWithPySecDec: Running make"
 
-${lsclMakePath} -j${lsclPySecDecNumThreads} -C loopint & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/memory_make.txt;
+${lsclMakePath} -j${lsclPySecDecNumThreads} -C loopint & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_make.txt;
 
 echo "lsclEvaluateWithPySecDec: Running integrate_int.py"
 
-${lsclPythonPath} integrate_int.py  & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/memory_integrate.txt;
+${lsclPythonPath} integrate_int.py  & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_integrate.txt;
 
 echo "lsclEvaluateWithPySecDec: Copying the results back"
 
-cp $TMPDIR/${lsclIntegralName}/numres* ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName};
+cp $TMPDIR/${lsclIntegralName}/numres* ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName};
 
 echo "lsclEvaluateWithPySecDec: Leaving"

@@ -27,6 +27,7 @@ lsclRsyncOptions="-iva -ogp --progress"
 lsclDryRun=0
 lsclNoDelete=0
 lsclClusterProjectDir=${lsclClusterProjectDirDefault}
+lsclSure=0
 
 while [[ ${#} -gt 0 ]]; do
   case ${1} in
@@ -45,6 +46,10 @@ while [[ ${#} -gt 0 ]]; do
       lsclRsyncOptions="-iva -ogp --progress"
       shift
       ;;
+    --IamSure)
+      lsclSure=1      
+      shift
+      ;;  
     --toCluster)
       lsclSyncDir="to"
       shift
@@ -59,6 +64,11 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    --diaNumber)
+      lsclDiaNumber=${2}
+      shift
+      shift
+      ;;  
     --ProjectProcessModelNLoops)
       lsclProjectName=${2}
       lsclProcessName=${3}
@@ -260,6 +270,19 @@ case ${lsclSyncWhat} in
     swapFromTo
     ;;
 
+  OnlyResultsSplitStage1)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
+    checkProjectProcessModelNLoops
+    if [ -z "$lsclDiaNumber" ]; then
+      lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/
+      lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/
+    else 
+      lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${lsclDiaNumber}/
+      lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${lsclDiaNumber}/
+    fi    
+    swapFromTo
+    ;;  
+
   OnlyResultsStage2)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
@@ -267,6 +290,19 @@ case ${lsclSyncWhat} in
     lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/
     swapFromTo
     ;;
+
+  OnlyResultsSplitStage2)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
+    checkProjectProcessModelNLoops
+    if [ -z "$lsclDiaNumber" ]; then
+      lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/
+      lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/
+    else 
+      lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${lsclDiaNumber}/
+      lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${lsclDiaNumber}/
+    fi
+    swapFromTo
+    ;;  
 
   OnlyClusterLogs)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
@@ -290,14 +326,19 @@ echo "lsclSync: Destination: ${lsclSyncTo}"
 
 echo "lsclSync: Options: ${lsclRsyncOptions}"
 
-read -p "Sure? " -n 1 -r
-echo
+if [[ ${lsclSure} -eq "0" ]]; then
+  read -p "Sure? " -n 1 -r
+  echo
 
-if [[ $REPLY = "y" ]] || [[ $REPLY = "j" ]]; then
-  rsync ${lsclRsyncOptions} ${lsclExclude} ${lsclSyncFrom} ${lsclSyncTo}
+  if [[ $REPLY = "y" ]] || [[ $REPLY = "j" ]]; then
+    rsync ${lsclRsyncOptions} ${lsclExclude} ${lsclSyncFrom} ${lsclSyncTo}
+  else
+    echo "lsclSync: Sync aborted."
+  fi
 else
-  echo "lsclSync: Sync aborted."
+  rsync ${lsclRsyncOptions} ${lsclExclude} ${lsclSyncFrom} ${lsclSyncTo}
 fi
+
 
 
 

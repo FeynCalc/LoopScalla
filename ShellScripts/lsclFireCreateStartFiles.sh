@@ -50,6 +50,9 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FIRE_NO_LITERED+x}" ]]; then
+  LSCL_FIRE_NO_LITERED=0
+fi
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -75,6 +78,12 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Whether to use FIRE with LiteRed 
+    --noLiteRed)
+      export LSCL_FIRE_NO_LITERED=1
+      echo "${LSCL_SCRIPT_NAME}: Not using LiteRed input in the reduction."
+      shift
+      ;;        
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
@@ -121,7 +130,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     echo "${LSCL_SCRIPT_NAME}: Processing a single topology."
     
     # Check if the precondition is met
-	if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ]; then
+	if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ] && [[ ${LSCL_FIRE_NO_LITERED} -ne 1 ]]; then
 		echo "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR"
 		echo "${LSCL_SCRIPT_NAME}: The LR directory is missing, aborting the calculation."
 		exit 1;

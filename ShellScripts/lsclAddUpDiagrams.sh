@@ -143,9 +143,8 @@ export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectNa
 #fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
-    # Process multiple diagrams in parallel
-    export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclAddUpDiagrams.sh"
-    #export LSCL_RUN_IN_PARALLEL="1"
+    # Process multiple diagrams without gnu parallel
+    export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclAddUpDiagrams.sh"    
     export LSCL_DIAGRAM_RANGE="1"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
@@ -167,6 +166,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
 
     ${lsclScriptDir}/lsclTemplateScriptForm.sh ${lsclBasicArguments[@]:0:4} ${lsclDiaNumberFrom} ${lsclDiaNumberTo} ${lsclExtraFormScriptArguments}
  else
+    # In the case of a single diagram we still submit a diagram range
     export LSCL_DIAGRAM_RANGE="1"
     lsclDiaNumber=${lsclBasicArguments[4]}
 

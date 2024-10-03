@@ -50,6 +50,13 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_MASTER_INTEGRALS_DIRECTORY+x}" ]]; then
+  LSCL_MASTER_INTEGRALS_DIRECTORY="pySecDec"
+fi
+
+if [[ -z "${LSCL_INTEGRALS_LIST+x}" ]]; then
+  LSCL_INTEGRALS_LIST="IntegralsList.txt"
+fi
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -62,19 +69,27 @@ if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
 fi
 
 while [[ ${#} -gt 0 ]]; do
-  case ${1} in
-	#Extra config suffix
-    --configsuffix)
-      export LSCL_CONFIG_SUFFIX=${2}
-      echo "$LSCL_SLURM_SCRIPT_NAME}: Suffix for FIRE config files: ${LSCL_CONFIG_SUFFIX}"
-      shift
-      ;;  
+  case ${1} in    
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1
       echo "${LSCL_SCRIPT_NAME}: Forcing reevaluation of already computed integrals."
       shift
       ;;
+     #Directory inside MasterIntegrals
+    --miDir)
+      export LSCL_MASTER_INTEGRALS_DIRECTORY=${2}
+      echo "${LSCL_SCRIPT_NAME}: Using the directory ${LSCL_MASTER_INTEGRALS_DIRECTORY}"
+      shift
+      shift
+      ;;  
+    #List of integrals to reduce
+    --intList)
+      export LSCL_INTEGRALS_LIST=${2}
+      echo "${LSCL_SCRIPT_NAME}: Using the list of integrals ${LSCL_INTEGRALS_LIST}"
+      shift
+      shift
+      ;;    
     --fromto)
       lsclOptFromTo=1
       lsclDiaNumberFrom=${2}
@@ -111,7 +126,7 @@ done
 
 if [[ ! -z "${LSCL_RESULT_FILE_TO_CHECK+x}" ]]; then
 	if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-		  export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/${lsclIntegralName}/${LSCL_RESULT_FILE_TO_CHECK}"
+		  export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/${LSCL_RESULT_FILE_TO_CHECK}"
 	fi
 fi
 
@@ -123,7 +138,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclEvaluateWithPySecDec.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralsList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_INTEGRALS_LIST}"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};

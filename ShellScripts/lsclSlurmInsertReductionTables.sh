@@ -71,11 +71,13 @@ while [[ ${#} -gt 0 ]]; do
       shift
       ;;
     #Expansion in ep
-    --epexpand)      
+    --epexpand)
       echo "${LSCL_CLUSTER_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND -D LSCLEPEXPANDORDER=${2}")
+      lsclEpExpandOrder=${2}
       shift
-      ;;    
+      shift
+      ;;
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1

@@ -50,6 +50,9 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_FIRE_NO_LITERED+x}" ]]; then
+  LSCL_FIRE_NO_LITERED=0
+fi
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -65,6 +68,12 @@ while [[ ${#} -gt 0 ]]; do
       echo "${LSCL_SCRIPT_NAME}: Forcing reevaluation of already computed diagrams."
       shift
       ;;
+    #Whether to use FIRE with LiteRed 
+    --noLiteRed)
+      export LSCL_FIRE_NO_LITERED=1
+      echo "${LSCL_SCRIPT_NAME}: Not using LiteRed input in the reduction."
+      shift
+      ;;      
     --fromto)
       lsclOptFromTo=1
       lsclDiaNumberFrom=${2}

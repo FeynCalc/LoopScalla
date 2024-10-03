@@ -28,7 +28,7 @@ lsclModelName="$3"
 lsclNLoops="$4"
 
 lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "*.tables" ! -name '*extra*.tables' | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "FireReductionRulesExpanded.m" | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "FireReductionRules.m" | wc -l)
 
 # TODO: find ./* -maxdepth 0 -type d '!' -exec test -f '{}/FireReductionRulesExpanded.m' ';' -print
 echo

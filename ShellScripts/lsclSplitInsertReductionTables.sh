@@ -57,10 +57,6 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
-echo ${LSCL_SCRIPT_NAME}: lsclIntNumber: $lsclIntNumber
-
-
-
 lsclOptFromTo=0
 
 while [[ ${#} -gt 0 ]]; do
@@ -84,29 +80,23 @@ while [[ ${#} -gt 0 ]]; do
     #Dia
     --diaNumber)
       lsclExtraFormScriptArguments+=("-d lsclDiaNumber=${2}")
-      lsclDiaNumber=${2}
-      shift
-      shift
-      ;;  
-    #Topo
-    --topology)
-      lsclExtraFormScriptArguments+=("-d lsclTopology=${2}")
-      lsclTopology=${2}
+      export LSCL_DIA_NUMBER=${2}
       shift
       shift
       ;;    
+    #Expansion in ep
+    --epexpand)
+      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND -D LSCLEPEXPANDORDER=${2}")
+      shift
+      shift
+      ;;      
     #FORM script arguments
     -d|-D)
       lsclExtraFormScriptArguments+=("${1} ${2}")
       shift
       shift
-      ;;
-    #Expansion in ep
-    --epexpand)      
-      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
-      shift
-      ;;  
+      ;;   
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
@@ -122,15 +112,14 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
-  export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${lsclDiaNumber}"
+  export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_DIA_NUMBER}"
 fi
 
-
 export LSCL_FORM_SCRIPT_NAME="lsclInsertReductionTables.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${lsclDiaNumber}"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}"
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${lsclDiaNumber}/stage2_dia${lsclDiaNumber}L${lsclNLoops}T${lsclTopology}I${lsclIntNumber}.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p${lsclIntNumber}.res"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
@@ -140,7 +129,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_DIAGRAM_RANGE="1"
 
     if [[ ${lsclIntNumberTo} == "all" ]]; then
-      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${lsclDiaNumber} -type f -name "stage1_dia${lsclDiaNumber}L${lsclNLoops}T${lsclTopology}I*.res" | wc -l)
+      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
       lsclIntNumberTo=${lsclNumInts}
 
       if [[ ${lsclNumInts} -eq "0" ]]; then

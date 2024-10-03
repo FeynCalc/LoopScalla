@@ -54,6 +54,14 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
   LSCL_FLAG_FORCE=0
 fi
 
+if [[ -z "${LSCL_MASTER_INTEGRALS_DIRECTORY+x}" ]]; then
+  LSCL_MASTER_INTEGRALS_DIRECTORY="pySecDec"
+fi
+
+if [[ -z "${LSCL_INTEGRALS_LIST+x}" ]]; then
+  LSCL_INTEGRALS_LIST="IntegralsList.txt"
+fi
+
 lsclOptFromTo=0
 
 while [[ ${#} -gt 0 ]]; do
@@ -66,6 +74,20 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+     #Directory inside MasterIntegrals
+    --miDir)
+      export LSCL_MASTER_INTEGRALS_DIRECTORY=${2}
+      echo "${LSCL_SCRIPT_NAME}: Using the directory ${LSCL_MASTER_INTEGRALS_DIRECTORY}"
+      shift
+      shift
+      ;;  
+    #List of integrals to reduce
+    --intList)
+      export LSCL_INTEGRALS_LIST=${2}
+      echo "${LSCL_SCRIPT_NAME}: Using the list of integrals ${LSCL_INTEGRALS_LIST}"
+      shift
+      shift
+      ;;      
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1
@@ -137,7 +159,7 @@ done
 
 export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
-export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/IntegralsList.txt"
+export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_INTEGRALS_LIST}"
 
 
 

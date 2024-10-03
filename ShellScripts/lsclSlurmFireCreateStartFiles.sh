@@ -81,6 +81,12 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
+    #Whether to use FIRE with LiteRed 
+    --noLiteRed)
+      export LSCL_FIRE_NO_LITERED=1
+      echo "${LSCL_SCRIPT_NAME}: Not using LiteRed input in the reduction."
+      shift
+      ;;          
     #Memory request for each job
     --mem)
       export LSCL_CLUSTER_MEM_PER_JOB=${2}

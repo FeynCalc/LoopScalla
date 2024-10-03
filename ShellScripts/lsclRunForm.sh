@@ -27,5 +27,22 @@ if [ -z ${lsclTformTmpDir} ]; then
     lsclTformTmpDir="/tmp"
     #exit 1;
 fi
-# echo "$*"
-time -p ${lsclTformPath} -M -q -Z -t ${lsclTformTmpDir} -w${lsclTformNumWorkers} $*
+
+if [[ -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then
+    lsclPsRecordLogPath=${LSCL_PARALLEL_JOBLOG_PATH}/MemoryUsage
+else
+    lsclPsRecordLogPath=${LSCL_SLURM_LOG_DIR}/MemoryUsage
+fi
+
+if [[ ! -d ${lsclPsRecordLogPath}} ]]; then
+      mkdir -p ${lsclPsRecordLogPath};
+  fi
+
+echo lsclRunForm: Log for psrecord: ${lsclPsRecordLogPath}
+
+if [[ -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then
+    time -p ${lsclTformPath} -M -q -Z -t ${lsclTformTmpDir} -w${lsclTformNumWorkers} $*;
+else
+    time -p ${lsclTformPath} -M -q -Z -t ${lsclTformTmpDir} -w${lsclTformNumWorkers} $* & psrecord $! --include-children --interval 5 --log ${lsclPsRecordLogPath}/${LSCL_FORM_SCRIPT_INPUT_ID}.txt;
+fi
+

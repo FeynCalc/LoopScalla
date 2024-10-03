@@ -7,11 +7,11 @@
 # Examples:
 
 
-# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --fromto 1 all --diaNumber=379 --topology topology6075
-# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --diaNumber=379 --topology topology6075
-# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --nodes 2 --slices 1000 --diaNumber 379 --topology topology6075
-# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --clearlogs --nodes 2 --slices 1000 --diaNumber 379 --topology topology6075
-# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 1000 --fromto 1 all --nodes 2 --slices 5 --clearlogs --diaNumber 379 --topology topology6075
+# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --fromto 1 all --diaNumber=379
+# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --diaNumber=379
+# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --force --nodes 2 --slices 1000 --diaNumber 379
+# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --clearlogs --nodes 2 --slices 1000 --diaNumber 379
+# ./ShellScripts/lsclSlurmSplitInsertReductionTables.sh MyProject MyProject MyModel 1 clusterPartitions --mem 1000 --fromto 1 all --nodes 2 --slices 5 --clearlogs --diaNumber 379
 
 
 # Stop if any of the commands fails
@@ -75,23 +75,18 @@ while [[ ${#} -gt 0 ]]; do
     #Dia
     --diaNumber)
       lsclExtraFormScriptArguments+=("-d lsclDiaNumber=${2}")
-      lsclDiaNumber=${2}
+      export LSCL_DIA_NUMBER=${2}
       shift
       shift
-      ;;  
-    #Topo
-    --topology)
-      lsclExtraFormScriptArguments+=("-d lsclTopology=${2}")
-      lsclTopology=${2}
-      shift
-      shift
-      ;;    
+      ;;
     #Expansion in ep
-    --epexpand)      
+    --epexpand)
       echo "${LSCL_CLUSTER_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND -D LSCLEPEXPANDORDER=${2}")
+      lsclEpExpandOrder=${2}
       shift
-      ;;    
+      shift
+      ;;
     #Extra shell script parameters
     --force)
       export LSCL_FLAG_FORCE=1
@@ -146,6 +141,13 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
+export LSCL_SLURM_JOB_NAME=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_DIA_NUMBER}.${lsclEpExpandOrder}
+export LSCL_SLURM_LOG_DIR=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_DIA_NUMBER}.${lsclEpExpandOrder}
+
+
+
+
+
 # Slurm must always be given a range of diagrams, even for a single diagram
 if [[ ${lsclOptFromTo} -ne 1 ]] ; then
       echo "${LSCL_SCRIPT_NAME}: You must specify a range of integrals to process"
@@ -156,7 +158,7 @@ export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
 
 if [[ ${lsclIntNumberTo} == "all" ]]; then
-  lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${lsclDiaNumber} -type f -name "stage1_dia${lsclDiaNumber}L${lsclNLoops}T${lsclTopology}I*.res" | wc -l)  
+  lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
   lsclIntNumberTo=${lsclNumInts}
 
   if [[ ${lsclNumInts} -eq "0" ]]; then
@@ -165,6 +167,6 @@ if [[ ${lsclIntNumberTo} == "all" ]]; then
   fi
 fi
 
-#echo "${LSCL_SLURM_SCRIPT_NAME}: Processing diagrams in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."
+#echo "${LSCL_SLURM_SCRIPT_NAME}: Processing diagrams in the range from ${LSCL_DIA_NUMBERFrom} to ${LSCL_DIA_NUMBERTo}."
 
 ${lsclScriptDir}/lsclTemplateScriptSlurm.sh ${lsclBasicArguments[@]:0:5} ${lsclIntNumberFrom} ${lsclIntNumberTo} ${lsclExtraFormScriptArguments[@]}

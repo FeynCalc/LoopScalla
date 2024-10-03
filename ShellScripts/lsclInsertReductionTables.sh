@@ -87,11 +87,18 @@ while [[ ${#} -gt 0 ]]; do
       shift
       ;;
     #Expansion in ep
-    --epexpand)      
+    --epexpand)
       echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
-      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND")
+      lsclExtraFormScriptArguments+=("-D LSCLEPEXPAND -D LSCLEPEXPANDORDER=${2}")
       shift
-      ;;  
+      shift
+      ;;      
+    #FORM script arguments
+    -d|-D)
+      lsclExtraFormScriptArguments+=("${1} ${2}")
+      shift
+      shift
+      ;;   
      #Number of requested GNU parallel jobs
     --pjobs)
       export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}

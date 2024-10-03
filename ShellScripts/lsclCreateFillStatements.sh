@@ -54,10 +54,12 @@ if [[ -z "${LSCL_FLAG_EXPAND_IN_EP+x}" ]]; then
   export LSCL_FLAG_EXPAND_IN_EP=0
 fi
 
-
-if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
-  export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
+if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
+  export LSCL_EP_EXPANSION_ORDER=999
 fi
+
+
+
 
 lsclOptFromTo=0
 
@@ -82,9 +84,11 @@ while [[ ${#} -gt 0 ]]; do
     #Expansion in ep
     --epexpand)
       export LSCL_FLAG_EXPAND_IN_EP=1
-      echo "${LSCL_SCRIPT_NAME}: Using reduction tables expanded in ep."
+      export LSCL_EP_EXPANSION_ORDER=${2}
+      echo "${LSCL_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
       shift
-      ;;     
+      shift
+      ;;         
     #FORM script arguments
     -d|-D)
       lsclExtraFormScriptArguments+=("${1} ${2}")
@@ -105,11 +109,15 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
+if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
+  export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_EP_EXPANSION_ORDER}"
+fi
+
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
       if [[ ${LSCL_FLAG_EXPAND_IN_EP} -eq 0 ]]; then
         export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatements.frm"
       else
-        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatementsExpanded.frm"
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/fillStatementsExpanded${LSCL_EP_EXPANSION_ORDER}.frm"
       fi     
 fi
 
