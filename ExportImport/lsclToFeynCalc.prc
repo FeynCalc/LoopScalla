@@ -3,13 +3,16 @@
 * lsclToFeynCalc() saves the active expression EXPR to FILE
 * such, that it can be loaded into FeynCalc for further investigations
 
-.sort
+.sort: lsclToFeynCalc Step 1;
+
+
 
 F lsclDiracGammaOpenHold;
 CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND, lsclDiracGammaClosed;
 F GAD,GSD;
 S I, SUNN, D, GaugeXi;
 Auto S dummyI;
+
 repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclFAD(?a) = FAD(List(?a));
@@ -28,13 +31,15 @@ id lsclSUNTF(?a) = SUNTF(?a);
 id lsclGaugeXi = GaugeXi;
 endrepeat;
 
+
 argument;
 repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclD^lsclS?!{,0} = D^lsclS;
 id lsclGaugeXi = GaugeXi;
-id N1_? = dummyI1;
+* Causes some codes to freeze :()
+*id N1_? = dummyI1;
 endrepeat;
 endargument;
 
@@ -44,7 +49,7 @@ if (occurs(g_));
 id lsclDiracGammaOpen(lsclI?,?a) = lsclDiracGammaOpenHold(?a);
 endif;
 
-.sort
+.sort: lsclToFeynCalc Step 2;
 *print;
 *.sort
 
