@@ -17,6 +17,8 @@ on HighFirst;
 
 #endif
 
+
+
 Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
 G s1dia`lsclDiaNumber'L`lsclNLoops' = s0dia`lsclDiaNumber'L`lsclNLoops';
 
@@ -68,7 +70,8 @@ chainin lsclRawTopology;
 *********************************************************************
 #ifdef `LSCLEXTRACTTOPOLOGIES'
 .sort
-print;
+b lsclRawTopology;
+print[];
 
 format Mathematica;
 #write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/ExtractedTopologies/topos_dia`lsclDiaNumber'L`lsclNLoops'.m> "(%E)", s1dia`lsclDiaNumber'L`lsclNLoops'
@@ -257,6 +260,7 @@ endrepeat;
 b lsclWrapFun3,lsclWrapFun4;
 print[];
 
+
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
@@ -290,7 +294,6 @@ b,
 print;
 .sort
 #endif
-.end
 
 #do i=`lsclToposFrom',`lsclToposTo'
 #message lsclTopologyIdentification: Calling the #lsclScalarProductRulesFor`$lsclTopoName`i'' fold from scalarProductRules.frm: `time_' ...
@@ -313,7 +316,6 @@ print;
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 #enddo
-
 
 
 if (occurs(lsclWrapFun3,lsclWrapFun4));
@@ -365,7 +367,9 @@ b
 ;
 * Extract loop integrals occurring in the amplitude
 *********************************************************************
+
 #ifdef `LSCLEXTRACTLOOPINTEGRALS'
+
 #message lsclTopologyIdentification: Extracting loop integrals for the reduction
 
 #message lsclTopologyIdentification: Calling sort: `time_' ...
