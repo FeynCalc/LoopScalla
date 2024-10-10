@@ -55,8 +55,16 @@ endargument;
 
 * Remove tensor functions from numerators
  repeat id `NUM'(lsclT?(?a)) = lsclT(?a);
+
+* Remove scalar functions from numerators, but not other NUM functions!
+* repeat id `NUM'(lsclF?!{`NUM'}(?a)) = lsclF99(lsclF(?a));
+
+* Remove scalar products from numerators
+ repeat id `NUM'(lsclP1?.lsclP2?^lsclS?!{,0}) = lsclP1.lsclP2^lsclS;
+
 * Remove nested numerators
  repeat id `NUM'(`NUM'(?a)) = `NUM'(?a);
+
 
 #if (`lsclPprApplyPolyRatFunVerbosity'>1)
   print;
