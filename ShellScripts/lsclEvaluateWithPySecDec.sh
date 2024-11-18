@@ -51,12 +51,23 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
 fi
 
 if [[ -z "${LSCL_MASTER_INTEGRALS_DIRECTORY+x}" ]]; then
-  LSCL_MASTER_INTEGRALS_DIRECTORY="pySecDec"
+  export LSCL_MASTER_INTEGRALS_DIRECTORY="pySecDec"
 fi
 
 if [[ -z "${LSCL_INTEGRALS_LIST+x}" ]]; then
-  LSCL_INTEGRALS_LIST="IntegralsList.txt"
+  export LSCL_INTEGRALS_LIST="IntegralsList.txt"
 fi
+
+if [[ -z "${LSCL_RESULT_FILE_TO_CHECK+x}" ]]; then
+  export LSCL_RESULT_FILE_TO_CHECK="numres*"
+fi
+
+if [[ -z "${LSCL_PYSECDEC_USE_TMPDIR+x}" ]]; then
+  export LSCL_PYSECDEC_USE_TMPDIR=0
+fi
+
+
+
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
   export LSCL_PARALLEL_JOBLOG_PATH="${lsclRepoDir}/Logs/${LSCL_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}"
@@ -114,7 +125,11 @@ while [[ ${#} -gt 0 ]]; do
     --onlyPoleStructures)
       export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
       shift
-      ;;      
+      ;;
+     --useTemporaryDirectory)
+      export LSCL_PYSECDEC_USE_TMPDIR=1      
+      shift
+      ;;        
             
     #Basic input parameters
     *)

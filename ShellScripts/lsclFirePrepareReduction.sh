@@ -51,7 +51,7 @@ if [[ -z "${LSCL_FLAG_FORCE+x}" ]]; then
 fi
 
 if [[ -z "${LSCL_FIRE_NO_LITERED+x}" ]]; then
-  LSCL_FIRE_NO_LITERED=0
+  export LSCL_FIRE_NO_LITERED=0
 fi
 
 if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
@@ -101,8 +101,6 @@ done
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
       export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.config"
 fi
-
-
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     # Process multiple diagrams in parallel

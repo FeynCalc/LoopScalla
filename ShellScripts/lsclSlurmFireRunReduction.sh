@@ -89,7 +89,7 @@ while [[ ${#} -gt 0 ]]; do
       shift
       shift
       ;;
-    #Number of requested GNU parallel jobs
+    #Whether to use FIRE with LiteRed 
     --noLiteRed)
       export LSCL_FIRE_NO_LITERED=1
       shift

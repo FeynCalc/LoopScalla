@@ -86,7 +86,7 @@ while [[ ${#} -gt 0 ]]; do
       ;;
      #Number of requested GNU parallel jobs
     --pjobs)
-      export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
+      export LSCL_NUMBER_OF_PARALLEL_FORM_JOBS=${2}
       shift
       shift
       ;;
@@ -101,6 +101,7 @@ done
 export LSCL_FORM_SCRIPT_NAME="lsclTopologyIdentification.frm"
 export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies"
 export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage1"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_3="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/Form"
 
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then

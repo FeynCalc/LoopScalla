@@ -43,6 +43,7 @@ if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
   LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
 fi
 
+if [[ ${LSCL_PYSECDEC_USE_TMPDIR} -eq 1 ]] ; then
 echo "lsclEvaluateWithPySecDec: Cluster temporary directory: $TMPDIR"
 
 mkdir -p $TMPDIR/${lsclIntegralName}
@@ -50,6 +51,10 @@ echo $pwd
 cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/* $TMPDIR/${lsclIntegralName};
 
 cd $TMPDIR/${lsclIntegralName};
+else 
+cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/
+fi
+
 
 echo "lsclEvaluateWithPySecDec: Running generate_int.py"
 
@@ -70,8 +75,10 @@ echo "lsclEvaluateWithPySecDec: Running integrate_int.py"
 
 ${lsclPythonPath} integrate_int.py  & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_integrate.txt;
 
+if [[ ${LSCL_PYSECDEC_USE_TMPDIR} -eq 1 ]] ; then
 echo "lsclEvaluateWithPySecDec: Copying the results back"
 
 cp $TMPDIR/${lsclIntegralName}/numres* ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName};
+fi
 
 echo "lsclEvaluateWithPySecDec: Leaving"
