@@ -20,7 +20,7 @@ on HighFirst;
 	#message lsclCreateIntegralFiles: All integral files loaded `time_'
 
 	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-	G ts1dia`i'L`lsclNLoops' = s1dia`i'L`lsclNLoops';
+	G ts1dia`i'L`lsclNLoops' = lidia`i'L`lsclNLoops';
 	#enddo
 
 	#message lsclCreateIntegralFiles: All defined `time_'
