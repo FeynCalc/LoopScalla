@@ -23,10 +23,17 @@ on HighFirst;
 
 #message lsclAddUpDiagrams: All loaded `time_'
 
+
+#if (`lsclNLoops' == 0)
+#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
+G ts2dia`i'L`lsclNLoops' = s0dia`i'L`lsclNLoops';
+#enddo
+#else
 * TODO FIX ME!!!
 #do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
 G ts2dia`i'L`lsclNLoops' = s2dia`i'L`lsclNLoops';
 #enddo
+#endif
 
 #message lsclAddUpDiagrams: All defined `time_'
 
@@ -45,23 +52,22 @@ G ts2dia`i'L`lsclNLoops' = s2dia`i'L`lsclNLoops';
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 #endif
 
+#message `LSCLADDDIAFLAG'
 
 
 #if (`LSCLADDDIAFLAG'==1)
 G ampL`lsclNLoops' = 
 #do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-+ lsclDiaFlag`i'*s2dia`i'L`lsclNLoops'
++ lsclDiaFlag(`i')*ts2dia`i'L`lsclNLoops'
 #enddo
 ;
 #else
 G ampL`lsclNLoops' = 
 #do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-+ s2dia`i'L`lsclNLoops'
++ ts2dia`i'L`lsclNLoops'
 #enddo
 ;
 #endif
-
-
 
 .sort
 #if (`lsclNLoops' > 0)
@@ -88,22 +94,12 @@ if (occurs(lsclEpHelpFlag)) exit;
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAddUpDiagramsCode
 #message lsclAddUpDiagrams: ... done: `time_'
 
-.sort
-on statistics;
 
-* Before inserting the reduction tables it is a good idea to simplify the coefficients
-* multiplying loop integrals
-collect lsclWrapFun1,lsclWrapFun2;
-#call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
-.sort: After lsclApplyPolyRatFun;
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
-.sort: After lsclNumDenFactorize;
-
-
+#message Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m
 #if (`LSCLADDDIAFLAG'==1)
-	#call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
+  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
 #else
-	#call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
+  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
 #endif
 
 .sort
