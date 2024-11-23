@@ -509,55 +509,6 @@ endrepeat;
 b
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
-
-* Extract loop integrals occurring in the amplitude
-*********************************************************************
-
-#ifdef `LSCLEXTRACTLOOPINTEGRALS'
-
-#message lsclTopologyIdentification: Extracting loop integrals for the reduction
-
-#message lsclTopologyIdentification: Calling sort: `time_' ...
-.sort
-#message lsclTopologyIdentification: ... done: `time_'
-
-
-collect lsclWrapFun5,lsclWrapFun6;
-argtoextrasymbol lsclWrapFun5,lsclWrapFun6;
-#message lsclTopologyIdentification: Calling sort: `time_' ...
-.sort
-#message lsclTopologyIdentification: ... done: `time_'
-
-
-id lsclWrapFun5(?a) = 1;
-id lsclWrapFun6(?a) = 1;
-
-* put topologyXYZ functions into lsclGLI
-*id lsclF?{
-* #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
-*}(?a) = lsclGLI(lsclF,?a);
-
-
-print[];
-.sort
-
-
-delete storage;
-
-#message lsclTopologyIdentification: Calling sort: `time_' ...
-.sort
-#message lsclTopologyIdentification: ... done: `time_'
-
-.store
-
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res;
-
-.sort
-#message lsclTopologyIdentification: Extraction of loop integrals completed successfully.
-.end
-#endif
-*********************************************************************
-
 print[];
 
 #message lsclTopologyIdentification: Calling sort: `time_' ...
@@ -657,22 +608,11 @@ delete storage;
 #message lsclTopologyIdentification: ... done: `time_'
 
 .store
-
+#message lsclTopologyIdentification: Saving loop integrals to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res
 save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res;
 
 .sort
 #message lsclTopologyIdentification: Extraction of loop integrals completed successfully.
-.end
-
-*********************************************************************
-
-
-
-
-
-
-print;
-#message lsclTopologyIdentification: ... done: `time_'
 
 #message lsclTopologyIdentification: Topology reduction completed successfully.
 
