@@ -35,7 +35,6 @@ If[$FrontEnd===Null && $lsclDEBUG===True,
 	Print["ERROR! Detected debugging during the productive run."];
 	QuitAbort[]
 ];
-Print[ToExpression[lsclNoLiteRed]];
 If[TrueQ[ToExpression[lsclNoLiteRed]=!=0 && ToExpression[lsclNoLiteRed]=!=1],
 	Print["ERROR! You did not specify whether to use LiteRed or not."];
 	QuitAbort[],
