@@ -36,7 +36,7 @@ fi
 
 if [[ ! -d ${lsclPsRecordLogPath}} ]]; then
       mkdir -p ${lsclPsRecordLogPath};
-  fi
+fi
 
 echo lsclRunForm: Log for psrecord: ${lsclPsRecordLogPath}
 
