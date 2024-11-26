@@ -2,11 +2,11 @@ off statistics;
 on HighFirst;
 
 
-#message lsclAddUpDiagrams: `lsclProjectName'
-#message lsclAddUpDiagrams: `lsclProcessName'
-#message lsclAddUpDiagrams: `lsclNLoops'
-#message lsclAddUpDiagrams: `lsclDiaNumberFrom'
-#message lsclAddUpDiagrams: `lsclDiaNumberTo'
+#message lsclAddUpDiagrams: Project: `lsclProjectName'
+#message lsclAddUpDiagrams: Process: `lsclProcessName'
+#message lsclAddUpDiagrams: Loops: `lsclNLoops'
+#message lsclAddUpDiagrams: From dia: `lsclDiaNumberFrom'
+#message lsclAddUpDiagrams: To dia: `lsclDiaNumberTo'
 
 
 #if (`lsclNLoops' == 0)
@@ -95,20 +95,21 @@ if (occurs(lsclEpHelpFlag)) exit;
 #message lsclAddUpDiagrams: ... done: `time_'
 
 
-#message Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m
 #if (`LSCLADDDIAFLAG'==1)
+  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m
   #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
 #else
+  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m
   #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
 #endif
 
 .sort
-#message delete storage
 delete storage;
 .sort
 
 .store
 
+#message lsclAddUpDiagrams: Saving FORM-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res
 save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res;
 
 .end
