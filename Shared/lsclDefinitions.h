@@ -69,7 +69,7 @@ F lsclQGPropagator, lsclQGVertex, lsclQGPolarization, lsclDiracU, lsclDiracUBar,
 
 CF lsclMass, lsclHold, lsclDiracChain, lsclSUNDelta(S), lsclSUNFDelta(S), lsclFAD, lsclDiracIndex, lsclLorentzIndex, lsclFunColorIndex, 
 lsclAdjColorIndex, lsclVector, lsclMetricTensor(S),  lsclSUNTF, lsclSUNF, lsclSUND, lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
-lsclIntegralNumber, lsclIntegral;
+lsclIntegralNumber, lsclIntegral, lsclDiaFlag;
 
 F lsclNCHold;
 
@@ -126,7 +126,7 @@ CF lsclTopoConvert;
 
 CF lsclNum, lsclDen, lsclRat;
 
-CF lsclHoldNum, lsclHoldDen, lsclHoldRat;
+CF lsclHoldNum, lsclHoldDen, lsclHoldRat, lsclSkipNum, lsclSkipDen;
 
 
 CF lsclEpHelpFlag;
