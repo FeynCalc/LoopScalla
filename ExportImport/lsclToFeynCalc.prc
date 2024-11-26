@@ -79,10 +79,8 @@ if (occurs(lsclDiracGamma,g_)) exit "Something went wrong here!";
 *print;
 
 format Mathematica;
+
 #write <`FILE'> "(%E)", `EXPR'
-
-
-.end
 
 #endprocedure
 
