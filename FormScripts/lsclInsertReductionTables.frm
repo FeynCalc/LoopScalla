@@ -52,7 +52,7 @@ CF
 
 
 #ifdef `LSCLREDUCESINGLEINTEGRAL'
-#external mkdir Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage2/`lsclDiaNumber'
+#system mkdir -p Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage2/`lsclDiaNumber'
 Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/stage1_dia`lsclDiaNumber'L`lsclNLoops'_p`lsclIntegralNumber'.res;
 G s2dia`lsclDiaNumber'L`lsclNLoops'I`lsclIntegralNumber' = s1diaS;
 #else
