@@ -88,7 +88,7 @@ while [[ ${#} -gt 0 ]]; do
     --epexpand)
       export LSCL_FLAG_EXPAND_IN_EP=1
       export LSCL_EP_EXPANSION_ORDER=${2}
-      echo "${LSCL_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
+      echo "${LSCL_SLURM_SCRIPT_NAME}: Reduction tables will be expanded in ep up to order " ${LSCL_EP_EXPANSION_ORDER}
       shift
       shift
       ;;      
@@ -141,10 +141,12 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
+export LSCL_SLURM_JOB_NAME=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_EP_EXPANSION_ORDER}
+export LSCL_SLURM_LOG_DIR=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_EP_EXPANSION_ORDER}
+
 export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
 export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
-
 
 
 if [[ ${#lsclBasicArguments[@]} -eq 6 ]] ; then
@@ -155,7 +157,7 @@ if [[ ${#lsclBasicArguments[@]} -eq 6 ]] ; then
     if [[ "${lsclTasksAll[$i]}" = "${lsclTopoName}" ]]; then
       lsclTopoIndex=${i}
       break;
-   fi
+  fi
   done
   if [[ ${lsclTopoIndex} -lt 0 ]] ; then
       echo "${LSCL_SCRIPT_NAME}: Failed to found the specified topology ${lsclTopoName} in the list."
@@ -166,8 +168,6 @@ if [[ ${#lsclBasicArguments[@]} -eq 6 ]] ; then
   lsclDiaNumberFrom=${lsclTopoIndex}
   lsclDiaNumberTo=${lsclTopoIndex}
   export lsclOptFromTo=1
-
-
 fi
 
 # Slurm must always be given a range of diagrams, even for a single diagram

@@ -142,6 +142,9 @@ while [[ ${#} -gt 0 ]]; do
   esac
 done
 
+export LSCL_SLURM_JOB_NAME=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_EP_EXPANSION_ORDER}
+export LSCL_SLURM_LOG_DIR=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_EP_EXPANSION_ORDER}
+
 export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
 export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
