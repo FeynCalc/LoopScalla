@@ -67,7 +67,7 @@ S lsclFlagExplicitDenominator;
 S lsclGaugeXi;
 F lsclQGPropagator, lsclQGVertex, lsclQGPolarization, lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
 
-CF lsclMass, lsclHold, lsclDiracChain, lsclSUNDelta(S), lsclSUNFDelta(S), lsclFAD, lsclDiracIndex, lsclLorentzIndex, lsclFunColorIndex, 
+CF lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold, lsclSUNDelta(S), lsclSUNFDelta(S), lsclFAD, lsclDiracIndex, lsclLorentzIndex, lsclFunColorIndex, 
 lsclAdjColorIndex, lsclVector, lsclMetricTensor(S),  lsclSUNTF, lsclSUNF, lsclSUND, lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
 lsclIntegralNumber, lsclIntegral, lsclDiaFlag;
 
