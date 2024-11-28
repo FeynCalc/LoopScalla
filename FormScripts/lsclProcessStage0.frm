@@ -25,7 +25,7 @@ G s0dia`lsclDiaNumber'L`lsclNLoops' =
 
 
 #message lsclProcessStage0: Linearizing Dirac chains: `time_' ...
-#call lsclDiracChainLinearize()
+#call lsclDiracChainLinearizeNaive()
 #call lsclDiracTraceLinearize()
 #message lsclProcessStage0: ... done: `time_'
 
@@ -36,18 +36,28 @@ G s0dia`lsclDiaNumber'L`lsclNLoops' =
 
 #message lsclProcessStage0: Linearizing Dirac chains: `time_' ...
 #call lsclDiracChainLinearize()
-#call lsclDiracTraceLinearize()
+ #call lsclDiracTraceLinearize()
 #message lsclProcessStage0: ... done: `time_'
 
+.sort
 
-
+* If we try to join the chains before linearizing them, we'll run into the
+* MaxTermSize issue.
 #message lsclProcessStage0: Joining Dirac chains: `time_' ...
 #call lsclDiracChainJoin()
 #message lsclProcessStage0: ... done: `time_'
 
+
+.sort
+
+
 #message lsclProcessStage0: Joining Color chains: `time_' ...
 #call lsclColorChainJoin()
 #message lsclProcessStage0: ... done: `time_'
+
+
+.sort
+
 
 #message lsclProcessStage0: Linearizing Dirac chains: `time_' ...
 #call lsclDiracChainLinearize()
