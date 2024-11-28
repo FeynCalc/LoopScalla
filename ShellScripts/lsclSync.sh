@@ -178,9 +178,17 @@ case ${lsclSyncWhat} in
   OnlyQGRAF)
     lsclExclude=""
     lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/QGRAF/
-    lsclSyncTo=${lsclClusterProjectDir}/Projects/${lsclProjectName}/QGRAF/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/QGRAF/
     swapFromTo
     ;;
+    
+  OnlyDiagramsInput)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
+    checkProjectProcessModelNLoops
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
+    swapFromTo
+    ;;  
 
   OnlyFinalResults)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
