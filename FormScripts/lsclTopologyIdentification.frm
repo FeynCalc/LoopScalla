@@ -34,13 +34,16 @@ b lsclGFAD,lsclFAD,
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
 
+*--#[ extractTopologies:
+
 * for the extraction of topologies the prefactors are set to unity
-*********************************************************************
 #ifdef `LSCLEXTRACTTOPOLOGIES'
 id lsclWrapFun1(?a) = 1;
 id lsclWrapFun2(?a) = 1;
 #endif
-*********************************************************************
+
+*--#] extractTopologies:
+
 
 * convert scalar products to lsclSPD functions
 argument lsclGFAD,lsclFAD;
@@ -82,8 +85,9 @@ if (occurs(lsclFlag123)) exit "Something went wrong during the topology extracti
 
 chainin lsclRawTopology;
 
+*--#[ extractTopologies:
+
 * for the extraction of topologies we leave the script here
-*********************************************************************
 #ifdef `LSCLEXTRACTTOPOLOGIES'
 .sort
 b lsclRawTopology;
@@ -96,7 +100,9 @@ format Mathematica;
 #message lsclTopologyIdentification: Topology extraction completed successfully.
 .end
 #endif
-*********************************************************************
+
+*--#] extractTopologies:
+
 * otherwise, we continue with the topology reduction here
 
 #message lsclTopologyIdentification: Calling the lsclSimplifyPropagators fold : `time_' ...
@@ -393,6 +399,7 @@ argtoextrasymbol lsclWrapFun3;
 
 id lsclWrapFun3(?a) = 1;
 
+
 #do i=`lsclToposFrom',`lsclToposTo'
 #$lsclTopoName`i' = 0;
 $lsclTopoName`i' = extrasymbol_(`i');
@@ -417,6 +424,13 @@ print;
 repeat;
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/scalarProductRules.frm #lsclScalarProductRulesFor`$lsclTopoName`i''
 endrepeat;
+
+* If the scalarProductRules.frm id-statements are already wrapped with lsclNum and lsclDen, 
+* then this should help to avoid expression swell!
+* lsclWrapFun300,lsclWrapFun400 and dummy functions
+#call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun300,lsclWrapFun400);
+.sort
+
 #message lsclTopologyIdentification: ... done: `time_'
 
 
@@ -440,10 +454,7 @@ print;
 
 
 
-if (occurs(lsclWrapFun3,lsclWrapFun4));
-print "Error, something went wrong in the previous steps.";
-exit;
-endif;
+
 
 if (occurs(
 #do i=1, `lsclNLoops'
@@ -566,8 +577,8 @@ save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName
 #message lsclTopologyIdentification: ... done: `time_'
 
 
-* Extract loop integrals occurring in the amplitude
-*********************************************************************
+*--#[ extractLoopIntegrals:
+* TODO Need to investigate the bottleneck here when calling sort
 #message lsclTopologyIdentification: Extracting loop integrals for the reduction
 G lidia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 b
@@ -595,11 +606,9 @@ id lsclWrapFun2(?a) = 1;
 *}(?a) = lsclGLI(lsclF,?a);
 
 
-*print[];
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
-
 
 delete storage;
 
@@ -613,6 +622,8 @@ save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName
 
 .sort
 #message lsclTopologyIdentification: Extraction of loop integrals completed successfully.
+
+*--#] extractLoopIntegrals:
 
 #message lsclTopologyIdentification: Topology reduction completed successfully.
 
