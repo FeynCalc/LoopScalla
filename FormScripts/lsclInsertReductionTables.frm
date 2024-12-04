@@ -134,9 +134,13 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 #message lsclInsertReductionTables: ... done.
 
 * Here we insert the reduction tables and do additional simplifications!
+#message lsclInsertReductionTables: Calling the IsolateLoopIntegralPrefactors fold : `time_' ...
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclIsolateLoopIntegralPrefactors
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclProcessReducedAmplitude
+#message lsclInsertReductionTables: ... done.
 
+#message lsclInsertReductionTables: Calling the ProcessReducedAmplitude fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclProcessReducedAmplitude
+#message lsclInsertReductionTables: ... done.
 
 .sort
 
@@ -145,7 +149,7 @@ b,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 ,
 lsclSkipNum,lsclSkipDen,
-lsclWrapFun,lsclEp,
+lsclWrapFun,lsclEp,lsclNum,lsclDen,
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
