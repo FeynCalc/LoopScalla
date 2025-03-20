@@ -28,6 +28,7 @@ lsclDryRun=0
 lsclNoDelete=0
 lsclClusterProjectDir=${lsclClusterProjectDirDefault}
 lsclSure=0
+lsclSpecificDir="/"
 
 while [[ ${#} -gt 0 ]]; do
   case ${1} in
@@ -68,7 +69,12 @@ while [[ ${#} -gt 0 ]]; do
       lsclDiaNumber=${2}
       shift
       shift
-      ;;  
+      ;;
+    --specificDirectory)
+      lsclSpecificDir=${2}
+      shift
+      shift
+      ;;    
     --ProjectProcessModelNLoops)
       lsclProjectName=${2}
       lsclProcessName=${3}
@@ -152,7 +158,7 @@ case ${lsclSyncWhat} in
     lsclSyncTo=${lsclRepoDir}/Projects/
     swapFromTo
     ;;  
-    
+
   OnlyProjectsNoLiteRed)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=env-*.sh --exclude=env-*.tmp --exclude=LR"
     lsclSyncFrom=${lsclClusterProjectDir}/Projects/
@@ -217,8 +223,8 @@ case ${lsclSyncWhat} in
   OnlyMasterIntegrals)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=loopint --exclude=memory*.txt"
     checkProjectProcessModelNLoops
-    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
-    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${lsclSpecificDir}/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${lsclSpecificDir}/
     swapFromTo
     ;;  
 
@@ -229,6 +235,14 @@ case ${lsclSyncWhat} in
     lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
     swapFromTo
     ;;
+
+    OnlyDiagramTopology)
+    lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp --exclude=memory.txt"
+    checkProjectProcessModelNLoops
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/
+    swapFromTo
+    ;;  
     
   OnlyReductionsNoLiteRed)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp --exclude=memory.txt --exclude=LR" 
