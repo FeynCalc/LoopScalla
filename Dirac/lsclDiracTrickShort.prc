@@ -4,7 +4,7 @@
 * that reduce length of the chain without increasing the 
 * number of terms. We assume that the chiral matrices have
 * already been moved to the right.
-#do j=0,5
+#do j=0,`lsclPprMaxDiracGammaLengthSimplification'
 repeat;
  label indexSimplify;
  id lsclDiracGamma(?a,lsclP?,lsclP?,?b) = lsclP.lsclP*lsclDiracGamma(?a,?b);
@@ -65,8 +65,9 @@ repeat;
  #do iii=1,20,2
  id lsclDiracTrace(lsclMu?,<lsclMu1?>,...,<lsclMu`iii'?>,lsclMu{`iii'+1}?!{,5}) = 0; 
  #enddo
- 
- #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclKinematics
+
+#message lsclDiracSimplify: Applying kinematic constraints 
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclKinematics
 endrepeat;
 #message lsclDiracSimplify: Calling sort from lsclDiracTrickShort, j=`j': `time_' ...
 .sort

@@ -41,4 +41,9 @@
 #define lsclPprExportToMathematicaSuffix ""
 #endif
 
+#ifndef `lsclPprMaxDiracGammaLengthSimplification'
+#define lsclPprMaxDiracGammaLengthSimplification "0"
+#endif
+
+
 #endif
