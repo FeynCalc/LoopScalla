@@ -17,17 +17,17 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 
 
 (*For debugging purposes*)
-
+(*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubarFull";
-lsclModelName="BToEtaCLCG";
-lsclNLoops="1";
-lsclNDiagrams="29";
-lsclNKernels="8";
+lsclProject="MyProject";
+lsclProcessName="MyProcess";
+lsclModelName="MyModel";
+lsclNLoops="MyNumberOfLoops";
+lsclNDiagrams="MyNumberOfDiagrams";
+lsclNKernels="MyNumberOfParallelKernels";
 ];
-
+*)
 
 
 lsclScriptName="lsclFindTopologies";
@@ -86,7 +86,7 @@ $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
 
 
-lmoms=FCMakeSymbols[k,Range[1,ToExpression[lsclNLoops]],List]
+lmoms=FCMakeSymbols[k,Range[1,ToExpression[lsclNLoops]],List];
 
 
 WriteString["stdout",lsclScriptName,": Loaded ", Length[rawTopologies], " amplitude topologies.","\n\n"]
@@ -97,7 +97,14 @@ fcVariables="FCVariables"/.fcConfig;
 If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
 	WriteString["stdout",lsclScriptName,": Symbols to be declared as FCVariable: ", fcVariables,".\n\n"];
 	(DataType[#,FCVariable]=True)&/@fcVariables;
-]
+	With[{xxx=fcVariables},
+	ParallelEvaluate[(DataType[#,FCVariable]=True)&/@xxx,DistributedContexts->False];
+	];	
+	If[Union[Flatten[ParallelEvaluate[DataType[#,FCVariable],DistributedContexts->False]&/@fcVariables]]=!={True},
+		WriteString["stdout",lsclScriptName,": Error! Something went wrong when declaring FCVariable datatype on parallel kernels."];
+		QuitAbort[]
+	]
+];
 
 
 finalSubstitutions="FinalSubstitutions"/.fcConfig;
@@ -107,11 +114,11 @@ If[ToString[finalSubstitutions]==="finalSubstitutions",
 WriteString["stdout",lsclScriptName,": Kinematic constraints: ", finalSubstitutions,".\n\n"];
 
 
-FromGFAD$InitialSubstitutions="FromGFAD$InitialSubstitutions"/.fcConfig;
+(*FromGFAD$InitialSubstitutions="FromGFAD$InitialSubstitutions"/.fcConfig;
 If[ToString[FromGFAD$InitialSubstitutions]==="FromGFAD$InitialSubstitutions",
 	FromGFAD$InitialSubstitutions={}
 ];
-WriteString["stdout",lsclScriptName,": Initial substitutions for FromGFAD: ", FCE@FromGFAD$InitialSubstitutions,".\n\n"];
+WriteString["stdout",lsclScriptName,": Initial substitutions for FromGFAD: ", FCE@FromGFAD$InitialSubstitutions,".\n\n"];*)
 
 
 (*preferredTopologies$File="PreferredTopologies"/.fcConfig;
@@ -123,39 +130,92 @@ WriteString["stdout",lsclScriptName,": Number of loaded preferred topologies: ",
 preferredTopologies={};
 
 
-rawTopologiesFC=FromGFAD[(rawTopologies/.{lsclSPD->SPD,lsclGFAD->GFAD,
-lsclFAD[x__]:>FAD[{x}]}/.lsclRawTopology->Times),LoopMomenta->lmoms,IntermediateSubstitutions->FRH[finalSubstitutions](*FromGFAD$InitialSubstitutions*)];
+rawTopologiesFC$0=FromGFAD[(rawTopologies/.{lsclSPD->SPD,lsclGFAD->GFAD,
+lsclFAD[x__]:>FAD[{x}]}/.lsclRawTopology->Times),LoopMomenta->lmoms,IntermediateSubstitutions->Join[FRH[finalSubstitutions]],FCVerbose->-1];
+
+
+ClearAll[generateLoopMomSums];
+generateLoopMomSums[lmoms_List]:=
+Flatten[Table[(Total/@ReleaseHold[Flatten[Outer[Hold[Times],Subsets[lmoms,{i}],Tuples[{1,-1},{i}]/.{-1,__Integer}->Nothing,1]]]),{i,Length[lmoms],2,-1}]];
+intSubstsForQuadraticEikonalPropagators=Map[ExpandScalarProduct[SPD[#]] -> SPD[#]&,generateLoopMomSums[lmoms]];
+
+
+rawTopologiesFC=FCLoopReplaceQuadraticEikonalPropagators[rawTopologiesFC$0, LoopMomenta -> {k1, k2, k3}, 
+InitialSubstitutions -> intSubstsForQuadraticEikonalPropagators, IntermediateSubstitutions -> FRH[finalSubstitutions]];
 
 
 rawTopologiesFC$2=SelectNotFree[#,FeynAmpDenominator]&/@rawTopologiesFC;
+rawTopologiesCheck=SelectFree[#,FeynAmpDenominator]&/@rawTopologiesFC;
+
+
 If[!MatchQ[Union[rawTopologiesFC$2/.FeynAmpDenominator[__]->1],{0}|{1}|{0,1}],
-	Print[];
-	WriteString["stdout",lsclScriptName,": ERROR! Something went wrong when converting raw topologies to the FeynCalc notation.", 
-	FCE@FromGFAD$InitialSubstitutions,".\n"];	
-	Print[rawTopologiesFC$2/.FeynAmpDenominator[__]->1];
+	WriteString["stdout",lsclScriptName,": ERROR! Something went wrong when converting raw topologies to the FeynCalc notation:",
+	rawTopologiesFC$2/.FeynAmpDenominator[__]->1,".\n"];
 	QuitAbort[]
 ];
 rawTopologiesFC$3=loopHead/@(rawTopologiesFC$2);
 
 
+If[!MatchQ[rawTopologiesCheck,{1..}],	
+	WriteString["stdout",lsclScriptName,": ERROR! The topologies also contain propagators without loop momentum dependence.",".\n"];
+	QuitAbort[]
+]
+
+
+(* Checkpoint for FCLoopFindTopologies*)
+
+
+(* ---------------------------------------------------------- *)
+
+
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologies.","\n\n"];
 aux1=FCLoopFindTopologies[rawTopologiesFC$3,lmoms,FCLoopIsolate->loopHead,FCLoopBasisOverdeterminedQ->True,FinalSubstitutions->finalSubstitutions,
-Names->"preTopoDia",Head->Identity,FCVerbose->0,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False];
+Names->"preTopoDia",Head->Identity,FCVerbose->1,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False,FCParallelize->True];
 
 
 WriteString["stdout","\n",lsclScriptName,": Done applying FCLoopFindTopologies.","\n\n"];
 
 
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopFindTopologies.","\n\n"];
+Put[aux1,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]]
+];
+
+
+(*aux1=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+(* Checkpoint for FCLoopGetKinematicInvariants*)
+
+
+(* ---------------------------------------------------------- *)
+
+
 WriteString["stdout",lsclScriptName,": Applying FCLoopGetKinematicInvariants.","\n"];
-kinInvs=FCLoopGetKinematicInvariants[aux1[[2]]];
+kinInvs=FCLoopGetKinematicInvariants[aux1[[2]],FCVerbose->1,FCParallelize->True];
 WriteString["stdout","\n",lsclScriptName,":  Done applying FCLoopFindTopologies.","\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopGetKinematicInvariants.","\n\n"];
+Put[kinInvs,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]]
+];
+
+
+(*kinInvs=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
 
 
 WriteString["stdout",lsclScriptName,": Kinematic invariants present in the topologies: ", kinInvs,".\n\n"]
 
 
 If[Complement[Union[kinInvs],Union[fcVariables]]=!={},
-	Print["ERROR! Detected undeclared kinematic invariants in the topologies."];
+	WriteString["stdout",lsclScriptName,": Error! Detected undeclared kinematic invariants in the topologies."];
 	QuitAbort[]
 ]
 
@@ -185,15 +245,45 @@ Close[file];
 WriteString["stdout","done.\n\n"];
 
 
-overdeterminedToposPre=Select[aux1[[2]],FCLoopBasisOverdeterminedQ];
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Detecting overdetermined topologies in parallel ..."];
+	odTopos = ParallelMap[FCLoopBasisOverdeterminedQ[#]&,aux1[[2]], DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[aux1[[2]]]/$KernelCount]/10]];
+	overdeterminedToposPre=Extract[aux1[[2]],Position[odTopos,True]],
+	WriteString["stdout",lsclScriptName,": Detecting overdetermined topologies ..."];
+	overdeterminedToposPre=Select[aux1[[2]],FCLoopBasisOverdeterminedQ];
+];
+WriteString["stdout","done.\n\n"];
 
 
 WriteString["stdout",lsclScriptName,": Number of topologies with too many propagators: ", Length[overdeterminedToposPre],"\n\n"];
 
 
+lsclNum[x_Integer]:=x;
+lsclDen[x_Integer]:=1/x;
+
+
+(* Checkpoint for FCLoopCreatePartialFractioningRules*)
+
+
+(* ---------------------------------------------------------- *)
+
+
 WriteString["stdout",lsclScriptName,": Applying FCLoopCreatePartialFractioningRules.","\n\n"];
-pfrRules=FCLoopCreatePartialFractioningRules[aux1[[1]],aux1[[2]],FCVerbose->1];
+pfrRules=FCLoopCreatePartialFractioningRules[aux1[[1]],aux1[[2]],FCVerbose->1,Numerator->lsclNum,Denominator->lsclDen,FCParallelize->True];
 WriteString["stdout","\nlsclFindTopologies: Done applying FCLoopCreatePartialFractioningRules.","\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreatePartialFractioningRules.","\n\n"];
+Put[pfrRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]]
+];
+
+
+(*pfrRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
 
 
 pfrToposPre=Union[First/@pfrRules[[2]]];
@@ -207,7 +297,7 @@ aux2=aux1/.Dispatch[pfrRules[[1]]];
 	Denominators from original topologies that do not require partial fractioning. Notice that 
 	the corresponding topologies themsevles still might be overdetermined! 
 *)
-remainderDens=SelectNotFree[aux2[[1]],First/@overdeterminedToposPre]//Union;
+remainderDens=Select[aux2[[1]],!FreeQ[#,Alternatives@@First/@overdeterminedToposPre]&]//Union;
 
 
 (* Determine which topologies related to these denominators are overdetermined *)
@@ -234,18 +324,47 @@ pfrRenRu=Thread[Rule[pfrTopos,pfrToposNew]];
 
 
 (* An extra rule for mapping the remaining denominators to the corresponding topologies with removed propagators *)
-gliRulePfr=Thread[Rule[remainderDens,newNoPfrGLIs]]/.pfrRenRu;
+gliRulePfr=Thread[Rule[remainderDens,newNoPfrGLIs]]/.Dispatch[pfrRenRu];
 
 
 (* Final list of topologies upon doing partial fractioning*)
 relevantPFrTopos=Union[Cases[aux2[[1]]/.Dispatch[gliRulePfr],GLI[id_,___]:>id,Infinity]];
-finalPreToposPfrRaw=SelectNotFree[Join[aux1[[2]],pfrRules[[2]],newNoPfrTopos/.Dispatch[pfrRenRu]],relevantPFrTopos]//Union;
+finalPreToposPfrRaw=Select[Join[aux1[[2]],pfrRules[[2]],newNoPfrTopos/.Dispatch[pfrRenRu]],!FreeQ[#,Alternatives@@relevantPFrTopos]&]//Union;
 
 
 WriteString["stdout",lsclScriptName,": Final number of topologies after partial fractioning: ", Length[finalPreToposPfrRaw],"\n\n"]
 
 
-scalelessPfrTopos=Select[finalPreToposPfrRaw,FCLoopScalelessQ]/.Dispatch[pfrRenRu];
+(* Checkpoint for FCLoopScalelessQ*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Detecting scaleless topologies in parallel ..."];
+	scTopos = ParallelMap[FCLoopScalelessQ[#]&,finalPreToposPfrRaw, DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[finalPreToposPfrRaw]/$KernelCount]/10]];
+	scalelessPfrTopos=Extract[finalPreToposPfrRaw,Position[scTopos,True]]/.Dispatch[pfrRenRu],
+	
+	WriteString["stdout",lsclScriptName,": Detecting scaleless topologies ..."];
+	scalelessPfrTopos=Select[finalPreToposPfrRaw,FCLoopScalelessQ]/.Dispatch[pfrRenRu]
+];
+WriteString["stdout","done.\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopScalelessQ.","\n\n"];
+Put[scalelessPfrTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]]
+];
+
+
+(*scalelessPfrTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
+
+
 WriteString["stdout",lsclScriptName,": Number of scaleless topologies among them: ", Length[scalelessPfrTopos],"\n\n"]
 
 
@@ -270,14 +389,24 @@ Close[file];
 WriteString["stdout","done.\n\n"];
 
 
-finalPreTopos=SelectFree[finalPreToposPfrRaw/.pfrRenRu,scalelessPfrTopos]//Union;
+finalPreTopos=Select[finalPreToposPfrRaw/.Dispatch[pfrRenRu],FreeQ[#,Alternatives@@(First/@scalelessPfrTopos)]&]//Union;
 
 
 WriteString["stdout",lsclScriptName,": Number of final topologies after partial fractioning: ", Length[finalPreTopos],"\n\n"]
 
 
-If[Union[FCLoopBasisOverdeterminedQ/@finalPreTopos]=!={False},
-	Print["ERROR! Not all overdetermined topologies were eliminated."];
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Detecting overdetermined topologies among the final pretopologies in parallel ..."];
+	check = ParallelMap[FCLoopBasisOverdeterminedQ[#]&,finalPreTopos, DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[finalPreTopos]/$KernelCount]/10]],
+	WriteString["stdout",lsclScriptName,": Detecting overdetermined topologies among the final pretopologies ... "];
+	check=FCLoopBasisOverdeterminedQ/@finalPreTopos;
+];
+WriteString["stdout","done.\n\n"];
+
+
+If[Union[check]=!={False},
+	WriteString["stdout",lsclScriptName,": Error! Not all overdetermined topologies were eliminated."];
 	QuitAbort[]
 ]
 
@@ -288,8 +417,26 @@ WriteString["stdout",lsclScriptName,": Done applying FCLoopFindSubtopologies.","
 subTopos={};
 
 
+(* Checkpoint for FCLoopFindTopologyMappings*)
+
+
+(* ---------------------------------------------------------- *)
+
+
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologyMappings.","\n\n"];
-mappedTopos=FCLoopFindTopologyMappings[finalPreTopos,PreferredTopologies->subTopos,FCVerbose->1];
+mappedTopos=FCLoopFindTopologyMappings[finalPreTopos,PreferredTopologies->subTopos,FCVerbose->1,FCParallelize->True];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopFindTopologyMappings.","\n\n"];
+Put[mappedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]]
+];
+
+
+(*mappedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
 
 
 (* An extra rule for introducing new names for the final topologies *)
@@ -323,8 +470,18 @@ WriteString["stdout","done.\n\n"];
 
 
 (* Some of the final topologies might be incomplete, so we need to account for that as well *)
-finToposRenamed=mappedTopos[[2]]/.finRenRu;
-incompleteTopos=Select[finToposRenamed,FCLoopBasisIncompleteQ];
+finToposRenamed=mappedTopos[[2]]/.Dispatch[finRenRu];
+
+
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Detecting incomplete topologies in parallel ..."];
+	check = ParallelMap[FCLoopBasisIncompleteQ[#]&,finToposRenamed, DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[finToposRenamed]/$KernelCount]/10]],
+	WriteString["stdout",lsclScriptName,": Detecting incomplete topologies ... "];
+	check=FCLoopBasisIncompleteQ/@finToposRenamed;
+];
+incompleteTopos=Extract[finToposRenamed,Position[check,True]];
+WriteString["stdout","done.\n\n"];
 
 
 WriteString["stdout",lsclScriptName,": Number of final topologies that require a basis completion: ", Length[incompleteTopos],"\n\n"];
@@ -334,15 +491,72 @@ WriteString["stdout",lsclScriptName,": Number of final topologies that require a
 allProps=Union[Flatten[#[[2]]&/@finToposRenamed]];
 
 
-WriteString["stdout",lsclScriptName,": Applying FCLoopBasisFindCompletion.","\n\n"];
-completedTopos=FCLoopBasisFindCompletion[incompleteTopos,Method->allProps];
-WriteString["stdout",lsclScriptName,": Done applying FCLoopBasisFindCompletion.","\n\n"];
+(* Checkpoint for FCLoopBasisFindCompletion*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Applying FCLoopBasisFindCompletion in parallel ..."];
+	With[{xxx=allProps},
+	ParallelEvaluate[allPropsParallel=xxx,DistributedContexts->False];
+	];
+	completedTopos = ParallelMap[FCLoopBasisFindCompletion[#,Method->allPropsParallel]&,incompleteTopos, DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[incompleteTopos]/$KernelCount]/10]],
+		
+	WriteString["stdout",lsclScriptName,": Applying FCLoopBasisFindCompletion ... "];
+	completedTopos=FCLoopBasisFindCompletion[incompleteTopos,Method->allProps];
+];
+WriteString["stdout","done.\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopBasisFindCompletion.","\n\n"];
+Put[completedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]]
+];
+
+
+(*completedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+(* Checkpoint for FCLoopCreateRuleGLIToGLI*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRuleGLIToGLI in parallel ... "];
+	With[{xxx=allProps},
+	ParallelEvaluate[allPropsParallel=xxx,DistributedContexts->False];
+	];
+	basisCompletionRules = ParallelMap[FCLoopCreateRuleGLIToGLI[#[[1]],#[[2]]]&,Transpose[{completedTopos,List/@incompleteTopos}], DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[completedTopos]/$KernelCount]/10]],
+		
+	WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRuleGLIToGLI ... "];
+	basisCompletionRules=FCLoopCreateRuleGLIToGLI[completedTopos,List/@incompleteTopos];
+];
+WriteString["stdout","done.\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreateRuleGLIToGLI.","\n\n"];
+Put[basisCompletionRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]]
+];
+
+
+(*basisCompletionRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
 
 
 ClearAll[tmp];
-basisCompletionRules=FCLoopCreateRuleGLIToGLI[completedTopos,List/@incompleteTopos]//Flatten;
-
-tmp=basisCompletionRules//ReplaceAll[#,Pattern->pattern]&//
+tmp=basisCompletionRules//Flatten//ReplaceAll[#,Pattern->pattern]&//
 ReplaceAll[#,pattern[x_,Blank[]]:>ToExpression[ToString[x]<>"$QM"]]&//ReplaceAll[#,RuleDelayed->Equal]&//
 FCLoopTopologyNameToSymbol//ReplaceAll[#,GLI[s_Symbol,inds_List]:>s@@inds]&;
 
@@ -378,15 +592,40 @@ WriteString["stdout","done.\n\n"];
 (*Finally, we also need rules to eliminate scalar products *)
 
 
-ultimateToposRenamed=ultimateTopos/.ultimateToposRenamingRule;
+ultimateToposRenamed=ultimateTopos/.Dispatch[ultimateToposRenamingRule];
+ultimateToposRenamedSymb=ultimateToposRenamed//FCLoopTopologyNameToSymbol;
 
 
 (*ultimateToposRenamed=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];*)
 
 
-WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRulesToGLI.","\n"];
-ruGLI=Map[{#[[1]],FCLoopCreateRulesToGLI[#]}&,ultimateToposRenamed//FCLoopTopologyNameToSymbol];
-WriteString["stdout","\nlsclFindTopologies: Done applying FCLoopCreateRulesToGLI.","\n\n"];
+(* Checkpoint for FCLoopCreateRulesToGLI*)
+
+
+(* ---------------------------------------------------------- *)
+
+
+If[$ParallelizeFeynCalc,
+	WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRulesToGLI in parallel ... "];
+	ruGLI = ParallelMap[{#[[1]],FCLoopCreateRulesToGLI[#,Numerator->lsclNum,Denominator->lsclDen]}&,ultimateToposRenamedSymb, DistributedContexts -> None,
+		Method->"ItemsPerEvaluation" -> Ceiling[N[Length[ultimateToposRenamedSymb]/$KernelCount]/10]],
+		
+	WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRulesToGLI ... "];
+	ruGLI=Map[{#[[1]],FCLoopCreateRulesToGLI[#,Numerator->lsclNum,Denominator->lsclDen]}&,(ultimateToposRenamed//FCLoopTopologyNameToSymbol)];
+];
+WriteString["stdout","done.\n\n"];
+
+
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]],
+WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreateRuleGLIToGLI.","\n\n"];
+Put[ruGLI,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]]
+];
+
+
+(*ruGLI=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]];*)
+
+
+(* ---------------------------------------------------------- *)
 
 
 WriteString["stdout",lsclScriptName,": Number of rules for eliminating scalar products: ", Length[ruGLI],"\n\n"];
@@ -404,13 +643,6 @@ gliRuleFin=Flatten[tmp2]//FCE//ReplaceAll[#,finalSubstitutions]&//ReplaceAll[#,S
 formRuleGLIRaw=If[Head[#]=!=String,StringReplace["id "<>ToString[#[[1]],InputForm]<>" = ("<>ToString[#[[2]],InputForm]<>");\n",{"->"->"=","["->"(","]"->")","formAnything"->"?a",
 "formReplace"->"replace_","$QM"->"?","$FORMJUMP"->"->"}],
 #]&/@(gliRuleFin/.s_String/;StringFreeQ[s,"#"]:>ToExpression[s]);
-
-
-(*formRuleGLI="\n\n*--#[ lsclScalarProductRules : \n\n\n"<>
-"#define lsclNumberOfScalarProductRules \""<>ToString[Length[tmp1]]<>"\"\n\n\n"<>"*--#] lsclScalarProductRules : \n\n\n"<>StringJoin[StringRiffle[formRuleGLIRaw,"\n"]];*)
-
-
-(*formRuleGLI="\n\n*--#[ lsclScalarProductRules : \n\n\n"<>StringJoin[StringRiffle[formRuleGLIRaw,"\n"]]<>"\n\n\n"<>"*--#] lsclScalarProductRules : \n\n\n";*)
 
 
 formRuleGLI="\n\n\n"<>StringJoin[StringRiffle[formRuleGLIRaw,"\n"]]<>"\n\n\n";
