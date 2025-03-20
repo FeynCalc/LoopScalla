@@ -1,10 +1,10 @@
 on shortstats;
 on HighFirst;
 
-
-#message lsclCreateIntegralFiles: `lsclProjectName'
-#message lsclCreateIntegralFiles: `lsclProcessName'
-#message lsclCreateIntegralFiles: `lsclNLoops'
+#message lsclCreateIntegralFiles: Project: `lsclProjectName'
+#message lsclCreateIntegralFiles: Process: `lsclProcessName'
+#message lsclCreateIntegralFiles: Model: `lsclModelName'
+#message lsclCreateIntegralFiles: Number of loops: `lsclNLoops'
 
 
 #ifdef `LSCLADDDIAFILES'

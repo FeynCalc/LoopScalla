@@ -17,13 +17,8 @@ repeat;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclFAD(?a) = FAD(List(?a));
 id lsclGFAD(?a) = GFAD(?a);
-
-
-
 id i_ = I;
-
 id lsclD^lsclS?!{,0} = D^lsclS;
-
 id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclSUNF(?a) = SUNF(?a);
 id lsclSUND(?a) = SUND(?a);
@@ -34,6 +29,7 @@ endrepeat;
 
 argument;
 repeat;
+id i_ = I;
 id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclD^lsclS?!{,0} = D^lsclS;

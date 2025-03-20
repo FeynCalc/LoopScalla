@@ -144,6 +144,8 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 
 .sort
 
+* If the factorization has already been applied in the past, it's a must to collect w.r.t
+* lsclNum and lsclDen. Otherwise we'll end up with a workspace overflow.
 #message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 b,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments

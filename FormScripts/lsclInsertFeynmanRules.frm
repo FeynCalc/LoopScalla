@@ -10,9 +10,8 @@ on HighFirst;
 
 #include lsclDeclarations.h
 #include lsclDefinitions.h
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 #include Projects/`lsclProjectName'/FeynmanRules/lsclParticles_`lsclModelName'.h
-
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
 #message lsclProcessStage0: Project: `lsclProjectName'
 #message lsclProcessStage0: Process: `lsclProcessName'

@@ -65,6 +65,10 @@ endargument;
 * Remove nested numerators
  repeat id `NUM'(`NUM'(?a)) = `NUM'(?a);
 
+* Remove purely numerical numerators and denominators
+repeat id `NUM'(lsclS?int_) = lsclS;
+repeat id `DEN'(lsclS?int_) = 1/lsclS;
+
 
 #if (`lsclPprApplyPolyRatFunVerbosity'>1)
   print;
@@ -72,9 +76,7 @@ endargument;
 #endif
 
 
-#if (`lsclPprApplyPolyRatFunVerbosity'>0)
-  #message lsclApplyPolyRatFun: Activating PolyRatFun : `time_' ...
-#endif
+#message lsclApplyPolyRatFun: Activating PolyRatFun : `time_' ...
 
 .sort: lsclApplyPolyRatFun 1;
 
@@ -86,9 +88,9 @@ id `DEN'(lsclS?) = `RAT'(1,lsclS);
   print;  
 #endif
 
-#if (`lsclPprApplyPolyRatFunVerbosity'>0)
-  #message lsclApplyPolyRatFun: Deactivating PolyRatFun : `time_' ...
-#endif
+
+#message lsclApplyPolyRatFun: Deactivating PolyRatFun : `time_' ...
+
 
 .sort: lsclApplyPolyRatFun 2;
 

@@ -29,7 +29,7 @@ lsclPDFDir=$lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/PDFs
 cd $lsclRepoDir
 qOutDir="qOutput"
 prName=$1
-echo $lsclGraphDir
+
 if [ ! -d $lsclGraphDir ]; then
     echo Directory  $lsclGraphDir does not exist!
     exit;

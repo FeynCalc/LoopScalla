@@ -128,9 +128,6 @@ dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Outpu
 currentTopology=SelectNotFree[fcTopologies,lsclTopologyName];
 
 
-Options[FIREPrepareStartFile]
-
-
 WriteString["stdout","Preparing start files ... "];
 FIREPrepareStartFile[currentTopology,dirReductions,Check->False,
 FIREPath:>environment["lsclFireMmaPath"],StringReplace->{"environment"->"Environment"},
