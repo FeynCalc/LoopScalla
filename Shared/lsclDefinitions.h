@@ -67,8 +67,10 @@ S lsclFlagExplicitDenominator;
 S lsclGaugeXi;
 F lsclQGPropagator, lsclQGVertex, lsclQGPolarization, lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
 
-CF lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold, lsclSUNDelta(S), lsclSUNFDelta(S), lsclFAD, lsclDiracIndex, lsclLorentzIndex, lsclFunColorIndex, 
-lsclAdjColorIndex, lsclVector, lsclMetricTensor(S),  lsclSUNTF, lsclSUNF, lsclSUND, lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
+CF lsclSUNDelta(S), lsclSUNFDelta(S), lsclFunColorIndex, lsclAdjColorIndex,  lsclSUNTF, lsclSUNF, lsclSUND;
+
+CF lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold,  lsclFAD, lsclDiracIndex, lsclLorentzIndex,  
+lsclVector, lsclMetricTensor(S),  lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
 lsclIntegralNumber, lsclIntegral, lsclDiaFlag;
 
 F lsclNCHold;
@@ -117,7 +119,7 @@ S lsclEp;
 
 * SU(N) algebra functions
 
-S lsclSUNN;
+S lsclSUNN,lsclCF,lsclCA,lsclNA, lsclCRmCA2;
 S lsclIsolateFlag;
 CF lsclRawTopology,lsclTopoID;
 
