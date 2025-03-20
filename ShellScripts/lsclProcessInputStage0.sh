@@ -85,7 +85,7 @@ while [[ ${#} -gt 0 ]]; do
       ;;
      #Number of requested GNU parallel jobs
     --pjobs)
-      export LSCL_NUMBER_OF_PARALLEL_SHELL_JOBS=${2}
+      export LSCL_NUMBER_OF_PARALLEL_FORM_JOBS=${2}
       shift
       shift
       ;;
