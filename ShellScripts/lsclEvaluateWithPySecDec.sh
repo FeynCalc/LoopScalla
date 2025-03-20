@@ -79,6 +79,10 @@ if [[ -z "${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE+x}" ]]; then
   LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=0
 fi
 
+if [[ -z "${LSCL_PYSECDEC_ONLY_INTEGRATE+x}" ]]; then
+  LSCL_PYSECDEC_ONLY_INTEGRATE=0
+fi
+
 while [[ ${#} -gt 0 ]]; do
   case ${1} in    
     #Extra shell script parameters
@@ -126,7 +130,11 @@ while [[ ${#} -gt 0 ]]; do
       export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
       shift
       ;;
-     --useTemporaryDirectory)
+    --onlyIntegrate)
+      export LSCL_PYSECDEC_ONLY_INTEGRATE=1
+      shift
+      ;;   
+    --useTemporaryDirectory)
       export LSCL_PYSECDEC_USE_TMPDIR=1      
       shift
       ;;        
