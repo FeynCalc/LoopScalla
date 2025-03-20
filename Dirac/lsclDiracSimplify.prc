@@ -50,16 +50,23 @@ repeat id once lsclDiracTrace(?a,lsclP?!vector_,?b) = lsclP(lsclMu100)*lsclDirac
 #message lsclDiracSimplify: ... done: `time_'
 
 
-id lsclDiracTrace(?a) = lsclF30(nargs_(?a))*lsclDiracTrace(?a);
+id lsclDiracTrace(?a) = lsclS30^nargs_(?a)*lsclDiracTrace(?a);
 #message lsclDiracSimplify: Structure of Dirac traces in the expression (number of matrices) x (number of terms)
 
-*id lsclF30(lsclI?!{,20}) = 0;
-b lsclF30;
+b lsclS30;
 print[];
 
 .sort
-id lsclF30(?a) = 1;
-
+#$maxTraceLen=0;
+#$minTraceLen=1;
+if ( count(lsclS30,1) > $maxTraceLen ) $maxTraceLen = count_(lsclS30,1);
+if ( count(lsclS30,1) < $minTraceLen ) $minTraceLen = count_(lsclS30,1);
+ModuleOption,maximum,$maxTraceLen;
+ModuleOption,minimum,$minTraceLen;
+.sort
+id lsclS30^lsclS?!{,0} = 1;
+#message lsclDiracSimplify: The shortest Dirac trace `$minTraceLen' contains Dirac matrices 
+#message lsclDiracSimplify: The longest Dirac trace `$maxTraceLen' contains Dirac matrices 
 
 #message lsclDiracSimplify: Calling lsclDiracIsolate: `time_'
 #call lsclDiracIsolate(lsclNonDiracPiece4,lsclNonDiracPiece5)
@@ -71,7 +78,7 @@ id lsclF30(?a) = 1;
 * #include lsclSharedTools.h #lsclDebuggingDiracAlgebra
 
 *********************************************************
-#do traceLen = 1, 40
+#do traceLen = `$minTraceLen', `$maxTraceLen'
 
 * if (count(lsclDiracTrace,1)>1) exit "Error more than one Dirac trace in an expression!";
 
@@ -200,7 +207,6 @@ endif;
 #message lsclDiracSimplify: Calling sort: `time_' ...
 .sort
 #message lsclDiracSimplify: ... done: `time_'
-
 
 #call lsclDiracIsolate(lsclNonDiracPiece8,lsclNonDiracPiece9)
 
