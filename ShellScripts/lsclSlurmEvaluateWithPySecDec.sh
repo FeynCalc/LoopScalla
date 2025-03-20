@@ -12,6 +12,8 @@
 # ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 2500 --fromto 1 all --clearlogs --nodes 2 --slices 1000
 # ./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh MyProject MyProject MyModel 1 clusterPartitions --mem 1000 --fromto 1 all --nodes 2 --slices 5 --clearlogs
 
+#./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh BToEtaC QbQubarToWQQubar BToEtaC 3 sfb,hpc topology6151X111111112110 --mem 256000 --cores 32 --miDir pySecDec1P
+#./ShellScripts/lsclSlurmEvaluateWithPySecDec.sh BToEtaC QbQubarToWQQubar BToEtaC 3 sfb,hpc,moon topology6151X111111112110 --mem 16000 --cores 8 --onlyIntegrate --miDir pySecDec1P
 
 # Stop if any of the commands fails
 set -e
@@ -146,9 +148,17 @@ while [[ ${#} -gt 0 ]]; do
       shift
       ;;
     --onlyPoleStructures)
-      export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1      
+      export LSCL_PYSECDEC_ONLY_POLE_STRUCTURE=1
       shift
-      ;;    
+      ;;
+    --onlyIntegrate)
+      export LSCL_PYSECDEC_ONLY_INTEGRATE=1
+      shift
+      ;;  
+    --useTemporaryDirectory)
+      export LSCL_PYSECDEC_USE_TMPDIR=1
+      shift
+      ;;  
     #Basic input parameters
     *)
       lsclBasicArguments+=("$1")
@@ -160,6 +170,9 @@ done
 export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
 export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_INTEGRALS_LIST}"
+
+export LSCL_SLURM_JOB_NAME=${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_INTEGRALS_LIST}
+export LSCL_SLURM_LOG_DIR=${lsclRepoDir}/ClusterLogs/${LSCL_SLURM_SCRIPT_NAME}.${lsclProjectName}.${lsclProcessName}.${lsclModelName}.${lsclNLoops}.${LSCL_INTEGRALS_LIST}
 
 
 

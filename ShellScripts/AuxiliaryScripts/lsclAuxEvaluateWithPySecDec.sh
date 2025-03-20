@@ -46,7 +46,9 @@ fi
 if [[ ${LSCL_PYSECDEC_USE_TMPDIR} -eq 1 ]] ; then
 echo "lsclEvaluateWithPySecDec: Cluster temporary directory: $TMPDIR"
 
+rm -rf $TMPDIR/${lsclIntegralName}
 mkdir -p $TMPDIR/${lsclIntegralName}
+
 echo $pwd
 cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/* $TMPDIR/${lsclIntegralName};
 
@@ -56,20 +58,29 @@ cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}
 fi
 
 
-echo "lsclEvaluateWithPySecDec: Running generate_int.py"
 
-${lsclPythonPath} generate_int.py & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_generate.txt;
+if [[ ${LSCL_PYSECDEC_ONLY_INTEGRATE} -eq 0 ]] ; then
 
-if [[ ${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE} -eq 1 ]] ; then
-	echo "lsclEvaluateWithPySecDec: Copying loopint_integral.json back"
-	cp $TMPDIR/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}
-	echo "lsclEvaluateWithPySecDec: Leaving"
-	exit
+  echo "lsclEvaluateWithPySecDec: Running generate_int.py"
+
+  ${lsclPythonPath} generate_int.py & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_generate.txt;
+
+  if [[ ${LSCL_PYSECDEC_ONLY_POLE_STRUCTURE} -eq 1 ]] ; then
+    echo "lsclEvaluateWithPySecDec: Copying loopint_integral.json back"
+    if [[ ${LSCL_PYSECDEC_USE_TMPDIR} -eq 1 ]] ; then
+    cp $TMPDIR/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}
+    else
+    cp ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/loopint/loopint_integral/disteval/loopint_integral.json ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}
+    fi
+    echo "lsclEvaluateWithPySecDec: Leaving"
+    exit
+  fi
+
+  echo "lsclEvaluateWithPySecDec: Running make"
+
+  ${lsclMakePath} -j${lsclPySecDecNumThreads} -C loopint & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_make.txt;
+
 fi
-
-echo "lsclEvaluateWithPySecDec: Running make"
-
-${lsclMakePath} -j${lsclPySecDecNumThreads} -C loopint & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/${LSCL_MASTER_INTEGRALS_DIRECTORY}/${lsclIntegralName}/memory_make.txt;
 
 echo "lsclEvaluateWithPySecDec: Running integrate_int.py"
 
