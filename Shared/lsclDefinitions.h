@@ -126,12 +126,17 @@ CF lsclRawTopology,lsclTopoID;
 S lsclFlagSPRule;
 CF lsclTopoConvert;
 
-CF lsclNum, lsclDen, lsclRat;
+CF lsclNum, lsclDen, lsclRat, lsclTdNum, lsclTdDen;
 
 CF lsclHoldNum, lsclHoldDen, lsclHoldRat, lsclSkipNum, lsclSkipDen;
 
 
 CF lsclEpHelpFlag;
+
+* Tensor reduction functions
+
+CF lsclTensRedMomentaRaw, lsclTensRedMomenta(S), lsclTensRedLoopRaw, lsclTensRedLoop(S), lsclTensRedHold, lsclTensRedRank, lsclTensRedNLegs, lsclTensRedTypeRaw, lsclTensRedType(S), lsclTensorStructure;
+Auto S lsclTd;
 
 * Must go to FeynCalc Definitions!
 CF lsclSPD,lsclGLI;

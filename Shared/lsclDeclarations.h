@@ -29,6 +29,10 @@
 #define LSCLMAXPROPAGATORS "16"
 #endif
 
+#ifndef `lsclPprIsolateLoopMomenta'
+#define lsclPprIsolateLoopMomenta "0"
+#endif
+
 #ifndef `lsclPprApplyPolyRatFunVerbosity'
 #define lsclPprApplyPolyRatFunVerbosity "0"
 #endif
