@@ -25,10 +25,11 @@ lsclProject="BToEtaC";
 lsclProcessName="QbQubarToWQQubar";
 lsclModelName="BToEtaC";
 lsclNLoops="3";
-lsclTopology="topology101";
+lsclTopology="topology5635";
 lsclExpandInEp=1;
 lsclNKernels=4;
 lsclEpExpandUpTo=0;
+lsclUsingKira=0;
 ];
 *)
 
@@ -71,6 +72,11 @@ If[ToString[lsclExpandInEp]==="lsclExpandInEp",
 	QuitAbort[]
 ];
 
+If[ToString[lsclUsingKira]==="lsclUsingKira",
+	WriteString["stdout",lsclScriptName,": Error! You did not specify whether FIRE or KIRA were used."];
+	QuitAbort[]
+];
+
 
 If[ !MatchQ[lsclNKernels,_Integer?Positive],
 	WriteString["stdout",lsclScriptName,": Error! You did not specify the ","number of parallel kernels."];	
@@ -82,7 +88,7 @@ If[ (lsclExpandInEp===1) && (!MatchQ[lsclEpExpandUpTo,_Integer] || lsclEpExpandU
 	WriteString["stdout",lsclScriptName,": Error! You did not specify the desired order of the ep-expansion."];	
 	QuitAbort[],
 	If[lsclExpandInEp===1,
-		WriteString["stdout",lsclScriptName,": Desired ep-expansion order: ", lsclEpExpandUpTo,"\n\n"];
+		WriteString["stdout",lsclScriptName,": Desired ep-expansion order: ", lsclEpExpandUpTo,"\n\n"],
 		WriteString["stdout",lsclScriptName,": No ep-expansion of the reduction tables.\n\n"];
 	]
 ];
@@ -100,6 +106,12 @@ If[Kernels[]==={},
 ];
 $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
+];
+
+
+If[TrueQ[lsclUsingKira===1],
+	usingKIRA=True,
+	usingKIRA=False
 ];
 
 
@@ -152,21 +164,35 @@ fileExtra2ReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagr
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"extra2-"<>lsclTopology<>".tables"}];
 
 
+kiraReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+lsclModelName, lsclNLoops,"Reductions",lsclTopology,"results",lsclTopology,"kira_KiraLoopIntegrals.m"}];
+
+
+fileKiraMasters=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+lsclModelName, lsclNLoops,"Reductions",lsclTopology,"results",lsclTopology,"masters"}];
+
+
 WriteString["stdout",lsclScriptName,": Loading the reduction tables ..."];
 
 
-reductionRulesRaw=FIREImportResults[lsclTopology,fileReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
+If[!usingKIRA,
+reductionRulesRaw=FIREImportResults[lsclTopology,fileReductionTable,FCReplaceD->{d->lsclD}]//Flatten,
+reductionRulesRaw=KiraImportResults[lsclTopology,kiraReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
+kiraMasters=StringSplit[Import[fileKiraMasters,"Text"],"\n"];
+kiraMasters=ToExpression/@StringReplace[kiraMasters,"#"~~__->""]/.id_[ints__Integer]:>GLI[ToString[id],{ints}];
+reductionRulesRaw=Join[reductionRulesRaw,Thread[Rule[kiraMasters,kiraMasters]]];
+];
 
 
 (*reductionRulesRaw=KiraImportResults[lsclTopology,
-"/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/topology5645/results/topology5645/kira_KiraLoopIntegrals.m",FCReplaceD->{d->lsclD}]//Flatten;*)
+"/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/"<>lsclTopology<>"/results/"<>lsclTopology<>"/kira_KiraLoopIntegrals.m",FCReplaceD->{d->lsclD}]//Flatten;*)
 
 
-(*aux1=StringSplit[Import["/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/topology5645/results/topology5645/masters","Text"],"\n"];
+(*aux1=StringSplit[Import["/media/Data/Projects/VS/LoopScalla/Projects/BToEtaC/Diagrams/Output/QbQubarToWQQubar/BToEtaC/3/Reductions/"<>lsclTopology<>"/results/"<>lsclTopology<>"/masters","Text"],"\n"];
 masters=ToExpression/@StringReplace[aux1,"#"~~__->""]/.id_[ints__Integer]:>GLI[ToString[id],{ints}];*)
 
 
-(*reductionRulesRaw=Join[reductionRulesRaw,Thread[Rule[masters,masters]]];*)
+
 
 
 WriteString["stdout"," done\n"];
@@ -175,7 +201,7 @@ WriteString["stdout"," done\n"];
 WriteString["stdout",lsclScriptName,": Number of reduction rules: ", Length[reductionRulesRaw] ,".\n"];
 
 
-If[FileExistsQ[fileExtraReductionTable],
+If[FileExistsQ[fileExtraReductionTable] && !usingKIRA,
 	WriteString["stdout",lsclScriptName,": Loading extra reduction tables ..."];
 	reductionRulesExtraRaw=FIREImportResults[lsclTopology,fileExtraReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
 	WriteString["stdout"," done\n"];
@@ -184,7 +210,7 @@ If[FileExistsQ[fileExtraReductionTable],
 ];
 
 
-If[FileExistsQ[fileExtra2ReductionTable],
+If[FileExistsQ[fileExtra2ReductionTable] && !usingKIRA,
 	WriteString["stdout",lsclScriptName,": Loading extra 2 reduction tables ..."];
 	reductionRulesExtraRaw=FIREImportResults[lsclTopology,fileExtra2ReductionTable,FCReplaceD->{d->lsclD}]//Flatten;
 	WriteString["stdout"," done\n"];
@@ -197,10 +223,16 @@ checkLHS=Union[integrals];
 checkRHS=Union[First/@reductionRulesRaw];
 
 
-If[Complement[checkLHS,checkRHS]=!={},
-	Print["ERROR! Some of the original integrals were not reduced:", Complement[checkLHS,checkRHS]];
-	QuitAbort[]
-]
+If[!usingKIRA,
+	If[Complement[checkLHS,checkRHS]=!={},
+		Print["ERROR! Some of the original integrals were not reduced:", Complement[checkLHS,checkRHS]];
+		QuitAbort[]
+	],
+	If[Complement[Complement[checkLHS,checkRHS],kiraMasters]=!={},
+		Print["ERROR! Some of the original integrals were not reduced:", Complement[checkLHS,checkRHS]];
+		QuitAbort[]
+	]
+];
 
 
 glisRaw=Cases2[Last/@reductionRulesRaw,GLI];
@@ -232,7 +264,7 @@ reductionRules=Join[reductionRules,mastersToMasterRules];
 
 If[lsclExpandInEp===1,
 	WriteString["stdout",lsclScriptName,": Extracting unique prefactors of master integrals ... "];
-	AbsoluteTiming[aux1=Collect2[reductionRules,GLI,Factoring->pref];];
+	AbsoluteTiming[aux1=Collect2[reductionRules,GLI,Factoring->pref,FCParallelize->True];];
 	ClearAll[pref];
 	pref[x_Integer]:=x;
 	uniquePrefs=Cases2[aux1,pref];

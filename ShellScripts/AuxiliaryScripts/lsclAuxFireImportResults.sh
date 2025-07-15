@@ -23,7 +23,7 @@ set +e
 ${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFireImportResults.m -run lsclProject="\"${lsclProjectName}\"" \
 -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" \
 -run lsclTopology="\"${lsclTopologyName}\"" -run lsclExpandInEp="${LSCL_FLAG_EXPAND_IN_EP}" -run lsclEpExpandUpTo=${LSCL_EP_EXPANSION_ORDER} \
--run lsclNKernels=${lsclFeynCalcNumKernels}
+-run lsclNKernels=${lsclFeynCalcNumKernels} -run lsclUsingKira=${LSCL_FLAG_KIRA}
 lsclStatus=$?
 
 echo
