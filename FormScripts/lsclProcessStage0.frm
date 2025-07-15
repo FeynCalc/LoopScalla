@@ -199,6 +199,19 @@ endif;
 .sort
 #message lsclProcessStage0: ... done: `time_'
 
+#if (`LSCLINSERTPROJECTOR' == 0)
+
+
+#message lsclProcessStage0: Calling the DoTensorReduction fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclDoTensorReduction
+#message lsclProcessStage0: ... done: `time_'
+
+#message lsclProcessStage0: Calling sort : `time_' ...
+.sort
+#message lsclProcessStage0: ... done: `time_'
+
+#endif
+
 
 
 #message delete storage
