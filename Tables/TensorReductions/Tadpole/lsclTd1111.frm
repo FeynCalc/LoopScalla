@@ -1,0 +1,1 @@
+id ifmatch->labelTdReductionDone, lsclTd1111*lsclTensRedMomenta()*lsclTensRedLoop(k1?(lsclMu1?), k1?(lsclMu2?), k1?(lsclMu3?), k1?(lsclMu4?)) = lsclTdDen(lsclD)*lsclTdDen(2 + lsclD)*lsclTdNum(k1(k1)^2)*lsclTensorStructure(d_(lsclMu1, lsclMu4)*d_(lsclMu2, lsclMu3) + d_(lsclMu1, lsclMu3)*d_(lsclMu2, lsclMu4) + d_(lsclMu1, lsclMu2)*d_(lsclMu3, lsclMu4));

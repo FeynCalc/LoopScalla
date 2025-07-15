@@ -1,0 +1,1 @@
+id ifmatch->labelTdReductionDone, lsclTd1*lsclTensRedMomenta(p1)*lsclTensRedLoop(k1?(lsclMu1?)) = lsclTdDen(p1(p1))*lsclTdNum(k1(p1))*lsclTensorStructure(p1(lsclMu1));

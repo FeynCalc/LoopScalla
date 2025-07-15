@@ -1,0 +1,12 @@
+#$lsclDollarTdRank12L6N1 = lsclTd111111123456;
+#$lsclDollarTdRank12L6N2 = lsclTd111111223456;
+#$lsclDollarTdRank12L6N3 = lsclTd111112223456;
+#$lsclDollarTdRank12L6N4 = lsclTd111112233456;
+#$lsclDollarTdRank12L6N5 = lsclTd111122223456;
+#$lsclDollarTdRank12L6N6 = lsclTd111122233456;
+#$lsclDollarTdRank12L6N7 = lsclTd111122334456;
+#$lsclDollarTdRank12L6N8 = lsclTd111222333456;
+#$lsclDollarTdRank12L6N9 = lsclTd111222334456;
+#$lsclDollarTdRank12L6N10 = lsclTd111223344556;
+#$lsclDollarTdRank12L6N11 = lsclTd112233445566;
+#$lsclDollarTdRank12L6NumTotal = 11;

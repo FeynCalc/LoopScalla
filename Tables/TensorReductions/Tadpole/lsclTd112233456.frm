@@ -1,0 +1,1 @@
+id ifmatch->labelTdReductionDone, lsclTd112233456*lsclTensRedMomenta()*lsclTensRedLoop(k1?(lsclMu1?), k1?(lsclMu2?), k2?(lsclMu3?), k2?(lsclMu4?), k3?(lsclMu5?), k3?(lsclMu6?), k4?(lsclMu7?), k5?(lsclMu8?), k6?(lsclMu9?)) = 0;

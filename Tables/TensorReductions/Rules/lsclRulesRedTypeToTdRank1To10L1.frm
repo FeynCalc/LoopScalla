@@ -1,0 +1,10 @@
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?) = lsclTd1;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?) = lsclTd11;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?) = lsclTd111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd1111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd11111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd111111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd1111111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd11111111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd111111111;
+id ifmatch->labelTdMappingDone, lsclTensRedType(lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?, lsclV1?) = lsclTd1111111111;
