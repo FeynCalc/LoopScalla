@@ -24,6 +24,13 @@ G s1dia`lsclDiaNumber'L`lsclNLoops' = s0dia`lsclDiaNumber'L`lsclNLoops';
 
 .sort
 
+
+#message lsclTopologyIdentification: Calling the BeforeTopologyExtraction fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclBeforeTopologyExtraction
+#message lsclTopologyIdentification: ... done: `time_'
+
+.sort
+
 * collect w.r.t. denominators, put all prefactors into lsclWrapFun1 and lsclWrapFun2
 b lsclGFAD,lsclFAD,
 *#do i=1, `lsclNLoops'
@@ -181,6 +188,11 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 #message lsclTopologyIdentification: Calling the lsclTopologyRules fold from preTopologies.frm: `time_' ...
 #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
+
+if (occurs(lsclRawTopology));
+print "Leftover raw topology in: %t";
+endif;
+if (occurs(lsclRawTopology)) exit "Failed to elimitate raw topology containers.";
 
 
 #if (`LSCLVERBOSITY'>0)
