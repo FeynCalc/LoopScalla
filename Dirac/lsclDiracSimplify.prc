@@ -51,7 +51,7 @@ repeat id once lsclDiracTrace(?a,lsclP?!vector_,?b) = lsclP(lsclMu100)*lsclDirac
 
 
 id lsclDiracTrace(?a) = lsclS30^nargs_(?a)*lsclDiracTrace(?a);
-#message lsclDiracSimplify: Structure of Dirac traces in the expression (number of matrices) x (number of terms)
+#message lsclDiracSimplify: Structure of Dirac traces in the expression (number of matrices) ^ (number of terms)
 
 b lsclS30;
 print[];
@@ -60,7 +60,7 @@ print[];
 #$maxTraceLen=0;
 #$minTraceLen=1;
 if ( count(lsclS30,1) > $maxTraceLen ) $maxTraceLen = count_(lsclS30,1);
-if ( count(lsclS30,1) < $minTraceLen ) $minTraceLen = count_(lsclS30,1);
+if ( (count(lsclS30,1) < $minTraceLen) && (count(lsclS30,1) > 0)) $minTraceLen = count_(lsclS30,1);
 ModuleOption,maximum,$maxTraceLen;
 ModuleOption,minimum,$minTraceLen;
 .sort
