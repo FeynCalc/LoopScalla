@@ -29,7 +29,7 @@ lsclNLoops="$4"
 
 lsclAllReductions=()
 lsclCompletedReductions=()
-readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "*.tables" ! -name '*extra*.tables' -print0);
+readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "*.tables" -print0);
 
 
 echo Unfinished imports:
