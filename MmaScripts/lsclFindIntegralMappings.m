@@ -17,14 +17,16 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 
 
 (*For debugging purposes*)
+(*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
 lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubarFull";
-lsclModelName="BToEtaC";
-lsclNLoops="1";
+lsclProcessName="QbQubarToWQQubar";
+lsclModelName="BToEtaCChk";
+lsclNLoops="2";
 lsclNKernels="8";
 ];
+*)
 
 
 lsclScriptName="lsclFindIntegralMappings";
@@ -89,7 +91,7 @@ $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
 
 
-AbsoluteTiming[mappings=FCLoopFindIntegralMappings[glis,fcTopologies,FCVerbose->1];]
+AbsoluteTiming[mappings=FCLoopFindIntegralMappings[glis,fcTopologies,FCVerbose->1,FCParallelize->True];]
 
 
 If[(Map[(Total[#[[1]][[2]]]-Total[#[[2]][[2]]])&,mappings[[1]]]//Union)=!={0},
@@ -114,42 +116,22 @@ Put[mappings,FileNameJoin[{Directory[],"Projects",lsclProject,
 	"Diagrams","Output",lsclProcessName,lsclModelName,lsclNLoops,"LoopIntegrals","MasterIntegralMappingsPre.m"}]];
 
 
-WriteString["stdout",lsclScriptName,": Checking for scaleless masters",".\n"];
-
-
-relTopos=SelectNotFree[fcTopologies,Union[First/@mappings[[2]]]];
-AbsoluteTiming[scalelessInts=FCLoopScalelessQ[mappings[[2]],relTopos];]
-
-
-If[Union[scalelessInts]==={False},
-	WriteString["stdout",lsclScriptName,": No scaleless masters detected.",".\n"];
-	mappingsFinal=mappings,
-	aux1=Extract[mappings[[2]],Position[scalelessInts,True]];	
-	WriteString["stdout",lsclScriptName,": Found ",Length[aux1]," scaleless masters.",".\n"];
-	aux2=Thread[Rule[aux1,ConstantArray[0,Length[aux1]]]];
-aux3=Join[mappings[[1]],aux2];
-bux=Map[Rule[#,Unevaluated[Sequence[]]]&,aux1];
-aux4=mappings[[2]]/.Dispatch[bux];
-mappingsFinal={aux3,aux4};
-];
-
-
-Put[mappings,FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams","Output",lsclProcessName,lsclModelName,lsclNLoops,"LoopIntegrals","MasterIntegralMappings.m"}]];
-
-
 WriteString["stdout",lsclScriptName,": Sorting the masters into different topologyies..."];
 
 
-rr=GatherBy[mappings[[1]],#[[1]][[1]]&];
-tns=Map[#[[1]][[1]][[1]]&,rr];
-
-
-aux1=GatherBy[mappingsFinal[[1]],#[[1]][[1]]&];
+bux1=GatherBy[mappings[[1]],#[[1]][[1]]&];
+bux2=Map[#[[1]][[1]][[1]]&,bux1];
+aux1=GatherBy[mappings[[1]],#[[1]][[1]]&];
 aux2=Map[#[[1]][[1]][[1]]&,aux1];
+
+
 allTopoNames=First/@fcTopologies;
-posList=Map[Position[tns,#]&,allTopoNames];
-aux3=Map[Flatten[Extract[rr,#]]&,posList];
+
+
+posList=Map[Position[bux2,#]&,allTopoNames];
+aux3=Map[Flatten[Extract[bux1,#]]&,posList];
+
+
 Table[
 (tmp=FCLoopTopologyNameToSymbol[aux3[[i]]]//ReplaceAll[#,GLI[s_Symbol,inds_List]:>s@@inds]&;
 tmp2=StringReplace["id "<>ToString[#,InputForm]<>";",{"->"->"=","["->"(","]"->")","formAnything"->"?a"}]&/@tmp;
