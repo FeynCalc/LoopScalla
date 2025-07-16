@@ -29,7 +29,7 @@ lsclNLoops="$4"
 
 lsclAllReductions=()
 lsclCompletedReductions=()
-readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/MasterIntegrals/pySecDec/  -type f -name "generate_int.py" -print0);
+readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/MasterIntegrals/pySecDec/  -type f -name "generate_int.py" -print0);
 
 
 echo Unfinished imports:

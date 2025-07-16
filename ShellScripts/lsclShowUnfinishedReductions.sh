@@ -29,7 +29,7 @@ lsclNLoops="$4"
 
 lsclAllReductions=()
 lsclCompletedReductions=()
-readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "LoopIntegrals.m" -print0);
+readarray -d '' lsclAllReductions < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "LoopIntegrals.m" -print0);
 
 
 echo Unfinished reductions:

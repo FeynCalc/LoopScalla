@@ -31,15 +31,15 @@ lsclDiaNumber="$5"
 lsclStage="$6"
 
 lsclFile="stage${lsclStage}_dia${lsclDiaNumber}L${lsclNLoops}.res"
-echo ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage}/$lsclFile
-if [ -f "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/$lsclFile" ]
+echo ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage}/$lsclFile
+if [ -f "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/$lsclFile" ]
 then
     read -p "Are you sure that you want to delete the result file $lsclFile? To continue, please type 'yes':" -n 3 -r
     echo    # (optional) move to a new line
     if [[ $REPLY = "yes" ]]
     then
         echo Deleting...
-        rm -rf ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage}/$lsclFile
+        rm -rf ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage}/$lsclFile
     fi
 else
     echo lsclRemoveResFile: The file $lsclFile does not exist.

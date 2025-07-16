@@ -13,7 +13,7 @@ on HighFirst;
 	#message lsclCreateIntegralFiles: `lsclDiaNumberTo'
 
 	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-	load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`i'L`lsclNLoops'.res;
+	load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`i'L`lsclNLoops'.res;
 	#enddo
 
 
@@ -29,7 +29,7 @@ on HighFirst;
 
 	#message lsclCreateIntegralFiles: `lsclTopologyName'
 
-	load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
+	load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
 	G ampL`lsclNLoops' = tampL`lsclNLoops';
 
 	#message lsclCreateIntegralFiles: Joint integral file loaded `time_'
@@ -51,7 +51,7 @@ on HighFirst;
 #include Projects/`lsclProjectName'/FeynmanRules/lsclParticles_`lsclModelName'.h
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
-* #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+* #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 
 #ifdef `LSCLADDDIAFILES'
 
@@ -75,7 +75,7 @@ on HighFirst;
 	delete storage;
 	.store
 
-	save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
+	save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/allLoopIntegrals.res;
 	#message lsclTopologyIdentification: Creation of the joint integral file for the process completed successfully.
 
 #else
@@ -85,7 +85,7 @@ on HighFirst;
  	if (occurs(`lsclTopologyName')==0) discard;
 	.sort
 	format Mathematica;
-	#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Mma/`lsclTopologyName'.m> "(%E)", ampL`lsclNLoops'
+	#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Mma/`lsclTopologyName'.m> "(%E)", ampL`lsclNLoops'
 	#message lsclTopologyIdentification: Creation of the integral file for the topology `lsclTopologyName' completed successfully.
 	
 #endif

@@ -30,7 +30,7 @@ lsclDiaNum="$5"
 
 lsclAllReductions=()
 lsclCompletedReductions=()
-readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1/$lsclDiaNum/ -type f -name "stage1_dia*L$lsclNLoops*.res" -print0 | sort -V);
+readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1/$lsclDiaNum/ -type f -name "stage1_dia*L$lsclNLoops*.res" -print0 | sort -V);
 
 IFS=$'\n' lsclAllDiagrams=($(sort -V <<<"${lsclAllDiagramsRaw[*]}"))
 unset IFS
@@ -39,7 +39,7 @@ echo Unprocessed diagrams:
 for i in "${lsclAllDiagrams[@]}"; do	
   lsclDiaNameRaw=$(basename ${i} .frm)  
   lsclDiaName=${lsclDiaNameRaw//stage1/stage2}    
-  if [ ! -f $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage2/$lsclDiaNum/${lsclDiaName} ]; then
+  if [ ! -f $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage2/$lsclDiaNum/${lsclDiaName} ]; then
    echo $lsclDiaName
    counter=$((counter + 1))
   fi

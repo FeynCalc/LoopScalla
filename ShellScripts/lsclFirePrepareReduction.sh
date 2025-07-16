@@ -99,7 +99,7 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.config"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.config"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
@@ -108,7 +108,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclFirePrepareReduction.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};

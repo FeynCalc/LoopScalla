@@ -136,10 +136,10 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 export LSCL_FORM_SCRIPT_NAME="lsclAddUpDiagrams.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results"
 
 #if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-#      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/stage0_dia${lsclDiaNumber}L${lsclNLoops}.res"
+#      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/stage0_dia${lsclDiaNumber}L${lsclNLoops}.res"
 #fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
@@ -160,7 +160,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     echo "${LSCL_SCRIPT_NAME}: Running in parallel."
 
     if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/ampL${lsclNLoops}From${lsclDiaNumberFrom}To${lsclDiaNumberTo}.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/ampL${lsclNLoops}From${lsclDiaNumberFrom}To${lsclDiaNumberTo}.res"
     fi
 
 
@@ -171,7 +171,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     lsclDiaNumber=${lsclBasicArguments[4]}
 
     if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/ampL${lsclNLoops}From${lsclDiaNumber}To${lsclDiaNumber}.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/ampL${lsclNLoops}From${lsclDiaNumber}To${lsclDiaNumber}.res"
     fi
 
     ${lsclScriptDir}/lsclTemplateScriptForm.sh ${lsclBasicArguments[@]:0:4} ${lsclDiaNumber} ${lsclDiaNumber} ${lsclExtraFormScriptArguments[@]}

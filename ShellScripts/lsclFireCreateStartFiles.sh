@@ -101,7 +101,7 @@ done
 
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.sbases"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.sbases"
 fi
 
 
@@ -112,7 +112,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclFireCreateStartFiles.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};
@@ -130,8 +130,8 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     echo "${LSCL_SCRIPT_NAME}: Processing a single topology."
     
     # Check if the precondition is met
-	if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ] && [[ ${LSCL_FIRE_NO_LITERED} -ne 1 ]]; then
-		echo "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR"
+	if [ ! -d "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR" ] && [[ ${LSCL_FIRE_NO_LITERED} -ne 1 ]]; then
+		echo "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/LR"
 		echo "${LSCL_SCRIPT_NAME}: The LR directory is missing, aborting the calculation."
 		exit 1;
 	fi

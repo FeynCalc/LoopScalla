@@ -27,8 +27,8 @@ lsclProcessName="$2"
 lsclModelName="$3"
 lsclNLoops="$4"
 
-lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "fillStatements.frm" | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "tablebase.tbl" | wc -l)
+lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "fillStatements.frm" | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "tablebase.tbl" | wc -l)
 
 echo
 echo Original number of fill statement: ${lsclNumDiasInput}

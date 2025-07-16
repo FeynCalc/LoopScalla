@@ -132,12 +132,12 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 export LSCL_FORM_SCRIPT_NAME="lsclCreateIntegralFiles.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/Mma"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_3="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/Form"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/Mma"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_3="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/Form"
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/allLoopIntegrals.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/allLoopIntegrals.res"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then

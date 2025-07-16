@@ -20,7 +20,7 @@ lsclTopologyName="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/CreateStartFile.m
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/CreateStartFile.m
 
 
 lsclStatus=$?

@@ -222,7 +222,7 @@ delete storage;
 .store
 
 
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
 
 #message lsclProcessStage0: Done processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 #message lsclProcessStage0: Stage 0 completed successfully.

@@ -18,7 +18,7 @@ on fewerstatistics 0;
 #message lsclSplitAmplitude: `lsclDiaNumber'
 
 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 
 
 CF
@@ -28,7 +28,7 @@ CF
 ;
 
 
-Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
+Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
 
 G s2dia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 
@@ -101,8 +101,8 @@ moduleoption notinparallel;
 
 * #do i=1, `LSCLNTOPOLOGIES'
 *    #do j=1,$topoPresent`i'
-*        #message Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''
-*        #external mkdir -p Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''
+*        #message Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''
+*        #external mkdir -p Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''
 *    #enddo
 * #enddo
 
@@ -122,7 +122,7 @@ id lsclIntegralNumber(?a) = 1;
 #endif
 G s1diaS = `t';
 .store
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/stage1_dia`lsclDiaNumber'L`lsclNLoops'_p`i'.res s1diaS;
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/stage1_dia`lsclDiaNumber'L`lsclNLoops'_p`i'.res s1diaS;
 delete storage;
 .sort
 #enddo
@@ -205,7 +205,7 @@ delete storage;
             #message lsclSplitAmplitude: Saving expression s1dia`lsclDiaNumber'L`lsclNLoops'T`LSCLTOPOLOGY`i''I`k'                        
             G s1diaS = $ds1dia`lsclDiaNumber'L`lsclNLoops'T`LSCLTOPOLOGY`i''I`k';
             .store
-            save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''/stage1_dia`lsclDiaNumber'L`lsclNLoops'T`LSCLTOPOLOGY`i''I`k'.res s1diaS;
+            save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage1/`lsclDiaNumber'/`LSCLTOPOLOGY`i''/stage1_dia`lsclDiaNumber'L`lsclNLoops'T`LSCLTOPOLOGY`i''I`k'.res s1diaS;
             delete storage;
             .sort            
         #enddo

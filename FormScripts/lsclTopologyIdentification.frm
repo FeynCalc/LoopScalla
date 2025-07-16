@@ -19,7 +19,7 @@ on HighFirst;
 
 
 
-Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
+Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
 G s1dia`lsclDiaNumber'L`lsclNLoops' = s0dia`lsclDiaNumber'L`lsclNLoops';
 
 .sort
@@ -101,7 +101,7 @@ b lsclRawTopology;
 print[];
 
 format Mathematica;
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/ExtractedTopologies/topos_dia`lsclDiaNumber'L`lsclNLoops'.m> "(%E)", s1dia`lsclDiaNumber'L`lsclNLoops'
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/ExtractedTopologies/topos_dia`lsclDiaNumber'L`lsclNLoops'.m> "(%E)", s1dia`lsclDiaNumber'L`lsclNLoops'
 
 .sort
 #message lsclTopologyIdentification: Topology extraction completed successfully.
@@ -121,7 +121,7 @@ format Mathematica;
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 CF
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ;
 
 
@@ -186,7 +186,7 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 ******************************************************
 
 #message lsclTopologyIdentification: Calling the lsclTopologyRules fold from preTopologies.frm: `time_' ...
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyRules
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
 
 if (occurs(lsclRawTopology));
@@ -198,7 +198,7 @@ if (occurs(lsclRawTopology)) exit "Failed to elimitate raw topology containers."
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ;
 print[];
 .sort
@@ -212,7 +212,7 @@ print[];
 #message lsclTopologyIdentification: ... done: `time_'
 * lsclF1 is needed for cases where the fold #lsclTopologyNames in partialFractioning.frm is empty
 CF lsclF1,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
 ;
 
 #message lsclTopologyIdentification: Calling sort : `time_' ...
@@ -220,15 +220,15 @@ CF lsclF1,
 #message lsclTopologyIdentification: ... done: `time_'
 
 #message lsclTopologyIdentification: Calling the lsclTopologyRules fold from partialFractioning.frm: `time_' ...
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyRules
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
  
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
 ;
 print[];
 .sort
@@ -240,9 +240,9 @@ print[];
 b,
 lsclSkipNum,lsclSkipDen,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
 ;
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
@@ -259,7 +259,7 @@ collect lsclWrapFun1,lsclWrapFun2;
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 CF
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
 ;
 
 #message lsclTopologyIdentification: Calling sort : `time_' ...
@@ -267,7 +267,7 @@ CF
 #message lsclTopologyIdentification: ... done: `time_'
 
 #message lsclTopologyIdentification: Calling the lsclTopologyMappings fold from topologyMappings.frm: `time_' ...
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyMappings
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyMappings
 #message lsclTopologyIdentification: ... done: `time_'
 
 * Topology mappings introduce shifts of loop momenta that also affect scalar products in the numerators.
@@ -283,7 +283,7 @@ CF
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
 ;
 print[];
 .sort
@@ -298,7 +298,7 @@ print[];
 b,
 lsclSkipDen,lsclSkipNum,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
 ;
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
@@ -314,7 +314,7 @@ collect lsclWrapFun1,lsclWrapFun2;
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 CF
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 
 #message lsclTopologyIdentification: Calling sort : `time_' ...
@@ -322,14 +322,14 @@ CF
 #message lsclTopologyIdentification: ... done: `time_'
 
 #message lsclTopologyIdentification: Calling the lsclTopologyMappings fold from augmentedTopologies.frm: `time_' ...
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyMappings
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyMappings
 #message lsclTopologyIdentification: ... done: `time_'
 
 
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 print[];
 .sort
@@ -359,7 +359,7 @@ b
 #do i=1, `lsclNLoops'
 k`i',
 #enddo
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
@@ -374,7 +374,7 @@ argtoextrasymbol lsclWrapFun1,lsclWrapFun2;
 * displaying topologies present in the expression
 
 ab
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 .sort
 collect lsclWrapFun3,lsclWrapFun4;
@@ -425,7 +425,7 @@ moduleoption notinparallel;
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 print;
 .sort
@@ -434,7 +434,7 @@ print;
 #do i=`lsclToposFrom',`lsclToposTo'
 #message lsclTopologyIdentification: Calling the #lsclScalarProductRulesFor`$lsclTopoName`i'' fold from scalarProductRules.frm: `time_' ...
 repeat;
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/scalarProductRules.frm #lsclScalarProductRulesFor`$lsclTopoName`i''
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/scalarProductRules.frm #lsclScalarProductRulesFor`$lsclTopoName`i''
 endrepeat;
 
 * If the scalarProductRules.frm id-statements are already wrapped with lsclNum and lsclDen, 
@@ -449,7 +449,7 @@ endrepeat;
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 print;
 .sort
@@ -480,7 +480,7 @@ k`i',
 
 * collect w.r.t. denominators, put all prefactors into lsclWrapFun3 and lsclWrapFun4
 b 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
@@ -516,9 +516,9 @@ FromPolynomial;
 repeat;
 #do i=1,`LSCLMAXPROPAGATORS'
 id lsclF?{
- #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+ #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 }(lsclX1?,...,lsclX`i'?)*lsclF?{
- #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+ #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 }(lsclY1?,...,lsclY`i'?)
  = lsclF(<lsclX1+lsclY1>,...,<lsclX`i'+lsclY`i'>);
 #enddo
@@ -530,7 +530,7 @@ endrepeat;
 #message lsclTopologyIdentification: ... done: `time_'
 
 b
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 print[];
 
@@ -559,7 +559,7 @@ print[];
 
 *#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 *b,
-*#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+*#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 *;
 *.sort
 *collect lsclWrapFun10,lsclWrapFun11;
@@ -582,8 +582,8 @@ delete storage;
 .global
 .store
 
-#message lsclTopologyIdentification: Saving results to: Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
+#message lsclTopologyIdentification: Saving results to: Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
@@ -594,7 +594,7 @@ save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName
 #message lsclTopologyIdentification: Extracting loop integrals for the reduction
 G lidia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 b
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 ;
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
@@ -614,7 +614,7 @@ id lsclWrapFun2(?a) = 1;
 
 * put topologyXYZ functions into lsclGLI
 *id lsclF?{
-* #include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
+* #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 *}(?a) = lsclGLI(lsclF,?a);
 
 
@@ -629,8 +629,8 @@ delete storage;
 #message lsclTopologyIdentification: ... done: `time_'
 
 .store
-#message lsclTopologyIdentification: Saving loop integrals to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res;
+#message lsclTopologyIdentification: Saving loop integrals to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res;
 
 .sort
 #message lsclTopologyIdentification: Extraction of loop integrals completed successfully.

@@ -29,7 +29,7 @@ lsclNLoops="$4"
 lsclStage="$5"
 
 lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Input/$lsclProcessName/$lsclModelName/$lsclNLoops -type f -name "dia*L$lsclNLoops.frm" | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L$lsclNLoops.res" | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L$lsclNLoops.res" | wc -l)
 
 echo
 echo Original number of input diagrams: ${lsclNumDiasInput}

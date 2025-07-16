@@ -175,8 +175,8 @@ case ${lsclShowMissingWhat} in
   OnlyFinalResults)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Results/
     swapFromTo
     ;;
 
@@ -191,80 +191,80 @@ case ${lsclShowMissingWhat} in
   OnlyIntegrals)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/LoopIntegrals/
     swapFromTo
     ;;
     
   OnlyMasterIntegrals)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=loopint --exclude=memory*.txt"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/
     swapFromTo
     ;;  
 
   OnlyReductions)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp --exclude=memory.txt"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
     swapFromTo
     ;;
     
   OnlyReductionsNoLiteRed)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp --exclude=memory.txt --exclude=LR" 
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/
     swapFromTo
     ;;  
 
   OnlyTopologies)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/
     swapFromTo
     ;;
 
   OnlyExtractedTopologies)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git --exclude=temp"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/ExtractedTopologies/
     swapFromTo
     ;;
 
   OnlyPySecDec)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=environment.sh --exclude=ClusterLogs --exclude=ClusterErrors --exclude=loopint"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/pySecDec/
     swapFromTo
     ;;
 
   OnlyResultsStage0)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage0/
     swapFromTo
     ;;
 
   OnlyResultsStage1)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage1/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage1/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage1/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage1/
     swapFromTo
     ;;
 
   OnlyResultsStage2)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/
     swapFromTo
     ;;
 

@@ -28,7 +28,7 @@ then
 fi
 
 for subDir in "Shared" "Mathematica" "FeynmanRules" "Diagrams" "Diagrams/Input" \
-"Diagrams/Output" "QGRAF" "QGRAF/Input" "QGRAF/Output" "QGRAF/Models" "QGRAF/Styles"
+"Diagrams" "QGRAF" "QGRAF/Input" "QGRAF/Output" "QGRAF/Models" "QGRAF/Styles"
 
 do
   if [ ! -d ${lsclFullProjectName}/${subDir} ] 

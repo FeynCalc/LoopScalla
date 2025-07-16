@@ -14,7 +14,7 @@ off statistics;
 #message lsclEnumerateLoopContent: Diagram number: `lsclDiaNumber'
 #message
 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 
 CF
 #do i=1, `LSCLNTOPOLOGIES'
@@ -23,7 +23,7 @@ CF
 ;
 
 
-Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
+Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
 
 G s2dia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 
@@ -87,7 +87,7 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
 #message
 #message lsclEnumerateLoopContent: Saving results: `time_' ...
 
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "{`lsclDiaNumber',{"
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "{`lsclDiaNumber',{"
 
 
 #do i=1, `LSCLNTOPOLOGIES'
@@ -95,7 +95,7 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
 
 
 format Mathematica;
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "{`LSCLTOPOLOGY`i'', `$topoIntegralCounter`i''},"
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "{`LSCLTOPOLOGY`i'', `$topoIntegralCounter`i''},"
 
 
 
@@ -103,7 +103,7 @@ format Mathematica;
 
 #enddo 
 #enddo
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "Nothing}}"
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/LoopContentPerDiagram/dia`lsclDiaNumber'L`lsclNLoops'.m> "Nothing}}"
 
 #message lsclEnumerateLoopContent: ... done : `time_'
 

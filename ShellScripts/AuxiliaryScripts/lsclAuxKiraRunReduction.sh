@@ -18,7 +18,7 @@ lsclModelName="$3"
 lsclNLoops="$4"
 lsclTopologyName="$5"
 
-cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName};
+cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName};
 
 set +e
 
@@ -30,17 +30,17 @@ echo "lsclAuxKiraRunReduction: Cluster temporary directory: $TMPDIR"
 
 mkdir -p $TMPDIR/KIRA_${lsclTopologyName}
 echo $pwd
-cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/* $TMPDIR/KIRA_${lsclTopologyName};
+cp -a ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/* $TMPDIR/KIRA_${lsclTopologyName};
 
 cd $TMPDIR/KIRA_${lsclTopologyName};
 
 echo "lsclAuxKiraRunReduction: Running KIRA"
 
-${lsclKiraPath} --parallel=${lsclKiraNumThreads} job.yaml & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/memory.txt
+${lsclKiraPath} --parallel=${lsclKiraNumThreads} job.yaml & psrecord $! --include-children --interval 5 --log ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/memory.txt
 
 echo "lsclAuxKiraRunReduction: Copying results back"
-cp -a $TMPDIR/KIRA_${lsclTopologyName}/results  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/results
-cp -a $TMPDIR/KIRA_${lsclTopologyName}/sectormappings  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/sectormappings
+cp -a $TMPDIR/KIRA_${lsclTopologyName}/results  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/results
+cp -a $TMPDIR/KIRA_${lsclTopologyName}/sectormappings  ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/sectormappings
 
 echo "lsclAuxKiraRunReduction: Leaving"
 exit

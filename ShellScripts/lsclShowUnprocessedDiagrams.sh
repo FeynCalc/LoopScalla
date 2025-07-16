@@ -40,7 +40,7 @@ for i in "${lsclAllDiagrams[@]}"; do
 	
   lsclDiaName=$(basename ${i} .frm)  
   
-  if [ ! -f $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage}/stage${lsclStage}_$lsclDiaName.res ]; then
+  if [ ! -f $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage}/stage${lsclStage}_$lsclDiaName.res ]; then
    echo $lsclDiaName
    counter=$((counter + 1))
   fi

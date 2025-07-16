@@ -16,7 +16,7 @@ on HighFirst;
 #include Projects/`lsclProjectName'/FeynmanRules/lsclParticles_`lsclModelName'.h
 
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
-#system mkdir -p Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/
+#system mkdir -p Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/
 .global
 
 
@@ -29,14 +29,14 @@ on HighFirst;
 
 #message lsclExtractIntermediateResult: Processing diagram `lsclExp'
 
-Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/`lsclPath';
+Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/`lsclPath';
 G currentExpr = `lsclExp';
 
 .sort
 
-#message Saving the expression `lsclExp' to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/`lsclExp'.m
+#message Saving the expression `lsclExp' to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/`lsclExp'.m
 
-#call lsclToFeynCalc(currentExpr,Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/`lsclPref'`lsclExp'.m)
+#call lsclToFeynCalc(currentExpr,Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/IntermediateResults/`lsclPref'`lsclExp'.m)
 .sort
 
 

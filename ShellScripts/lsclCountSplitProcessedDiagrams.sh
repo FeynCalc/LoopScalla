@@ -34,15 +34,15 @@ diaIntCompleted=()
 counterTotal=0
 counterDone=0
 
-readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1 -mindepth 1 -maxdepth 1 -type d -name "*" -print0 | sort -V);
+readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1 -mindepth 1 -maxdepth 1 -type d -name "*" -print0 | sort -V);
 
 IFS=$'\n' lsclAllDiagrams=($(sort -V <<<"${lsclAllDiagramsRaw[*]}"))
 unset IFS
 echo "Diagram number | Stage 1 | Stage 2"
 for i in "${lsclAllDiagrams[@]}"; do
 num=$(basename $i)
-lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1/$num/ -type f -name "stage1_dia*L$lsclNLoops*.res" 2>/dev/null  | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage2/$num/ -type f -name "stage2_dia*L$lsclNLoops*.res" 2>/dev/null  | wc -l)
+lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage1/$num/ -type f -name "stage1_dia*L$lsclNLoops*.res" 2>/dev/null  | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/SplitStage2/$num/ -type f -name "stage2_dia*L$lsclNLoops*.res" 2>/dev/null  | wc -l)
 echo $num $lsclNumDiasInput $lsclNumDiasOutput
 diaNum+=($num)
 diaIntOrig+=($lsclNumDiasInput)

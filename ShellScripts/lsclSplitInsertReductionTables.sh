@@ -116,10 +116,10 @@ if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
 fi
 
 export LSCL_FORM_SCRIPT_NAME="lsclInsertReductionTables.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}"
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p${lsclIntNumber}.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage2/${LSCL_DIA_NUMBER}/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p${lsclIntNumber}.res"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
@@ -129,7 +129,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_DIAGRAM_RANGE="1"
 
     if [[ ${lsclIntNumberTo} == "all" ]]; then
-      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
+      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
       lsclIntNumberTo=${lsclNumInts}
 
       if [[ ${lsclNumInts} -eq "0" ]]; then

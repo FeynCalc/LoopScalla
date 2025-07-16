@@ -12,6 +12,6 @@ fi
 
 ################################################################################
 
-rm -rf $lsclRepoDir/Projects/*/Diagrams/Output/*/*/Reductions/*/temp;
+rm -rf $lsclRepoDir/Projects/*/Diagrams/*/*/Reductions/*/temp;
 
 

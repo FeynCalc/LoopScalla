@@ -98,11 +98,11 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 export LSCL_FORM_SCRIPT_NAME="lsclExtractDiagramTopology.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/Mma"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_2="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/Mma"
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/Mma/${lsclDiaNumber}L${lsclNLoops}.m"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/DiagramTopology/Mma/${lsclDiaNumber}L${lsclNLoops}.m"
       echo ${LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT}
 fi
 

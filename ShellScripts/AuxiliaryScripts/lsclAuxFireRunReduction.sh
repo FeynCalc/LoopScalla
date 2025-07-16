@@ -18,7 +18,7 @@ lsclModelName="$3"
 lsclNLoops="$4"
 lsclTopologyName="$5"
 
-cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName};
+cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName};
 
 set +e
 
@@ -36,5 +36,5 @@ if [[ $lsclStatus -eq 0 ]] ; then
 else
       echo "lsclAuxFireRunReduction: IBP reduction for ${lsclTopologyName} failed."
 fi
-rm -rf ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/temp;
+rm -rf ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/temp;
 exit $lsclStatus

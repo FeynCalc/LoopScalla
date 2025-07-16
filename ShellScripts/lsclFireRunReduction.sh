@@ -100,7 +100,7 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.tables"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}.tables"
 fi
 
 
@@ -111,7 +111,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_SCRIPT_TO_RUN_IN_PARALLEL="lsclFireRunReduction.sh"
     export LSCL_RUN_IN_PARALLEL="1"
     export LSCL_DIAGRAM_RANGE="1"
-    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
+    export LSCL_TASKS_FROM_FILE="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Topologies/TopologyList.txt"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
       readarray -t lsclTasksAll < ${LSCL_TASKS_FROM_FILE};
@@ -128,7 +128,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
  else
     echo "${LSCL_SCRIPT_NAME}: Processing a single topology."
     
-    if [ ! -f "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}${LSCL_CONFIG_SUFFIX}.config" ]; then
+    if [ ! -f "${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Reductions/${lsclTopologyName}/${lsclTopologyName}${LSCL_CONFIG_SUFFIX}.config" ]; then
 		echo "${LSCL_SCRIPT_NAME}: The config file ${lsclTopologyName}${LSCL_CONFIG_SUFFIX}.config is missing, aborting the calculation."
 		exit 1;
 	fi

@@ -28,7 +28,7 @@ lsclModelName="$3"
 lsclNLoops="$4"
 
 lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Input/$lsclProcessName/$lsclModelName/$lsclNLoops -type f -name "dia*L$lsclNLoops.frm" | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Output/$lsclProcessName/$lsclModelName/$lsclNLoops/ExtractedTopologies -type f -name "topos_dia*L$lsclNLoops.m" | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/ExtractedTopologies -type f -name "topos_dia*L$lsclNLoops.m" | wc -l)
 
 echo
 echo Original number of input diagrams: ${lsclNumDiasInput}

@@ -109,7 +109,7 @@ fi
 
 
 export LSCL_FORM_SCRIPT_NAME="lsclCombineAmplitude.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2"
 export LSCL_FORM_SCRIPT_INPUT_VARIABLE_FROM="lsclIntNumberFrom"
 export LSCL_FORM_SCRIPT_INPUT_VARIABLE_TO="lsclIntNumberTo"
 export LSCL_FORM_SCRIPT_INPUT_VARIABLE="lsclIntNumber"
@@ -122,15 +122,15 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
 
     if [[ ${LSCL_FLAG_FORCE} -eq 0 ]]; then
       if [[ ${lsclIntNumberFrom} -eq 1 ]] && [[ ${lsclIntNumberTo} == "all" ]]; then      
-        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}.res"
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}.res"
       else        
-        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}From${lsclIntNumberFrom}To${lsclIntNumberTo}.res"
+        export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}From${lsclIntNumberFrom}To${lsclIntNumberTo}.res"
       fi
     fi
 
     if [[ ${lsclIntNumberTo} == "all" ]]; then
 
-      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
+      lsclNumInts=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams//${lsclProcessName}/${lsclModelName}/${lsclNLoops}/SplitStage1/${LSCL_DIA_NUMBER} -type f -name "stage1_dia${LSCL_DIA_NUMBER}L${lsclNLoops}_p*.res" | wc -l)
       lsclIntNumberTo=${lsclNumInts}
 
       if [[ ${lsclNumInts} -eq "0" ]]; then
@@ -149,7 +149,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     lsclIntNumber=${lsclBasicArguments[4]}
 
     if [[ ${LSCL_FLAG_FORCE} -eq 0 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}From${lsclIntNumber}To${lsclIntNumber}.res"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage2/stage2_dia${LSCL_DIA_NUMBER}L${lsclNLoops}From${lsclIntNumber}To${lsclIntNumber}.res"
     fi
 
     ${lsclScriptDir}/lsclTemplateScriptForm.sh ${lsclBasicArguments[@]:0:4} ${lsclIntNumber} ${lsclIntNumber} ${lsclExtraFormScriptArguments[@]}

@@ -28,7 +28,7 @@ G s0dia`lsclDiaNumber'L`lsclNLoops' =
 #message lsclExtractDiagamTopology: ... done: `time_'
 
 format Mathematica;
-#write <Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/DiagramTopology/Mma/`lsclDiaNumber'L`lsclNLoops'.m> "(%E)", s0dia`lsclDiaNumber'L`lsclNLoops'
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/DiagramTopology/Mma/`lsclDiaNumber'L`lsclNLoops'.m> "(%E)", s0dia`lsclDiaNumber'L`lsclNLoops'
 	
 #message lsclExtractDiagamTopology: Done processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 #message lsclExtractDiagamTopology: Extraction completed successfully.

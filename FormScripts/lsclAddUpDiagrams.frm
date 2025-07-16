@@ -12,12 +12,12 @@ on HighFirst;
 #if (`lsclNLoops' == 0)
 	#message lsclAddUpDiagrams: Working with tree-level diagrams
 	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-	Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`i'L`lsclNLoops'.res;
+	Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`i'L`lsclNLoops'.res;
 	#enddo
 #else
 
 	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
-	Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage2/stage2_dia`i'L`lsclNLoops'.res;
+	Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage2/stage2_dia`i'L`lsclNLoops'.res;
 	#enddo
 #endif
 
@@ -49,7 +49,7 @@ G ts2dia`i'L`lsclNLoops' = s2dia`i'L`lsclNLoops';
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
 #if (`lsclNLoops' > 0)
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 #endif
 
 #message `LSCLADDDIAFLAG'
@@ -96,11 +96,11 @@ if (occurs(lsclEpHelpFlag)) exit;
 
 
 #if (`LSCLADDDIAFLAG'==1)
-  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m
-  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
+  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m
+  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
 #else
-  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m
-  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
+  #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m
+  #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.m)
 #endif
 
 .sort
@@ -109,8 +109,8 @@ delete storage;
 
 .store
 
-#message lsclAddUpDiagrams: Saving FORM-readable result to Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res;
+#message lsclAddUpDiagrams: Saving FORM-readable result to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'.res;
 
 .end
 

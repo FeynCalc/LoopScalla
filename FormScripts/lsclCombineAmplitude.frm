@@ -11,7 +11,7 @@ on fewerstatistics 0;
 
 
 #do i = `lsclIntNumberFrom', `lsclIntNumberTo'
-Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage2/`lsclDiaNumber'/stage2_dia`lsclDiaNumber'L`lsclNLoops'_p`i'.res;
+Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage2/`lsclDiaNumber'/stage2_dia`lsclDiaNumber'L`lsclNLoops'_p`i'.res;
 #enddo
 
 
@@ -37,7 +37,7 @@ Load Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
 
-#include Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
+#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 
 
 
@@ -67,7 +67,7 @@ delete storage;
 
 
 
-save Projects/`lsclProjectName'/Diagrams/Output/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage2/stage2_dia`lsclDiaNumber'L`lsclNLoops'.res s2dia`lsclDiaNumber'L`lsclNLoops';
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage2/stage2_dia`lsclDiaNumber'L`lsclNLoops'.res s2dia`lsclDiaNumber'L`lsclNLoops';
 
 .end
 

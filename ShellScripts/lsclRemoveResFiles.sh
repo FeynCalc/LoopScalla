@@ -30,7 +30,7 @@ lsclNLoops="$4"
 lsclStage="$5"
 
 
-lsclNumFiles=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L${lsclNLoops}.res" | wc -l)
+lsclNumFiles=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L${lsclNLoops}.res" | wc -l)
 
 
 read -p "Are you sure that you want to delete ${lsclNumFiles} stage${lsclStage}_dia*L${lsclNLoops}.res files? To continue, please type 'yes':" -n 3 -r
@@ -38,7 +38,7 @@ echo    # (optional) move to a new line
 if [[ $REPLY = "yes" ]]
 then
     echo Deleting...
-    find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L${lsclNLoops}.res" -delete; 
+    find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L${lsclNLoops}.res" -delete; 
 fi
 
 

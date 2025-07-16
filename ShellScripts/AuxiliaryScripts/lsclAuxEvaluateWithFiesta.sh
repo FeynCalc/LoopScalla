@@ -36,7 +36,7 @@ if [[ ! -z "${LSCL_SET_ULIMIT_TO+x}" ]]; then
 	ulimit -a
 fi
 
-cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Output/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/FIESTA/${lsclIntegralName}
+cd ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/MasterIntegrals/FIESTA/${lsclIntegralName}
 
 set +e
 
