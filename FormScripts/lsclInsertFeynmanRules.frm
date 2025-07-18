@@ -28,6 +28,10 @@ L origDiag =
 ;
 .sort
 
+#message lsclInsertFeynmanRules: Calling the lsclBeforeInsertingFeynmanRules fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclBeforeInsertingFeynmanRules
+#message lsclInsertFeynmanRules: ... done: `time_'
+
 #include Projects/`lsclProjectName'/FeynmanRules/lsclFeynmanRules_`lsclModelName'.h
 
 if (occurs(lsclQGVertex));
