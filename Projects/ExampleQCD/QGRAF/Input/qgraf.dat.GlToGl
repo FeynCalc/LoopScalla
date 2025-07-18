@@ -1,0 +1,19 @@
+ output = 'lsclTempAmps.out' ;
+ style = 'Styles/form.sty' ;
+
+ output = 'lsclTempGraphs.out' ;
+ style = 'Styles/graphviz.sty' ;
+
+ output = 'lsclTempTeX.out' ;
+ style = 'Styles/tikz-feynman.sty' ;
+
+ model = 'xxx' ;
+
+ in = Gl;
+ out = Gl;
+
+ loops = xxx;
+
+ loop_momentum = k ;
+
+ options = notadpoles, onshell, nosnail;
