@@ -118,7 +118,7 @@ If[TrueQ[lsclUsingKira===1],
 WriteString["stdout",lsclScriptName,": Loading the integrals ..."];
 filesLoaded=Catch[
 	lsclSymbolicTopologyName=ToExpression[lsclTopology];
-	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopology<>".m"}];	
+	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopology<>".m"}];	
 	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopology,{inds}];	
 	,
 	$Failed
@@ -133,7 +133,7 @@ WriteString["stdout"," done\n"];
 WriteString["stdout",lsclScriptName,": Loading the topologies ..."];
 filesLoaded=Catch[
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
-	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
+	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
 	,
 	$Failed
 ];
@@ -152,23 +152,23 @@ If[MatchQ[ExtraReplacementsForTheReduction,{___}],
 ];
 
 
-fileReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+fileReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,lsclTopology<>".tables"}];
 
 
-fileExtraReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+fileExtraReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"extra-"<>lsclTopology<>".tables"}];
 
 
-fileExtra2ReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+fileExtra2ReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"extra2-"<>lsclTopology<>".tables"}];
 
 
-kiraReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+kiraReductionTable=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"results",lsclTopology,"kira_KiraLoopIntegrals.m"}];
 
 
-fileKiraMasters=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,
+fileKiraMasters=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,
 lsclModelName, lsclNLoops,"Reductions",lsclTopology,"results",lsclTopology,"masters"}];
 
 

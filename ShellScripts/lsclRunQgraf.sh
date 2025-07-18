@@ -112,16 +112,16 @@ echo "${LSCL_SCRIPT_NAME}: Generating amplitudes with QGRAF"
 if [[ ${LSCL_FLAG_NO_PDF} -eq 0 ]]; then
 
       echo "${LSCL_SCRIPT_NAME}: Splitting graphs into single files"
-      "$lsclScriptDir"/lsclSplitGraphs.sh $lsclProjectName $lsclProcessName.$lsclModelName.$lsclNLoops.graphs;
-
-      if [ -z "$(ls -A $lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/$lsclProcessName.$lsclModelName.$lsclNLoops.graphs)" ]; then
+      ${lsclScriptDir}/AuxiliaryScripts/lsclAuxSplitGraphs.sh $lsclProjectName $lsclProcessName.$lsclModelName.$lsclNLoops.graphs;
+      
+      if [ -z "$(ls -A $lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/Files/$lsclProcessName.$lsclModelName.$lsclNLoops.graphs)" ]; then
         echo "${LSCL_SCRIPT_NAME}: No diagrams were generated, leaving.";
         rmdir $lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/Graphs/$lsclProcessName.$lsclModelName.$lsclNLoops.graphs;
         exit 1;
       fi
 
       echo "${LSCL_SCRIPT_NAME}: Generating PDFs"
-      "$lsclScriptDir"/lsclDrawGraphs.sh $lsclProjectName $lsclProcessName.$lsclModelName.$lsclNLoops.graphs;
+      ${lsclScriptDir}/AuxiliaryScripts/lsclAuxDrawGraphs.sh $lsclProjectName $lsclProcessName.$lsclModelName.$lsclNLoops.graphs;
 fi
 
 

@@ -183,8 +183,8 @@ case ${lsclShowMissingWhat} in
   OnlyInput)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
-    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
+    lsclShowMissingFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
+    lsclShowMissingTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
     swapFromTo
     ;;
 

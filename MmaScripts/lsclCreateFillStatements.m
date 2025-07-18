@@ -73,12 +73,12 @@ If[ToString[lsclExpandInEp]==="lsclExpandInEp",
 filesLoaded=Catch[
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]],
 	If[lsclExpandInEp===0,
-		WriteString["stdout","Loading the reduction rules (no expansion) ..."];
-		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRules.m"}]],
-		WriteString["stdout","Loading ep-expanded reduction rules ..."];
-		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
+		WriteString["stdout",lsclScriptName,": Loading the reduction rules (no expansion) ..."];
+		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRules.m"}]],
+		WriteString["stdout",lsclScriptName,": Loading ep-expanded reduction rules ..."];
+		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
 	];
-	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
+	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
 	,
 	$Failed
 ];
@@ -207,8 +207,8 @@ If[!StringQ[formTopoNames]||!StringQ[formtabTopoName]||!StringQ[formFillStatemen
 
 
 If[lsclExpandInEp===0,		
-		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatements.frm"}]],		
-		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
+		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatements.frm"}]],		
+		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
 ];
 WriteString[file,formTopoNames<>"\n"<>formtabTopoName<>"\n"<>formFillStatements<>"\n"];
 Close[file];

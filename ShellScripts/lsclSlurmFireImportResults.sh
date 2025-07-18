@@ -62,7 +62,7 @@ if [[ -z "${LSCL_EP_EXPANSION_ORDER+x}" ]]; then
 fi
 
 if [[ -z "${LSCL_FLAG_KIRA+x}" ]]; then
-  LSCL_FLAG_KIRA=0
+  export LSCL_FLAG_KIRA=0
 fi
 
 lsclOptFromTo=0

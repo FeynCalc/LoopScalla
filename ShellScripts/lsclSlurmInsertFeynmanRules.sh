@@ -134,7 +134,7 @@ export LSCL_DIAGRAM_RANGE="1"
 export LSCL_RUN_IN_PARALLEL="1"
 
 if [[ ${lsclDiaNumberTo} == "all" ]]; then
-  lsclNumDias=$(grep -o '\#\[ d' ${lsclRepoDir}/Projects/${lsclProjectName}/QGRAF/${lsclProcessName}.${lsclModelName}.${lsclNLoops}.amps | wc -l)
+  lsclNumDias=$(grep -o '\#\[ d' ${lsclRepoDir}/Projects/${lsclProjectName}/QGRAF/Output/Files/${lsclProcessName}.${lsclModelName}.${lsclNLoops}.amps | wc -l)
   lsclDiaNumberTo=${lsclNumDias}
 
   if [[ ${lsclNumDias} -eq "0" ]]; then

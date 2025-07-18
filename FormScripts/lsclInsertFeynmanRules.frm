@@ -24,7 +24,7 @@ on HighFirst;
 #message lsclInsertFeynmanRules: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 L origDiag = 
-#include Projects/`lsclProjectName'/QGRAF/Output/`lsclProcessName'.`lsclModelName'.`lsclNLoops'.amps # d`lsclDiaNumber'
+#include Projects/`lsclProjectName'/QGRAF/Output/Files/`lsclProcessName'.`lsclModelName'.`lsclNLoops'.amps # d`lsclDiaNumber'
 ;
 .sort
 
@@ -62,9 +62,9 @@ print;
 #endif
 
 .sort
-#write <Projects/`lsclProjectName'/Diagrams/Input/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/dia`lsclDiaNumber'L`lsclNLoops'.frm> "*--#[ dia`lsclDiaNumber'L`lsclNLoops' :"
-#write <Projects/`lsclProjectName'/Diagrams/Input/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/dia`lsclDiaNumber'L`lsclNLoops'.frm> "%+e", origDiag
-#write <Projects/`lsclProjectName'/Diagrams/Input/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/dia`lsclDiaNumber'L`lsclNLoops'.frm> "*--#] dia`lsclDiaNumber'L`lsclNLoops' :"
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm> "*--#[ dia`lsclDiaNumber'L`lsclNLoops' :"
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm> "%+e", origDiag
+#write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm> "*--#] dia`lsclDiaNumber'L`lsclNLoops' :"
 
 
 * drop origDiag;

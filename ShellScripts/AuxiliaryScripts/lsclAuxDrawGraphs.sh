@@ -1,25 +1,16 @@
 #!/bin/bash
 
-if [[ $# -ne 2 ]] ; then
-    echo 'You must specify the process name so that the graphgram structure is like
-    qOutput/"$name"graphs/"$name"graphs.1.graph and so on!'
-    exit -1
-fi
+# This file is a part of LoopScalla, a framework for loop calculations
+# Loopscalla is covered by the GNU General Public License 3.
+# Copyright (C) 2019-2023 Vladyslav Shtabovenko
 
-# example ./lsclDrawGraphs.sh SCETSoftFun QCDTwoFlavors.1.graphs
-
-################################################################################
 # Stop if any of the commands fails
 set -e
 
-lsclScriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-lsclRepoDir="$(dirname $lsclScriptDir)"
-
-if [ -z "${lsclEnvSourced}" ]; then
-  . "$lsclRepoDir"/environment.sh
+if [[ $# -ne 2 ]] ; then
+    echo 'You must specify the process name so that the graph file.'
+    exit -1
 fi
-
-################################################################################
 
 lsclProjectName="$1"
 lsclGraphFile="$2" # $lsclModelFile.$lsclNLoops.graphs

@@ -27,8 +27,8 @@ then
     mkdir -p ${lsclFullProjectName};
 fi
 
-for subDir in "Shared" "Mathematica" "FeynmanRules" "Diagrams" "Diagrams/Input" \
-"Diagrams" "QGRAF" "QGRAF/Input" "QGRAF/Output" "QGRAF/Models" "QGRAF/Styles"
+for subDir in "Shared" "Mathematica" "FeynmanRules" "Diagrams" \
+"QGRAF" "QGRAF/Input" "QGRAF/Output" "QGRAF/Models" "QGRAF/Styles"
 
 do
   if [ ! -d ${lsclFullProjectName}/${subDir} ] 

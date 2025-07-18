@@ -19,7 +19,7 @@ on HighFirst;
 #message lsclProcessStage0: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 G s0dia`lsclDiaNumber'L`lsclNLoops' =
-  #include Projects/`lsclProjectName'/Diagrams/Input/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/dia`lsclDiaNumber'L`lsclNLoops'.frm # dia`lsclDiaNumber'L`lsclNLoops'
+  #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm # dia`lsclDiaNumber'L`lsclNLoops'
 
 
 

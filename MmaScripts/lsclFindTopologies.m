@@ -69,7 +69,7 @@ If[ ToString[lsclNKernels]==="lsclNKernels",
 
 WriteString["stdout",lsclScriptName,": Loading the raw topologies ... "];
 filesLoaded=Catch[
-	rawTopologies0=Table[Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"ExtractedTopologies","topos_dia"<>ToString[i]<>"L"<>lsclNLoops<>".m"}]],{i,1,
+	rawTopologies0=Table[Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"ExtractedTopologies","topos_dia"<>ToString[i]<>"L"<>lsclNLoops<>".m"}]],{i,1,
 	ToExpression[lsclNDiagrams]}];
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
 	rawTopologies=Cases2[rawTopologies0,lsclRawTopology];
@@ -170,19 +170,19 @@ If[!MatchQ[rawTopologiesCheck,{1..}],
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologies.","\n\n"];
 aux1=FCLoopFindTopologies[rawTopologiesFC$3,lmoms,FCLoopIsolate->loopHead,FCLoopBasisOverdeterminedQ->True,FinalSubstitutions->finalSubstitutions,
-Names->"preTopoDia",Head->Identity,FCVerbose->1,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False,FCParallelize->True];
+Names->"preTopoDia",Head->Identity,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False,FCParallelize->True];
 
 
 WriteString["stdout","\n",lsclScriptName,": Done applying FCLoopFindTopologies.","\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopFindTopologies.","\n\n"];
-Put[aux1,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]]
+Put[aux1,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]]
 ];
 
 
-(*aux1=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]];*)
+(*aux1=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologies.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -195,17 +195,17 @@ Put[aux1,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",ls
 
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopGetKinematicInvariants.","\n"];
-kinInvs=FCLoopGetKinematicInvariants[aux1[[2]],FCVerbose->1,FCParallelize->True];
+kinInvs=FCLoopGetKinematicInvariants[aux1[[2]],FCParallelize->True]//Flatten;
 WriteString["stdout","\n",lsclScriptName,":  Done applying FCLoopFindTopologies.","\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopGetKinematicInvariants.","\n\n"];
-Put[kinInvs,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]]
+Put[kinInvs,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]]
 ];
 
 
-(*kinInvs=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]];*)
+(*kinInvs=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopGetKinematicInvariants.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -239,7 +239,7 @@ preTopoRules="*--#[ lsclTopologyRules:\n"<>formRules<>"\n*--#] lsclTopologyRules
 
 
 WriteString["stdout",lsclScriptName,": Writing preTopologies.frm ... "];
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","preTopologies.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","preTopologies.frm"}]];
 WriteString[file,preTopoDefs<>"\n"<>preTopoRules];
 Close[file];
 WriteString["stdout","done.\n\n"];
@@ -270,17 +270,17 @@ lsclDen[x_Integer]:=1/x;
 
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopCreatePartialFractioningRules.","\n\n"];
-pfrRules=FCLoopCreatePartialFractioningRules[aux1[[1]],aux1[[2]],FCVerbose->1,Numerator->lsclNum,Denominator->lsclDen,FCParallelize->True];
+pfrRules=FCLoopCreatePartialFractioningRules[aux1[[1]],aux1[[2]],Numerator->lsclNum,Denominator->lsclDen,FCParallelize->True];
 WriteString["stdout","\nlsclFindTopologies: Done applying FCLoopCreatePartialFractioningRules.","\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreatePartialFractioningRules.","\n\n"];
-Put[pfrRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]]
+Put[pfrRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]]
 ];
 
 
-(*pfrRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]];*)
+(*pfrRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreatePartialFractioningRules.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -353,13 +353,13 @@ If[$ParallelizeFeynCalc,
 WriteString["stdout","done.\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopScalelessQ.","\n\n"];
-Put[scalelessPfrTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]]
+Put[scalelessPfrTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]]
 ];
 
 
-(*scalelessPfrTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]];*)
+(*scalelessPfrTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopScalelessQ.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -383,7 +383,7 @@ pfrTopoDefs="*--#[ lsclTopologyNames:\n"<>StringRiffle[ToString/@(pfrToposNew),"
 
 
 WriteString["stdout",lsclScriptName,": Writing partialFractioning.frm ... "];
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","partialFractioning.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","partialFractioning.frm"}]];
 WriteString[file,pfrTopoDefs<>"\n"<>parFracRules];
 Close[file];
 WriteString["stdout","done.\n\n"];
@@ -424,16 +424,16 @@ subTopos={};
 
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologyMappings.","\n\n"];
-mappedTopos=FCLoopFindTopologyMappings[finalPreTopos,PreferredTopologies->subTopos,FCVerbose->1,FCParallelize->True];
+mappedTopos=FCLoopFindTopologyMappings[finalPreTopos,PreferredTopologies->subTopos,FCParallelize->True];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopFindTopologyMappings.","\n\n"];
-Put[mappedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]]
+Put[mappedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]]
 ];
 
 
-(*mappedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]];*)
+(*mappedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopFindTopologyMappings.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -463,7 +463,7 @@ finTopoDefs="*--#[ lsclTopologyNames:\n"<>StringRiffle[ToString/@(finTopoNamesNe
 
 
 WriteString["stdout",lsclScriptName,": Writing topologyMappings.frm ... "];
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","topologyMappings.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","topologyMappings.frm"}]];
 WriteString[file,finTopoDefs<>"\n"<>formTopoIDRule];
 Close[file];
 WriteString["stdout","done.\n\n"];
@@ -497,7 +497,7 @@ allProps=Union[Flatten[#[[2]]&/@finToposRenamed]];
 (* ---------------------------------------------------------- *)
 
 
-If[$ParallelizeFeynCalc,
+If[$ParallelizeFeynCalc && Length[incompleteTopos]=!=0,
 	WriteString["stdout",lsclScriptName,": Applying FCLoopBasisFindCompletion in parallel ..."];
 	With[{xxx=allProps},
 	ParallelEvaluate[allPropsParallel=xxx,DistributedContexts->False];
@@ -511,13 +511,13 @@ If[$ParallelizeFeynCalc,
 WriteString["stdout","done.\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopBasisFindCompletion.","\n\n"];
-Put[completedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]]
+Put[completedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]]
 ];
 
 
-(*completedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]];*)
+(*completedTopos=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopBasisFindCompletion.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -529,7 +529,7 @@ Put[completedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","
 (* ---------------------------------------------------------- *)
 
 
-If[$ParallelizeFeynCalc,
+If[$ParallelizeFeynCalc && Length[completedTopos]=!=0,
 	WriteString["stdout",lsclScriptName,": Applying FCLoopCreateRuleGLIToGLI in parallel ... "];
 	With[{xxx=allProps},
 	ParallelEvaluate[allPropsParallel=xxx,DistributedContexts->False];
@@ -543,13 +543,13 @@ If[$ParallelizeFeynCalc,
 WriteString["stdout","done.\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreateRuleGLIToGLI.","\n\n"];
-Put[basisCompletionRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]]
+Put[basisCompletionRules,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]]
 ];
 
 
-(*basisCompletionRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]];*)
+(*basisCompletionRules=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRuleGLIToGLI.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -583,7 +583,7 @@ formUltimateRule="*--#[ lsclTopologyMappings:\n\n repeat;\n"<>StringJoin[StringR
 
 
 WriteString["stdout",lsclScriptName,": Writing augmentedTopologies.frm ..."];
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","augmentedTopologies.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","augmentedTopologies.frm"}]];
 WriteString[file,ultimateToposDefs<>"\n"<>formUltimateRule];
 Close[file];
 WriteString["stdout","done.\n\n"];
@@ -596,7 +596,7 @@ ultimateToposRenamed=ultimateTopos/.Dispatch[ultimateToposRenamingRule];
 ultimateToposRenamedSymb=ultimateToposRenamed//FCLoopTopologyNameToSymbol;
 
 
-(*ultimateToposRenamed=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];*)
+(*ultimateToposRenamed=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];*)
 
 
 (* Checkpoint for FCLoopCreateRulesToGLI*)
@@ -616,13 +616,13 @@ If[$ParallelizeFeynCalc,
 WriteString["stdout","done.\n\n"];
 
 
-If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]],
+If[!FileExistsQ[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]],
 WriteString["stdout","\n",lsclScriptName,": Checkpoint: Saving the output of FCLoopCreateRuleGLIToGLI.","\n\n"];
-Put[ruGLI,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]]
+Put[ruGLI,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]]
 ];
 
 
-(*ruGLI=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]];*)
+(*ruGLI=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","outputFCLoopCreateRulesToGLI.m"}]];*)
 
 
 (* ---------------------------------------------------------- *)
@@ -649,14 +649,14 @@ formRuleGLI="\n\n\n"<>StringJoin[StringRiffle[formRuleGLIRaw,"\n"]]<>"\n\n\n";
 
 
 WriteString["stdout",lsclScriptName,": Writing scalarProductRules.frm ... "];
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","scalarProductRules.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","scalarProductRules.frm"}]];
 WriteString[file,formRuleGLI<>"\n"];
 Close[file];
 WriteString["stdout","done.\n\n"];
 
 
 WriteString["stdout",lsclScriptName,": Writing FCTopologies.m ... "];
-Put[ultimateToposRenamed,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
+Put[ultimateToposRenamed,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
 WriteString["stdout","done.\n\n"];
 
 
@@ -667,14 +667,14 @@ sortedTopologyNames=First/@fcTopologies;
 formTopoNames="#define LSCLNTOPOLOGIES \""<>ToString[Length[sortedTopologyNames]]<>"\"\n\n"<>StringRiffle[Table["#define LSCLTOPOLOGY"<>ToString[i]<>" \""<>ToString[sortedTopologyNames[[i]]]<>"\"",{i,1,Length[sortedTopologyNames]}],"\n"];
 
 
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.txt"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.txt"}]];
 WriteString[file,StringRiffle[ToString/@sortedTopologyNames,"\n"]];
 Close[file];
 
 
-file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.frm"}]];
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.frm"}]];
 WriteString[file,formTopoNames];
 Close[file];
 
 
-WriteString["stdout","All done.\n"];
+WriteString["stdout","\n",lsclScriptName,": All done.","\n\n"];

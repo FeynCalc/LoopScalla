@@ -20,10 +20,10 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubar";
-lsclModelName="BToEtaCChk";
-lsclNLoops="2";
+lsclProject="ExampleQCD";
+lsclProcessName="GlToGl";
+lsclModelName="TwoFlavorQCD";
+lsclNLoops="1";
 lsclNKernels="8";
 ];
 *)
@@ -66,8 +66,8 @@ If[ ToString[lsclNKernels]==="lsclNKernels",
 
 WriteString["stdout",lsclScriptName,": Loading the topologies and master integrals ..."];
 filesLoaded=Catch[
-	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
-	fcMasters=Get/@FileNames["FireMasterIntegrals.m",{FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions","*"}]}];
+	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
+	fcMasters=Get/@FileNames["FireMasterIntegrals.m",{FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions","*"}]}];
 	,
 	$Failed
 ];
@@ -91,13 +91,15 @@ $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
 
 
-AbsoluteTiming[mappings=FCLoopFindIntegralMappings[glis,fcTopologies,FCVerbose->1,FCParallelize->True];]
+AbsoluteTiming[mappings=FCLoopFindIntegralMappings[glis,fcTopologies,FCParallelize->True];]
 
 
-If[(Map[(Total[#[[1]][[2]]]-Total[#[[2]][[2]]])&,mappings[[1]]]//Union)=!={0},
-WriteString["stdout",lsclScriptName,": Error, something went wrong when obtaining the mappings.",".\n"];
-QuitAbort[]
-];
+If[mappings[[1]]=!={},
+	If[(Map[(Total[#[[1]][[2]]]-Total[#[[2]][[2]]])&,mappings[[1]]]//Union)=!={0},
+	WriteString["stdout",lsclScriptName,": Error, something went wrong when obtaining the mappings.",".\n"];
+	QuitAbort[]
+	];
+]
 
 
 WriteString["stdout",lsclScriptName,": Number of mapping rules: ", Length[mappings[[1]]] ,".\n"];
@@ -113,7 +115,7 @@ WriteString["stdout",lsclScriptName,": Final number of contributing topologies: 
 
 
 Put[mappings,FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams","Output",lsclProcessName,lsclModelName,lsclNLoops,"LoopIntegrals","MasterIntegralMappingsPre.m"}]];
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"LoopIntegrals","MasterIntegralMappingsPre.m"}]];
 
 
 WriteString["stdout",lsclScriptName,": Sorting the masters into different topologyies..."];
@@ -137,7 +139,7 @@ Table[
 tmp2=StringReplace["id "<>ToString[#,InputForm]<>";",{"->"->"=","["->"(","]"->")","formAnything"->"?a"}]&/@tmp;
 formMappings="*--#[ lsclMasterIntegralMappings:\n"<>StringRiffle[ToString/@(tmp2),"\n"]<>"\n*--#] lsclMasterIntegralMappings:\n";
 file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams","Output",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappings.frm"}]];
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappings.frm"}]];
 WriteString[file,formMappings];
 Close[file];),
 {i,1,Length[fcTopologies]}

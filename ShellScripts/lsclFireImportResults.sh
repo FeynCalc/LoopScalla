@@ -64,7 +64,7 @@ if [[ -z "${LSCL_PARALLEL_JOBLOG_PATH+x}" ]]; then
 fi
 
 if [[ -z "${LSCL_FLAG_KIRA+x}" ]]; then
-  LSCL_FLAG_KIRA=0
+  export LSCL_FLAG_KIRA=0
 fi
 
 lsclOptFromTo=0

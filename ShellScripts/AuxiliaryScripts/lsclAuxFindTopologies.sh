@@ -20,7 +20,9 @@ lsclNumberOfDiagrams="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFindTopologies.m -run lsclProject="\"${lsclProjectName}\"" -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclNDiagrams="\"${lsclNumberOfDiagrams}\""
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFindTopologies.m -run lsclProject="\"${lsclProjectName}\"" \
+-run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" \
+-run lsclNDiagrams="\"${lsclNumberOfDiagrams}\"" -run lsclNKernels="\"${lsclFeynCalcNumKernels}\""
 
 lsclStatus=$?
 

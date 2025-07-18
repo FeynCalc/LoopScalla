@@ -74,8 +74,7 @@ while [[ ${#} -gt 0 ]]; do
       lsclOptFromTo=1
       lsclDiaNumberFrom=${2}
       lsclDiaNumberTo=${3}
-      echo "${LSCL_SCRIPT_NAME}: Processing diagrams in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."
-      echo $lsclOptFromTo
+      echo "${LSCL_SCRIPT_NAME}: Processing diagrams in the range from ${lsclDiaNumberFrom} to ${lsclDiaNumberTo}."      
       shift
       shift
       shift
@@ -101,10 +100,10 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 export LSCL_FORM_SCRIPT_NAME="lsclInsertFeynmanRules.frm"
-export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}"
+export LSCL_CREATE_DIR_IF_NOT_PRESENT_1="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input"
 
 if [[ ${LSCL_FLAG_FORCE} -eq 0 ]] && [[ ${lsclOptFromTo} -ne 1 ]]; then
-      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/dia${lsclDiaNumber}L${lsclNLoops}.frm"
+      export LSCL_RUN_ONLY_IF_RESULT_FILE_NOT_PRESENT="${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/dia${lsclDiaNumber}L${lsclNLoops}.frm"
 fi
 
 if [[ ${lsclOptFromTo} -eq 1 ]] ; then
@@ -114,7 +113,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_DIAGRAM_RANGE="1"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
-      lsclNumDias=$(grep -o '\#\[ d' ${lsclRepoDir}/Projects/${lsclProjectName}/QGRAF/Output/${lsclProcessName}.${lsclModelName}.${lsclNLoops}.amps | wc -l)
+      lsclNumDias=$(grep -o '#\[ d' ${lsclRepoDir}/Projects/${lsclProjectName}/QGRAF/Output/Files/${lsclProcessName}.${lsclModelName}.${lsclNLoops}.amps | wc -l)
       lsclDiaNumberTo=${lsclNumDias}
 
       if [[ ${lsclNumDias} -eq "0" ]]; then

@@ -191,8 +191,8 @@ case ${lsclSyncWhat} in
   OnlyDiagramsInput)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
-    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
     swapFromTo
     ;;  
 
@@ -207,8 +207,8 @@ case ${lsclSyncWhat} in
   OnlyInput)
     lsclExclude="--exclude={*.tmp,*.str,*.log} --exclude=.git"
     checkProjectProcessModelNLoops
-    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
-    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/
+    lsclSyncFrom=${lsclClusterProjectDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
+    lsclSyncTo=${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input/
     swapFromTo
     ;;
 

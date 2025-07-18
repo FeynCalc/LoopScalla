@@ -114,7 +114,7 @@ if [[ ${lsclOptFromTo} -eq 1 ]] ; then
     export LSCL_DIAGRAM_RANGE="1"
 
     if [[ ${lsclDiaNumberTo} == "all" ]]; then
-      lsclNumDias=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/Input/${lsclProcessName}/${lsclModelName}/${lsclNLoops} -type f -name "dia*L${lsclNLoops}.frm" | wc -l)
+      lsclNumDias=$(find ${lsclRepoDir}/Projects/${lsclProjectName}/Diagrams/${lsclProcessName}/${lsclModelName}/${lsclNLoops}/Input -type f -name "dia*L${lsclNLoops}.frm" | wc -l)
       lsclDiaNumberTo=${lsclNumDias}
 
       if [[ ${lsclNumDias} -eq "0" ]]; then

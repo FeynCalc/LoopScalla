@@ -30,7 +30,7 @@ lsclStage="$5"
 
 lsclAllReductions=()
 lsclCompletedReductions=()
-readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Input/$lsclProcessName/$lsclModelName/$lsclNLoops -type f -name "dia*L$lsclNLoops.frm" -print0 | sort -V);
+readarray -d '' lsclAllDiagramsRaw < <(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Input -type f -name "dia*L$lsclNLoops.frm" -print0 | sort -V);
 
 IFS=$'\n' lsclAllDiagrams=($(sort -V <<<"${lsclAllDiagramsRaw[*]}"))
 unset IFS

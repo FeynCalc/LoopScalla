@@ -28,8 +28,8 @@ lsclModelName="$3"
 lsclNLoops="$4"
 
 
-lsclNumDiasInput=$(grep -o '#\[ d' $lsclRepoDir/Projects/$lsclProjectName/QGRAF/$lsclProcessName.$lsclModelName.$lsclNLoops.amps | wc -l)
-lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Input/$lsclProcessName/$lsclModelName/$lsclNLoops -type f -name "dia*L$lsclNLoops.frm" | wc -l)
+lsclNumDiasInput=$(grep -o '#\[ d' $lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/Files/$lsclProcessName.$lsclModelName.$lsclNLoops.amps | wc -l)
+lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Input -type f -name "dia*L$lsclNLoops.frm" | wc -l)
 
 
 echo

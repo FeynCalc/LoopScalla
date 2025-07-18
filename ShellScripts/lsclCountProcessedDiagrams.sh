@@ -28,7 +28,7 @@ lsclModelName="$3"
 lsclNLoops="$4"
 lsclStage="$5"
 
-lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/Input/$lsclProcessName/$lsclModelName/$lsclNLoops -type f -name "dia*L$lsclNLoops.frm" | wc -l)
+lsclNumDiasInput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Input -type f -name "dia*L$lsclNLoops.frm" | wc -l)
 lsclNumDiasOutput=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Stage${lsclStage} -type f -name "stage${lsclStage}_dia*L$lsclNLoops.res" | wc -l)
 
 echo

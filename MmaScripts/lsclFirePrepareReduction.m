@@ -72,13 +72,13 @@ If[ToString[lsclNLoops]==="lsclTopologyName"|| lsclTopologyName==="",
 ];
 
 
-WriteString["stdout","Loading the integrals ..."];
+WriteString["stdout","lsclFirePrepareReduction: Loading the integrals ..."];
 filesLoaded=Catch[
-	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopologyName<>".m"}];
+	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopologyName<>".m"}];
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
 	lsclSymbolicTopologyName=ToExpression[lsclTopologyName];
 	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopologyName,{inds}];
-	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
+	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
 	,
 	$Failed
 ];
@@ -122,7 +122,7 @@ If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
 ];
 
 
-dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Output",lsclProcessName,lsclModelName, lsclNLoops,"Reductions"}];
+dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions"}];
 
 
 currentTopology=SelectNotFree[fcTopologies,lsclTopologyName];
