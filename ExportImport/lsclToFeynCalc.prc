@@ -8,7 +8,7 @@
 
 
 F lsclDiracGammaOpenHold;
-CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND, lsclDiracGammaClosed;
+CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND,SUNDelta,SUNFDelta,FVD,CA,CF lsclDiracGammaClosed, MTD,GLI;
 F GAD,GSD;
 S I, SUNN, D, GaugeXi;
 Auto S dummyI;
@@ -24,6 +24,13 @@ id lsclSUNF(?a) = SUNF(?a);
 id lsclSUND(?a) = SUND(?a);
 id lsclSUNTF(?a) = SUNTF(?a);
 id lsclGaugeXi = GaugeXi;
+id lsclCA = CA;
+id lsclCF = CF;
+id d_(lsclMu1?,lsclMu2?) = MTD(lsclMu1,lsclMu2);
+id lsclSUNDelta(lsclMu1?,lsclMu2?) = SUNDelta(lsclMu1,lsclMu2);
+id lsclSUNFDelta(lsclMu1?,lsclMu2?) = SUNFDelta(lsclMu1,lsclMu2);
+id lsclV?(lsclMu?) = FVD(lsclV,lsclMu);
+id lsclGLI(lsclS?,?a) = GLI(lsclS,List(?a));
 endrepeat;
 
 
@@ -34,6 +41,8 @@ id lsclP1?.lsclP2?^lsclS?!{,0} = SPD(lsclP1,lsclP2)^lsclS;
 id lsclSUNN^lsclS?!{,0} = SUNN^lsclS;
 id lsclD^lsclS?!{,0} = D^lsclS;
 id lsclGaugeXi = GaugeXi;
+id lsclCA = CA;
+id lsclCF = CF;
 * Causes some codes to freeze :()
 *id N1_? = dummyI1;
 endrepeat;
