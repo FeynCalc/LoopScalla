@@ -129,14 +129,16 @@ CF
 id lsclWrapFun1(lsclS?) = lsclS;
 id lsclWrapFun2(lsclS?) = lsclS;
 
+
 b,
-lsclRawTopology,
+lsclRawTopology, d_,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 
 #do i=1, `lsclNLoops'
 k`i',
 #enddo
 ;
+
 .sort
 
 collect lsclWrapFun1,lsclWrapFun2;
@@ -224,6 +226,7 @@ CF lsclF1,
 #if (`LSCLVERBOSITY'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
+d_,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
@@ -237,7 +240,7 @@ print[];
 #message lsclTopologyIdentification: 2nd Factorization
 #message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
-lsclSkipNum,lsclSkipDen,
+lsclSkipNum,lsclSkipDen,d_
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ,
@@ -296,7 +299,7 @@ print[];
 #message lsclTopologyIdentification: 3rd Factorization
 #message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
-lsclSkipDen,lsclSkipNum,
+lsclSkipDen,lsclSkipNum,d_,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
 ;

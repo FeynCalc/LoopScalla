@@ -78,6 +78,7 @@ G s2dia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 * The output might be too large for a log file ...
 
 b,
+d_,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
@@ -135,7 +136,6 @@ print "Leftover flag100 in: %t";
 endif;
 if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 
-.sort
 #message lsclInsertReductionTables: ... done.
 
 #message lsclInsertReductionTables: Calling sort : `time_' ...
@@ -161,7 +161,7 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 b,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 ,
-lsclSkipNum,lsclSkipDen,
+lsclSkipNum,lsclSkipDen, d_,
 lsclWrapFun,lsclEp,lsclNum,lsclDen,
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
