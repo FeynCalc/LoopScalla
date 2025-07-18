@@ -147,4 +147,4 @@ Close[file];),
 WriteString["stdout"," done\n"];
 
 
-WriteString["stdout","All done.\n"];
+WriteString["stdout",lsclScriptName,": All done.\n"];

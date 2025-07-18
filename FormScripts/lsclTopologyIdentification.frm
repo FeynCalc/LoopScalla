@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 on shortstats;
 on HighFirst;
 
@@ -8,20 +12,14 @@ on HighFirst;
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
 
-#message `lsclProjectName'
-#message `lsclProcessName'
-#message `lsclNLoops'
-#message `lsclDiaNumber'
-
-#ifdef `LSCLEXTRACTTOPOLOGIES'
-
-#endif
-
+#message lsclTopologyIdentification: Project: `lsclProjectName'
+#message lsclTopologyIdentification: Process: `lsclProcessName'
+#message lsclTopologyIdentification: Model: `lsclModelName'
+#message lsclTopologyIdentification: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 
 Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
 G s1dia`lsclDiaNumber'L`lsclNLoops' = s0dia`lsclDiaNumber'L`lsclNLoops';
-
 .sort
 
 
@@ -142,8 +140,8 @@ k`i',
 .sort
 
 collect lsclWrapFun1,lsclWrapFun2;
-
-#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
+#message lsclTopologyIdentification: 1st Factorization
+#message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
 #call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
@@ -236,7 +234,8 @@ print[];
 
 ******************************************************
 * Here we do another factorization 
-#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
+#message lsclTopologyIdentification: 2nd Factorization
+#message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
 lsclSkipNum,lsclSkipDen,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
@@ -294,7 +293,8 @@ print[];
 ******************************************************
 * Here we do another factorization 
 
-#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
+#message lsclTopologyIdentification: 3rd Factorization
+#message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
 lsclSkipDen,lsclSkipNum,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
@@ -440,6 +440,7 @@ endrepeat;
 * If the scalarProductRules.frm id-statements are already wrapped with lsclNum and lsclDen, 
 * then this should help to avoid expression swell!
 * lsclWrapFun300,lsclWrapFun400 and dummy functions
+#message lsclTopologyIdentification: 4th Factorization
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun300,lsclWrapFun400);
 .sort
 
@@ -491,6 +492,7 @@ collect lsclWrapFun3,lsclWrapFun4;
 
 ******************************************************
 * Here we do another factorization, combining rational functions factorized previously with the unfactorized ones from the augmented topologies
+#message lsclTopologyIdentification: 5th Factorization
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun3,lsclWrapFun4);
 .sort
 #call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
@@ -557,7 +559,7 @@ print[];
 
 
 
-*#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
+*#message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 *b,
 *#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 *;

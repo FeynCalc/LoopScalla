@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 on shortstats;
 on HighFirst;
 on fewerstatistics 0;
@@ -16,12 +20,13 @@ on fewerstatistics 0;
 #define LSCLSTARTWITHINTEGRALNO "0"
 #endif
 
-#message lsclInsertReductionTables: lsclProjectName: `lsclProjectName'
-#message lsclInsertReductionTables: lsclProcessName: `lsclProcessName'
-#message lsclInsertReductionTables: lsclNLoops: `lsclNLoops'
-#message lsclInsertReductionTables: lsclDiaNumber: `lsclDiaNumber'
+#message lsclInsertReductionTables: Project: `lsclProjectName'
+#message lsclInsertReductionTables: Process: `lsclProcessName'
+#message lsclInsertReductionTables: Model: `lsclModelName'
+#message lsclInsertReductionTables: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
+
 #ifdef `LSCLREDUCESINGLEINTEGRAL'
-#message lsclInsertReductionTables: lsclIntegralNumber: `lsclIntegralNumber'
+#message lsclInsertReductionTables: Integral number: `lsclIntegralNumber'
 #endif
 
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
@@ -133,6 +138,10 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 .sort
 #message lsclInsertReductionTables: ... done.
 
+#message lsclInsertReductionTables: Calling sort : `time_' ...
+.sort
+#message lsclInsertReductionTables: ... done: `time_'
+
 * Here we insert the reduction tables and do additional simplifications!
 #message lsclInsertReductionTables: Calling the IsolateLoopIntegralPrefactors fold : `time_' ...
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclIsolateLoopIntegralPrefactors
@@ -142,11 +151,13 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclProcessReducedAmplitude
 #message lsclInsertReductionTables: ... done.
 
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+#message lsclInsertReductionTables: ... done: `time_'
 
 * If the factorization has already been applied in the past, it's a must to collect w.r.t
 * lsclNum and lsclDen. Otherwise we'll end up with a workspace overflow.
-#message lsclProcessReducedAmplitude: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
+#message lsclInsertReductionTables: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 b,
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 ,
@@ -157,16 +168,24 @@ lsclWrapFun,lsclEp,lsclNum,lsclDen,
 #enddo
 
 ;
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+#message lsclInsertReductionTables: ... done: `time_'
+
 collect lsclWrapFun1,lsclWrapFun2;
 
-
-
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
+#message lsclInsertReductionTables: ... done: `time_'
+
 #call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+
+#message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
-#message lsclInsertReductionTables: ... done.
+#message lsclInsertReductionTables: ... done: `time_'
 
 
 
@@ -185,14 +204,11 @@ print[];
 #call lsclToFeynCalc(s2dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumber'To`lsclDiaNumber'`lsclPprExportToMathematicaSuffix'.m)
 #endif
 .sort
-#message lsclProcessReducedAmplitude: ... done : `time_'
+#message lsclInsertReductionTables: ... done : `time_'
 
-#message delete storage
+
 delete storage;
 .sort
-
-
-
 .store
 
 #ifdef `LSCLREDUCESINGLEINTEGRAL'

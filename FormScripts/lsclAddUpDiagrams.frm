@@ -1,12 +1,15 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 off statistics;
 on HighFirst;
 
-
 #message lsclAddUpDiagrams: Project: `lsclProjectName'
 #message lsclAddUpDiagrams: Process: `lsclProcessName'
-#message lsclAddUpDiagrams: Loops: `lsclNLoops'
-#message lsclAddUpDiagrams: From dia: `lsclDiaNumberFrom'
-#message lsclAddUpDiagrams: To dia: `lsclDiaNumberTo'
+#message lsclAddUpDiagrams: Model: `lsclModelName'
+#message lsclAddUpDiagrams: Adding up diagrams from `lsclDiaNumberFrom' to `lsclDiaNumberTo' at `lsclNLoops' loop(s)
+
 
 
 #if (`lsclNLoops' == 0)

@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 on shortstats;
 on HighFirst;
 
@@ -23,9 +27,7 @@ on HighFirst;
 #message lsclExtractIntermediateResult: Project: `lsclProjectName'
 #message lsclExtractIntermediateResult: Process: `lsclProcessName'
 #message lsclExtractIntermediateResult: Model: `lsclModelName'
-#message lsclExtractIntermediateResult: Processing diagram `lsclPath'
-
-
+#message lsclExtractIntermediateResult: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 #message lsclExtractIntermediateResult: Processing diagram `lsclExp'
 

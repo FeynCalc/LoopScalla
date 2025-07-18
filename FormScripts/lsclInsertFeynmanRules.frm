@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 off statistics;
 on HighFirst;
 
@@ -13,10 +17,11 @@ on HighFirst;
 #include Projects/`lsclProjectName'/FeynmanRules/lsclParticles_`lsclModelName'.h
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
-#message lsclProcessStage0: Project: `lsclProjectName'
-#message lsclProcessStage0: Process: `lsclProcessName'
-#message lsclProcessStage0: Model: `lsclModelName'
-#message lsclProcessStage0: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
+
+#message lsclInsertFeynmanRules: Project: `lsclProjectName'
+#message lsclInsertFeynmanRules: Process: `lsclProcessName'
+#message lsclInsertFeynmanRules: Model: `lsclModelName'
+#message lsclInsertFeynmanRules: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 L origDiag = 
 #include Projects/`lsclProjectName'/QGRAF/Output/`lsclProcessName'.`lsclModelName'.`lsclNLoops'.amps # d`lsclDiaNumber'

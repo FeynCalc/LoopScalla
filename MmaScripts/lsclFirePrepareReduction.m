@@ -128,25 +128,25 @@ dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams","Outpu
 currentTopology=SelectNotFree[fcTopologies,lsclTopologyName];
 
 
-WriteString["stdout","Preparing start files ... "];
+WriteString["stdout","lsclFirePrepareReduction: Preparing start files ... ","\n\n"];
 FIREPrepareStartFile[currentTopology,dirReductions,Check->False,
 FIREPath:>environment["lsclFireMmaPath"],StringReplace->{"environment"->"Environment"},
 FIREParallel->4,
 FIREUseLiteRed->usingLiteRed,
 FinalSubstitutions->ExtraReplacementsForTheReduction
 ];
-WriteString["stdout","done\n"];
+WriteString["stdout","done.\n\n"];
 
 
-WriteString["stdout","Preparing integral files ...","\n\n"];
+WriteString["stdout","lsclFirePrepareReduction: Preparing integral files ...","\n\n"];
 FIRECreateIntegralFile[integrals,currentTopology,dirReductions,Check->False];
-WriteString["stdout","done\n"];
+WriteString["stdout","done.\n\n"];
 
 
 (*TODO: This should be done via the config files...*)
 
 
-WriteString["stdout","Preparing config files ... "];
+WriteString["stdout","lsclFirePrepareReduction: Preparing config files ... ","\n\n"];
 topoNameAsString=ToString[currentTopology[[1]][[1]]];
 FIRECreateConfigFile[currentTopology,dirReductions,
 Variables->fcVariables,
@@ -208,4 +208,4 @@ FIREDatabase->"/formswap/shtabovenko/"<>topoNameAsString
 WriteString["stdout","done\n"];
 
 
-WriteString["stdout","All done.\n"];
+WriteString["stdout","lsclFirePrepareReduction: All done.\n"];

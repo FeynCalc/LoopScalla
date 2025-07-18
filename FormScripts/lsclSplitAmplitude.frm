@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 on shortstats;
 on HighFirst;
 on fewerstatistics 0;
@@ -12,11 +16,10 @@ on fewerstatistics 0;
 #define LSCLSTARTWITHINTEGRALNO "1"
 #endif
 
-#message lsclSplitAmplitude: `lsclProjectName'
-#message lsclSplitAmplitude: `lsclProcessName'
-#message lsclSplitAmplitude: `lsclNLoops'
-#message lsclSplitAmplitude: `lsclDiaNumber'
-
+#message lsclSplitAmplitude: Project: `lsclProjectName'
+#message lsclSplitAmplitude: Process: `lsclProcessName'
+#message lsclSplitAmplitude: Model: `lsclModelName'
+#message lsclSplitAmplitude: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 

@@ -125,9 +125,10 @@ formtabTopoName="*--#[ lsclCurrentTopologyDefinitions:\n\n#define LSCLCURRENTTOP
 
 WriteString["stdout",lsclScriptName,": Topology definitions:\n\n"];
 WriteString["stdout",formtabTopoName];
+WriteString["stdout","\n\n"];
 
 
-WriteString["stdout","Collecting the rules ... "];
+WriteString["stdout",lsclScriptName,": Collecting the rules ... "];
 ClearAll[lsclNum,lsclDen,togetherHold,togetherHoldF,factFunHold,factFunHoldF];
 lsclNum[x_Integer]:=x;
 lsclDen[x_Integer]:=1/x;

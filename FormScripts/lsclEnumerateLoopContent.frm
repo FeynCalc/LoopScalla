@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 on HighFirst;
 off statistics;
 #include lsclDeclarations.h
@@ -6,13 +10,11 @@ off statistics;
 
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
+#message lsclEnumerateLoopContent: Project: `lsclProjectName'
+#message lsclEnumerateLoopContent: Process: `lsclProcessName'
+#message lsclEnumerateLoopContent: Model: `lsclModelName'
+#message lsclEnumerateLoopContent: Processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 
-#message lsclEnumerateLoopContent: Project name: `lsclProjectName'
-#message lsclEnumerateLoopContent: Process name: `lsclProcessName'
-#message lsclEnumerateLoopContent: Model name: `lsclModelName'
-#message lsclEnumerateLoopContent: Number of loops: `lsclNLoops'
-#message lsclEnumerateLoopContent: Diagram number: `lsclDiaNumber'
-#message
 
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 

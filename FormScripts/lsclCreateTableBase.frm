@@ -1,3 +1,7 @@
+* This file is a part of LoopScalla, a framework for loop calculations
+* LoopScalla is covered by the GNU General Public License 3.
+* Copyright (C) 2019-2025 Vladyslav Shtabovenko
+
 off statistics;
 on HighFirst;
 
@@ -7,11 +11,10 @@ on HighFirst;
 
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclGeneric
 
-
-#message lsclCreateTableBase: `lsclProjectName'
-#message lsclCreateTableBase: `lsclProcessName'
-#message lsclCreateTableBase: `lsclNLoops'
-#message lsclCreateTableBase: `lsclTopologyName'
+#message lsclCreateTableBase: Project: `lsclProjectName'
+#message lsclCreateTableBase: Process: `lsclProcessName'
+#message lsclCreateTableBase: Model: `lsclModelName'
+#message lsclCreateTableBase: Processing topology `lsclTopologyName' at `lsclNLoops' loop(s)
 
 
 
