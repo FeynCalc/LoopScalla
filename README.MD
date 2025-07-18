@@ -65,6 +65,10 @@ Most scripts will have following suffixes attached to their names:
    at least 32 GB of RAM.
  - The number slices specifies the total number of jobs to be processed by a node. In general, the total
    number of single tasks divivded by the number of requested nodes should be a good number
+
+# Examples
+
+Check Projects/ExampleQCD/Readme.md for an example of running all steps
    
 # Workflow
 
