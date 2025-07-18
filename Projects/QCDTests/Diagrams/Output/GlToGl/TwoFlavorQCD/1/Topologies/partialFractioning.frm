@@ -1,8 +1,0 @@
-*--#[ lsclTopologyNames:
-
-*--#] lsclTopologyNames:
-
-*--#[ lsclTopologyRules:
-
-
-*--#] lsclTopologyRules:

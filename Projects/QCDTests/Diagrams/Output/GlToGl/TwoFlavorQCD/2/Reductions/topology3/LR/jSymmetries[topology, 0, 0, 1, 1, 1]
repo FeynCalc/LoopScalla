@@ -1,9 +1,0 @@
-{{j[topology, (n1_)?NonPositive, (n2_)?NonPositive, (n3_)?Positive, 
-     (n4_)?Positive, (n5_)?Positive] /; True :> 
-   Expand[j[topology, n1, n2, n3, n4, n5]]}, 
- {j[topology, (n1_)?NonPositive, (n2_)?NonPositive, (n3_)?Positive, 
-     (n4_)?Positive, (n5_)?Positive] /; True :> 
-   Expand[j[topology, 0, n2, n4, n3, n5]/(-j[topology, -1, 0, 0, 0, 0] - 
-       j[topology, 0, -1, 0, 0, 0] + j[topology, 0, 0, -1, 0, 0] + 
-       j[topology, 0, 0, 0, -1, 0] - j[topology, 0, 0, 0, 0, -1] + 
-       pp*j[topology, 0, 0, 0, 0, 0])^n1]}}

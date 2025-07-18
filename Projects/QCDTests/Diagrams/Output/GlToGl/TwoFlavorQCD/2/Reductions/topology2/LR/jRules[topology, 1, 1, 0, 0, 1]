@@ -1,9 +1,0 @@
-{j[topology, (n1_)?Positive, (n2_)?Positive, (n3_)?NonPositive, 
-    (n4_)?NonPositive, (n5_)?Positive] /; True :> 
-  Expand[j[topology, n5, 0, n1, n2, 0]/
-    ((-3*j[topology, -1, 0, 0, 0, 0] - 3*j[topology, 0, -1, 0, 0, 0] + 
-       3*j[topology, 0, 0, -1, 0, 0] + 3*j[topology, 0, 0, 0, -1, 0] + 
-       j[topology, 0, 0, 0, 0, -1] - 3*pp*j[topology, 0, 0, 0, 0, 0])^n4*
-     (2*j[topology, -1, 0, 0, 0, 0] + 4*j[topology, 0, -1, 0, 0, 0] - 
-       2*j[topology, 0, 0, -1, 0, 0] - j[topology, 0, 0, 0, 0, -1] + 
-       4*pp*j[topology, 0, 0, 0, 0, 0])^n3)]}
