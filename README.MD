@@ -4,8 +4,6 @@
 
 LoopScalla is a software framework that uses FORM, Mathematica and FeynCalc to calculate multiloop diagrams.
 
-In its current stage it is merely a preview not ready for productive usage.
-
 
 # QGRAF conventions
 
