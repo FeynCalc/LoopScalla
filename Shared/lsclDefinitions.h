@@ -1,16 +1,16 @@
 #ifndef `LSCLDEFINITIONS'
 #define LSCLDEFINITIONS
 
-S `lsclDim';
+S `lsclDim', lsclEp;
 Dimension `lsclDim';
 
 * Sets of momenta appearing in the amplitude
 
 auto V q, p, k;
-set externalMomenta: p1,...,p`LSCLMAXINDEX', k1,...,k`LSCLMAXINDEX';
+set externalMomenta: p1,...,p`LSCLMAXINDEX', q1,...,q`LSCLMAXINDEX';
 set externalMomentaP: p1,...,p`LSCLMAXINDEX';
-set externalMomentaK: k1,...,k`LSCLMAXINDEX';
-set internalMomenta: q1,...,q`LSCLMAXINDEX';
+set externalMomentaK: q1,...,q`LSCLMAXINDEX';
+set internalMomenta: k1,...,k`LSCLMAXINDEX';
 
 * Generic indices
 I lsclI, lsclI1, ... , lsclI`LSCLMAXINDEX';
@@ -48,99 +48,64 @@ V lsclV, lsclV1, ... , lsclV`LSCLMAXINDEX';
 CF lsclF, lsclF1, ... , lsclF`LSCLMAXINDEX';
 CF lsclG, lsclG1, ... , lsclG`LSCLMAXINDEX';
 
-* Generic commutative tensors
-CT lsclT, lsclT1, ... , lsclT`LSCLMAXINDEX';
-
-
 * Generic noncommutative functions
 CF lsclNF, lsclNF1, ... , lsclNF`LSCLMAXINDEX';
 CF lsclNG, lsclNG1, ... , lsclNG`LSCLMAXINDEX';
 
+* Generic commutative tensors
+CT lsclT, lsclT1, ... , lsclT`LSCLMAXINDEX';
+
 * Generic noncommutative tensors
 CT lsclNT, lsclNT1, ... , lsclNT`LSCLMAXINDEX';
-
-* Topologies
-
-
-
-S lsclFlagExplicitDenominator;
-S lsclGaugeXi;
-F lsclQGPropagator, lsclQGVertex, lsclQGPolarization, lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
-
-CF lsclSUNDelta(S), lsclSUNFDelta(S), lsclFunColorIndex, lsclAdjColorIndex,  lsclSUNTF, lsclSUNF, lsclSUND;
-
-CF lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold,  lsclFAD, lsclDiracIndex, lsclLorentzIndex,  
-lsclVector, lsclMetricTensor(S),  lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
-lsclIntegralNumber, lsclIntegral, lsclDiaFlag;
-
-F lsclNCHold;
-
-* When we need to wrap something into something else
-Auto CF lsclWrapFun;
-
-Auto CF lsclIsoFun;
-
-Auto S lsclFlag;
 
 * Polarization vector ep(px)
 V lsclPVIp1, ... , lsclPVIp`LSCLMAXINDEX';
 V lsclPVIq1, ... , lsclPVIq`LSCLMAXINDEX';
+
 * Polarization vector ep*(px)
 V lsclPVOp1, ... , lsclPVOp`LSCLMAXINDEX';
 V lsclPVOq1, ... , lsclPVOq`LSCLMAXINDEX';
 
+* Flags
+Auto S lsclFlag;
+CF lsclEpHelpFlag, lsclDiaFlag;
 
-Auto CF lsclNonColorPiece;
+* Feynman rules
+F lsclNCHold, lsclQGPropagator, lsclQGVertex, lsclQGPolarization, 
+lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
+CF lsclSUNDelta(S), lsclSUNFDelta(S), lsclFunColorIndex, lsclAdjColorIndex,  lsclSUNTF, lsclSUNF, lsclSUND,
+lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold,  lsclFAD, lsclDiracIndex, lsclLorentzIndex,  
+lsclVector, lsclMetricTensor(S),  lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD
+S lsclGaugeXi;
 
-* Dirac algebra functions
+* Insertion of reduction tables
+CF lsclIntegralNumber, lsclIntegral, lsclIsolateFlag;
 
-* representa a position dependent Dirac spinor, second argument distinguishes between
-* U and V
-F lsclDiracSpinor, lsclDiracChainNC;
-CF lsclDiracChainOpen; 
+* When we need to wrap something into something else
+Auto CF lsclWrapFun, lsclIsoFun;
 
-* open chains of d-dimensional Dirac matrices, first argument denotes the chain
-nt lsclDiracGammaOpen, lsclDiracGammaChiralOpen, lsclDiracGammaOpen2;
-* closed chains of d-dimensional Dirac matrices, always sandwiched between two spinors
-nt lsclDiracGamma, lsclDiracGammaChiral;
-
-F lsclDiracMatrix;
-
-
+* Dirac algebra related variables
+F lsclDiracSpinor, lsclDiracChainNC, lsclDiracMatrix;
+CF lsclDiracChainOpen, lsclDiracFlag1, lsclDCh; 
+nt lsclDiracGammaOpen, lsclDiracGammaChiralOpen, lsclDiracGamma, lsclDiracGammaChiral;
 CF lsclDiracGammaHold;
 CF lsclAuxHoldFunction;
-* auxiliary variables for Dirac algebra simplifications
 nt lsclVecFu;
-
 Auto CF lsclNonDiracPiece;
-CF lsclDiracFlag1, lsclDCh;
-
-S lsclEp;
 
 * SU(N) algebra functions
+S lsclSUNN,lsclCF,lsclCA,lsclNA;
 
-S lsclSUNN,lsclCF,lsclCA,lsclNA, lsclCRmCA2;
-S lsclIsolateFlag;
-CF lsclRawTopology,lsclTopoID;
-
-S lsclFlagSPRule;
-CF lsclTopoConvert;
-
+* Factorization related functions
 CF lsclNum, lsclDen, lsclRat, lsclTdNum, lsclTdDen;
-
 CF lsclHoldNum, lsclHoldDen, lsclHoldRat, lsclSkipNum, lsclSkipDen;
 
-
-CF lsclEpHelpFlag;
-
 * Tensor reduction functions
-
-CF lsclTensRedMomentaRaw, lsclTensRedMomenta(S), lsclTensRedLoopRaw, lsclTensRedLoop(S), lsclTensRedHold, lsclTensRedRank, lsclTensRedNLegs, lsclTensRedTypeRaw, lsclTensRedType(S), lsclTensorStructure;
+CF lsclTensRedMomentaRaw, lsclTensRedMomenta(S), lsclTensRedLoopRaw, lsclTensRedLoop(S), 
+lsclTensRedHold, lsclTensRedRank, lsclTensRedNLegs, lsclTensRedTypeRaw, lsclTensRedType(S), 
+lsclTensorStructure;
 Auto S lsclTd;
 
-* Must go to FeynCalc Definitions!
-CF lsclSPD,lsclGLI;
-
-Auto S lsclDiaFlag;
-
+* Topology identification functions
+CF lsclRawTopology,lsclSPD,lsclGLI;
 #endif
