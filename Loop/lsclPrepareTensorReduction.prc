@@ -47,11 +47,13 @@ repeat id lsclTensRedMomentaRaw(?a,lsclV1?(lsclV2?),?b) = lsclTensRedMomentaRaw(
 repeat;
 * Remove all nonvectors, loop momenta and multiple appearances of the same vector
 id lsclTensRedMomentaRaw(?a,lsclS?,?b) = lsclTensRedMomentaRaw(?a,?b); 
-id lsclTensRedMomentaRaw(?a,lsclV1?,lsclV1?,?b) = lsclTensRedMomentaRaw(?a,lsclV1,?b); 
+id lsclTensRedMomentaRaw(?a,lsclV1?,?c,lsclV1?,?b) = lsclTensRedMomentaRaw(?a,lsclV1,?c,?b); 
 id lsclTensRedMomentaRaw(?a,lsclV?lsclLoopMomenta,?b) = lsclTensRedMomentaRaw(?a,?b);
 endrepeat;
 
 id lsclTensRedMomentaRaw(?a) = lsclTensRedMomenta(?a)*lsclTensRedNLegs(nargs_(?a));
+
+
 
 * At this point every integral is multiplied by a lsclTensRedMomentaSorted(...) function containing the external momenta it
 * depends on. The next step is to handle loop momenta contractions
