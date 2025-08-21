@@ -8,7 +8,7 @@
 
 
 F lsclDiracGammaOpenHold;
-CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND,SUNDelta,SUNFDelta,FVD,CA,CF lsclDiracGammaClosed, MTD,GLI;
+CF SPD,FAD,GFAD,DiracTrace,List,SUNTF,SUNF,SUND,SUNDelta,SUNFDelta,FVD,CA,CF lsclDiracGammaClosed, MTD,GLI, Polarization;
 F GAD,GSD;
 S I, SUNN, D, GaugeXi;
 Auto S dummyI;
@@ -49,6 +49,7 @@ endrepeat;
 endargument;
 
 
+
 if (occurs(g_));
 #call lsclToDiracGamma()
 id lsclDiracGammaOpen(lsclI?,?a) = lsclDiracGammaOpenHold(?a);
@@ -75,6 +76,19 @@ id lsclDiracGammaOpenHold(?a) = DiracTrace(?a);
 
 if (occurs(lsclDiracGamma,g_)) exit "Something went wrong here!";
 
+
+* Polarization vectors
+
+argument;
+#do k=1, `LSCLMAXINDEX'
+repeat;
+id lsclPVIp`k' = Polarization(p`k',I);
+id lsclPVIq`k' = Polarization(q`k',I);
+id lsclPVOp`k' = Polarization(p`k',-I);
+id lsclPVOq`k' = Polarization(q`k',-I);
+endrepeat;
+#enddo
+endargument;
 
 *multiply replace_(lsclDiracTrace,DiracTrace,i_,I);
 
