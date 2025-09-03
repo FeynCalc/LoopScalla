@@ -4,13 +4,16 @@
  output = 'lsclTempGraphs.out' ;
  style = 'Styles/graphviz.sty' ;
 
- model = 'xxx' ;
+ output = 'lsclTempTeX.out' ;
+ style = 'Styles/tikz-feynman.sty' ;
 
- in = Qi, Qibar;
- out = Qj, Qjbar;
+ model = 'DONTCHANGE';
 
- loops = xxx;
+ in = CHANGEME;
+ out = CHANGEME;
 
- loop_momentum = k ;
+ loops = DONTCHANGE;
+
+ loop_momentum = k;
 
  options = notadpoles, onshell, nosnail;

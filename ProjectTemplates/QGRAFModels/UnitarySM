@@ -1,0 +1,198 @@
+[ model = 'Standard Model in the Unitary Gauge' ]
+
+% The unitary gauge obviously only applied to the EW
+% part of the SM. Meaning that there are no Goldstones
+% except for the Higgs and that all there are no weak
+% boson ghostss
+
+% Possible colors for GraphViz
+% https://graphviz.org/doc/info/colors.html
+
+% ---------------------------
+%       Propagators
+% ---------------------------
+
+% Gauge bosons
+
+[Gl, Gl, +; color='crimson', style='dashed']
+[Ga, Ga, +; color='orange', style='dashed']
+[Wm, Wp, +; color='orchid', style='dashed']
+[Z, Z, +; color='mediumorchid', style='dashed']
+
+% Quarks
+
+[Qu, Qubar, -; color='tomato', style='solid']
+[Qd, Qdbar, -; color='firebrick', style='solid']
+[Qc, Qcbar, -; color='mediumseagreen',style='solid']
+[Qs, Qsbar, -; color='darkgreen', style='solid']
+[Qt, Qtbar, -; color='gold', style='solid']
+[Qb, Qbbar, -; color='goldenrod', style='solid']
+
+% Leptons
+
+[El, Ael, -; color='dodgerblue', style='solid']
+[Mu, Amu, -; color='royalblue', style='solid']
+[Tau, Atau, -; color='midnightblue', style='solid']
+[Nel, Anel, -; color='lightcyan', style='solid']
+[Nmu, Anmu, -; color='paleturquoise', style='solid']
+[Ntau, Antau, -; color='powderblue', style='solid']
+
+% Ghosts
+
+[Gh, Ghbar, -; color='dimgray', style='bold']
+
+% Goldstones
+
+[H, H, +; color='deeppink', style='dotted']
+
+% gs counts the powers of the strong coupling constant
+% el counts the powers of the fine-structure constant
+
+% ---------------------------
+%      QCD Vertices
+% ---------------------------
+
+
+[Qubar, Qu, Gl; gs='1', el='0']
+[Qcbar, Qc, Gl; gs='1', el='0']
+[Qtbar, Qt, Gl; gs='1', el='0']
+[Qdbar, Qd, Gl; gs='1', el='0']
+[Qsbar, Qs, Gl; gs='1', el='0']
+[Qbbar, Qb, Gl; gs='1', el='0']
+
+[Gl, Gl, Gl, Gl; gs='2', el='0']
+[Gl, Gl, Gl; gs='1', el='0']
+[Ghbar, Gl, Gh; gs='1', el='0']
+
+
+% ---------------------------
+%      EW Vertices
+% ---------------------------
+
+% --------- VFF -------------
+
+% Lepton-photon
+
+[Ael,El,Ga; gs='0', el='1']
+[Amu,Mu,Ga; gs='0', el='1']
+[Atau,Tau,Ga; gs='0', el='1']
+
+% Leptonic charged current
+
+[Anel, El, Wp; gs='0', el='1']
+[Ael, Nel, Wm; gs='0', el='1']
+[Anmu, Mu, Wp; gs='0', el='1']
+[Amu, Nmu, Wm; gs='0', el='1']
+[Antau, Tau, Wp; gs='0', el='1']
+[Atau, Ntau, Wm; gs='0', el='1']
+
+% Lepton-neutrino neutral current
+
+[Anel, Nel, Z; gs='0', el='1']
+[Anmu, Nmu, Z; gs='0', el='1']
+[Antau, Ntau, Z; gs='0', el='1']
+[Ael, El, Z; gs='0', el='1']
+[Amu, Mu, Z; gs='0', el='1']
+[Atau, Tau, Z; gs='0', el='1']
+
+% Quark charged current
+
+[Qubar, Qd, Wp; gs='0', el='1']
+[Qubar, Qs, Wp; gs='0', el='1']
+[Qubar, Qb, Wp; gs='0', el='1']
+
+[Qcbar, Qd, Wp; gs='0', el='1']
+[Qcbar, Qs, Wp; gs='0', el='1']
+[Qcbar, Qb, Wp; gs='0', el='1']
+
+[Qtbar, Qd, Wp; gs='0', el='1']
+[Qtbar, Qs, Wp; gs='0', el='1']
+[Qtbar, Qb, Wp; gs='0', el='1']
+
+[Qdbar, Qu, Wm; gs='0', el='1']
+[Qdbar, Qc, Wm; gs='0', el='1']
+[Qdbar, Qt, Wm; gs='0', el='1']
+
+[Qsbar, Qu, Wm; gs='0', el='1']
+[Qsbar, Qc, Wm; gs='0', el='1']
+[Qsbar, Qt, Wm; gs='0', el='1']
+
+[Qbbar, Qu, Wm; gs='0', el='1']
+[Qbbar, Qc, Wm; gs='0', el='1']
+[Qbbar, Qt, Wm; gs='0', el='1']
+
+% Quark neutral current
+
+[Qubar, Qu, Z; gs='0', el='1']
+[Qcbar, Qc, Z; gs='0', el='1']
+[Qtbar, Qt, Z; gs='0', el='1']
+[Qdbar, Qd, Z; gs='0', el='1']
+[Qsbar, Qs, Z; gs='0', el='1']
+[Qbbar, Qb, Z; gs='0', el='1']
+
+% Quark-photon
+
+[Qubar, Qu, Ga; gs='0', el='1']
+[Qcbar, Qc, Ga; gs='0', el='1']
+[Qtbar, Qt, Ga; gs='0', el='1']
+[Qdbar, Qd, Ga; gs='0', el='1']
+[Qsbar, Qs, Ga; gs='0', el='1']
+[Qbbar, Qb, Ga; gs='0', el='1']
+
+% --------- SFF -------------
+
+% Yukawa interactions of leptons 
+
+[Ael, El, H; gs='0', el='1']
+[Amu, Mu, H; gs='0', el='1']
+[Atau, Tau, H; gs='0', el='1']
+
+% If the neutrinos are treated as massless, 
+% these interactions proportional
+% to the neutrino mass and do not contribute
+
+% [Anel, Nel, H; gs='0', el='1']
+% [Anmu, Nmu, H; gs='0', el='1']
+% [Antau, Ntau, H; gs='0', el='1']
+ 
+% Yukawa interactions of quarks
+
+% Quark neutral current
+
+[Qubar, Qu, H; gs='0', el='1']
+[Qcbar, Qc, H; gs='0', el='1']
+[Qtbar, Qt, H; gs='0', el='1']
+[Qdbar, Qd, H; gs='0', el='1']
+[Qsbar, Qs, H; gs='0', el='1']
+[Qbbar, Qb, H; gs='0', el='1']
+
+% --------- VVV and VVVV -------------
+
+% Gauge interactions of weak gauge bosons
+
+[Wp, Wm, Ga; gs='0', el='1']
+[Wp, Wm, Z; gs='0', el='1']
+
+[Wp, Wm, Ga, Ga; gs='0', el='2']
+[Wp, Wm, Ga, Z; gs='0', el='2']
+[Wp, Wm, Ga, Z; gs='0', el='2']
+[Wp, Wp, Wm, Wm; gs='0', el='2']
+
+% --------- SSS and SSSS -------------
+
+% Self-interactions of the Higgs boson
+
+[H, H, H; gs='0', el='1']
+[H, H, H, H; gs='0', el='2']
+
+% --------- SVV, SSV and SSVV -------------
+
+% Gauge interactions of the Higgs boson
+
+[H, Z, Z; gs='0', el='1']
+[H, Wp, Wm; gs='0', el='1']
+
+
+[Z, Z, H, H; gs='0', el='2']
+[Wp, Wm, H, H; gs='0', el='2']
+

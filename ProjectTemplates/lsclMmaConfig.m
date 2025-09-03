@@ -9,6 +9,10 @@
 *)
 "FinalSubstitutions" -> {},
 (*
+  Mass dimensions of variables in the integral families passed to KIRA
+*)
+"KiraMassDimensions" -> {},
+(*
   In the case of expansions performed on the level of amplitudes, the propagators get rewritten
   as GFADs. For the sake of topology identification they should be mapped back to SFADs or CFADs.
   The following rules facilitate the process of finind proper mappings.
