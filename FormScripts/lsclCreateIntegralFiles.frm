@@ -61,7 +61,7 @@ on HighFirst;
 
 	#message lsclCreateIntegralFiles: Creating the file containing all loop integrals for this process.
 
-	#if (`LSCLADDDIAFLAG'==1)
+	#if (`lsclPprAddDiaFlag'==1)
 	G tampL`lsclNLoops' = 
 	#do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
 	+ lsclDiaFlag`i'*ts1dia`i'L`lsclNLoops'

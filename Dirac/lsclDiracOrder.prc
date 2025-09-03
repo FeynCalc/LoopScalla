@@ -8,7 +8,7 @@ chainout lsclDiracGamma;
 #do i=1,`MAX'
 disorder lsclDiracGamma(lsclMu1?)*lsclDiracGamma(lsclMu2?) = -lsclDiracGamma(lsclMu2)*lsclDiracGamma(lsclMu1) + 2*d_(lsclMu1,lsclMu2);
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclDiracOrder: Iteration `i'
 #endif
 

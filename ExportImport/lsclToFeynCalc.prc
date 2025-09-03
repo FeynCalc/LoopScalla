@@ -80,7 +80,7 @@ if (occurs(lsclDiracGamma,g_)) exit "Something went wrong here!";
 * Polarization vectors
 
 argument;
-#do k=1, `LSCLMAXINDEX'
+#do k=1, `lsclPprMaxIndex'
 repeat;
 id lsclPVIp`k' = Polarization(p`k',I);
 id lsclPVIq`k' = Polarization(q`k',I);

@@ -23,7 +23,7 @@ G s0dia`lsclDiaNumber'L`lsclNLoops' =
 
 
 
-#if (`LSCLINSERTPROJECTOR' == 1)
+#if (`lsclPprInsertProjector' == 1)
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclInsertProjector
 #endif
 
@@ -193,7 +193,7 @@ endif;
 #message lsclProcessStage0: ... done: `time_'
 
 
-
+#if (`ZERO_s0dia`lsclDiaNumber'L`lsclNLoops'' != 1)
 
 #message lsclProcessStage0: Calling the CodeBlock1 fold : `time_' ...
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclCodeBlock1
@@ -203,8 +203,14 @@ endif;
 .sort
 #message lsclProcessStage0: ... done: `time_'
 
-#if (`LSCLINSERTPROJECTOR' == 0)
+#else
+#message lsclProcessStage0: Skipping the CodeBlock1 fold as s0dia`lsclDiaNumber'L`lsclNLoops' is zero.
+#endif
 
+* We skip tensor reduction if the expression is already zero after CodeBlock1
+#if (`lsclPprInsertProjector' == 0)
+
+#if (`ZERO_s0dia`lsclDiaNumber'L`lsclNLoops'' != 1)
 
 #message lsclProcessStage0: Calling the DoTensorReduction fold : `time_' ...
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclDoTensorReduction
@@ -214,6 +220,9 @@ endif;
 .sort
 #message lsclProcessStage0: ... done: `time_'
 
+#else
+#message lsclProcessStage0: Skipping the DoTensorReduction fold as s0dia`lsclDiaNumber'L`lsclNLoops' is zero.
+#endif
 #endif
 
 delete storage;

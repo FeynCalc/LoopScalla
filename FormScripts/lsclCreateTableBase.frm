@@ -17,16 +17,31 @@ on HighFirst;
 #message lsclCreateTableBase: Processing topology `lsclTopologyName' at `lsclNLoops' loop(s)
 
 
-
+#ifdef `LSCLKIRA'
 
 #ifdef `LSCLEPEXPAND'
         #message lsclCreateTableBase: Using the fill statements expanded in ep up to `LSCLEPEXPAND'        
-        #define LSCLFILLSTATEMENTSFILENAME "fillStatementsExpanded`LSCLEPEXPAND'.frm"
-        #define LSCLTBLFILENAME "tablebaseExpanded`LSCLEPEXPAND'.tbl"        
+        #define LSCLFILLSTATEMENTSFILENAME "fillStatementsKiraExpanded`LSCLEPEXPAND'.frm"
+        #define LSCLTBLFILENAME "tablebaseKiraExpanded`LSCLEPEXPAND'.tbl"        
 #else
     #message lsclCreateTableBase: Using ep-exact reduction tables
-    #define LSCLFILLSTATEMENTSFILENAME "fillStatements.frm"
-    #define LSCLTBLFILENAME "tablebase.tbl"
+    #define LSCLFILLSTATEMENTSFILENAME "fillStatementsKira.frm"
+    #define LSCLTBLFILENAME "tablebaseKira.tbl"
+#endif
+
+
+#else
+
+#ifdef `LSCLEPEXPAND'
+        #message lsclCreateTableBase: Using the fill statements expanded in ep up to `LSCLEPEXPAND'        
+        #define LSCLFILLSTATEMENTSFILENAME "fillStatementsFireExpanded`LSCLEPEXPAND'.frm"
+        #define LSCLTBLFILENAME "tablebaseFireExpanded`LSCLEPEXPAND'.tbl"        
+#else
+    #message lsclCreateTableBase: Using ep-exact reduction tables
+    #define LSCLFILLSTATEMENTSFILENAME "fillStatementsFire.frm"
+    #define LSCLTBLFILENAME "tablebaseFire.tbl"
+#endif
+
 #endif
 
 

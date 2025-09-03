@@ -55,10 +55,7 @@ G ts2dia`i'L`lsclNLoops' = s2dia`i'L`lsclNLoops';
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 #endif
 
-#message `LSCLADDDIAFLAG'
-
-
-#if (`LSCLADDDIAFLAG'==1)
+#if (`lsclPprAddDiaFlag'==1)
 G ampL`lsclNLoops' = 
 #do i = `lsclDiaNumberFrom', `lsclDiaNumberTo'
 + lsclDiaFlag(`i')*ts2dia`i'L`lsclNLoops'
@@ -98,7 +95,7 @@ if (occurs(lsclEpHelpFlag)) exit;
 #message lsclAddUpDiagrams: ... done: `time_'
 
 
-#if (`LSCLADDDIAFLAG'==1)
+#if (`lsclPprAddDiaFlag'==1)
   #message lsclAddUpDiagrams: Saving FeynCalc-readable result to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m
   #call lsclToFeynCalc(ampL`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumberFrom'To`lsclDiaNumberTo'-diaFlag.m)
 #else

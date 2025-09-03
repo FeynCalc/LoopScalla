@@ -1,70 +1,70 @@
 #ifndef `LSCLDEFINITIONS'
 #define LSCLDEFINITIONS
 
-S `lsclDim', lsclEp;
-Dimension `lsclDim';
+S lsclD, lsclEp;
+Dimension lsclD;
 
 * Sets of momenta appearing in the amplitude
 
 auto V q, p, k;
-set externalMomenta: p1,...,p`LSCLMAXINDEX', q1,...,q`LSCLMAXINDEX';
-set externalMomentaP: p1,...,p`LSCLMAXINDEX';
-set externalMomentaK: q1,...,q`LSCLMAXINDEX';
-set internalMomenta: k1,...,k`LSCLMAXINDEX';
+set externalMomenta: p1,...,p`lsclPprMaxIndex', q1,...,q`lsclPprMaxIndex';
+set externalMomentaP: p1,...,p`lsclPprMaxIndex';
+set externalMomentaK: q1,...,q`lsclPprMaxIndex';
+set internalMomenta: k1,...,k`lsclPprMaxIndex';
 
 * Generic indices
-I lsclI, lsclI1, ... , lsclI`LSCLMAXINDEX';
+I lsclI, lsclI1, ... , lsclI`lsclPprMaxIndex';
 
 * Lorentz indices
-I lsclMu, lsclMu1, ... , lsclMu`LSCLMAXINDEX';
-I lsclNu, lsclNu1, ... , lsclNu`LSCLMAXINDEX';
-I lsclRho, lsclRho1, ... , lsclRho`LSCLMAXINDEX';
-I lsclAl, lsclAl1, ... , lsclAl`LSCLMAXINDEX';
-I lsclBe, lsclBe1, ... , lsclBe`LSCLMAXINDEX';
+I lsclMu, lsclMu1, ... , lsclMu`lsclPprMaxIndex';
+I lsclNu, lsclNu1, ... , lsclNu`lsclPprMaxIndex';
+I lsclRho, lsclRho1, ... , lsclRho`lsclPprMaxIndex';
+I lsclAl, lsclAl1, ... , lsclAl`lsclPprMaxIndex';
+I lsclBe, lsclBe1, ... , lsclBe`lsclPprMaxIndex';
 
 * Dirac indices
-I lsclDi, lsclDi1, ... , lsclDi`LSCLMAXINDEX';
-I lsclDj, lsclDj1, ... , lsclDj`LSCLMAXINDEX';
+I lsclDi, lsclDi1, ... , lsclDi`lsclPprMaxIndex';
+I lsclDj, lsclDj1, ... , lsclDj`lsclPprMaxIndex';
 
 * Color indices
-I lsclCFi, lsclCFi1, ... , lsclCFi`LSCLMAXINDEX';
-I lsclCFj, lsclCFj1, ... , lsclCFj`LSCLMAXINDEX';
-I lsclCAi, lsclCAi1, ... , lsclCAi`LSCLMAXINDEX';
-I lsclCAj, lsclCAj1, ... , lsclCAj`LSCLMAXINDEX';
+I lsclCFi, lsclCFi1, ... , lsclCFi`lsclPprMaxIndex';
+I lsclCFj, lsclCFj1, ... , lsclCFj`lsclPprMaxIndex';
+I lsclCAi, lsclCAi1, ... , lsclCAi`lsclPprMaxIndex';
+I lsclCAj, lsclCAj1, ... , lsclCAj`lsclPprMaxIndex';
 
 * Generic symbols
-S lsclS, lsclS1, ... , lsclS`LSCLMAXINDEX';
-S lsclX, lsclX1, ... , lsclX`LSCLMAXINDEX';
-S lsclY, lsclY1, ... , lsclY`LSCLMAXINDEX';
-S lsclZ, lsclZ1, ... , lsclZ`LSCLMAXINDEX';
+S lsclS, lsclS1, ... , lsclS`lsclPprMaxIndex';
+S lsclX, lsclX1, ... , lsclX`lsclPprMaxIndex';
+S lsclY, lsclY1, ... , lsclY`lsclPprMaxIndex';
+S lsclZ, lsclZ1, ... , lsclZ`lsclPprMaxIndex';
 
 * Generic vectors
-V lsclP, lsclP1, ... , lsclP`LSCLMAXINDEX';
-V lsclQ, lsclQ1, ... , lsclQ`LSCLMAXINDEX';
-V lsclL, lsclL1, ... , lsclL`LSCLMAXINDEX';
-V lsclV, lsclV1, ... , lsclV`LSCLMAXINDEX';
+V lsclP, lsclP1, ... , lsclP`lsclPprMaxIndex';
+V lsclQ, lsclQ1, ... , lsclQ`lsclPprMaxIndex';
+V lsclL, lsclL1, ... , lsclL`lsclPprMaxIndex';
+V lsclV, lsclV1, ... , lsclV`lsclPprMaxIndex';
 
 * Generic commutative functions
-CF lsclF, lsclF1, ... , lsclF`LSCLMAXINDEX';
-CF lsclG, lsclG1, ... , lsclG`LSCLMAXINDEX';
+CF lsclF, lsclF1, ... , lsclF`lsclPprMaxIndex';
+CF lsclG, lsclG1, ... , lsclG`lsclPprMaxIndex';
 
 * Generic noncommutative functions
-CF lsclNF, lsclNF1, ... , lsclNF`LSCLMAXINDEX';
-CF lsclNG, lsclNG1, ... , lsclNG`LSCLMAXINDEX';
+CF lsclNF, lsclNF1, ... , lsclNF`lsclPprMaxIndex';
+CF lsclNG, lsclNG1, ... , lsclNG`lsclPprMaxIndex';
 
 * Generic commutative tensors
-CT lsclT, lsclT1, ... , lsclT`LSCLMAXINDEX';
+CT lsclT, lsclT1, ... , lsclT`lsclPprMaxIndex';
 
 * Generic noncommutative tensors
-CT lsclNT, lsclNT1, ... , lsclNT`LSCLMAXINDEX';
+CT lsclNT, lsclNT1, ... , lsclNT`lsclPprMaxIndex';
 
 * Polarization vector ep(px)
-V lsclPVIp1, ... , lsclPVIp`LSCLMAXINDEX';
-V lsclPVIq1, ... , lsclPVIq`LSCLMAXINDEX';
+V lsclPVIp1, ... , lsclPVIp`lsclPprMaxIndex';
+V lsclPVIq1, ... , lsclPVIq`lsclPprMaxIndex';
 
 * Polarization vector ep*(px)
-V lsclPVOp1, ... , lsclPVOp`LSCLMAXINDEX';
-V lsclPVOq1, ... , lsclPVOq`LSCLMAXINDEX';
+V lsclPVOp1, ... , lsclPVOp`lsclPprMaxIndex';
+V lsclPVOq1, ... , lsclPVOq`lsclPprMaxIndex';
 
 * Flags
 Auto S lsclFlag;
@@ -83,6 +83,9 @@ CF lsclIntegralNumber, lsclIntegral, lsclIsolateFlag;
 
 * When we need to wrap something into something else
 Auto CF lsclWrapFun, lsclIsoFun;
+CF lsclNonColorPiece1, lsclNonColorPiece2;
+
+CF lsclFermionLine,lsclFermionLoop;
 
 * Dirac algebra related variables
 F lsclDiracSpinor, lsclDiracChainNC, lsclDiracMatrix;
@@ -94,7 +97,7 @@ nt lsclVecFu;
 Auto CF lsclNonDiracPiece;
 
 * SU(N) algebra functions
-S lsclSUNN,lsclCF,lsclCA,lsclNA;
+S lsclSUNN,lsclCF,lsclCA,lsclNA,lsclCRmCA2;
 
 * Factorization related functions
 CF lsclNum, lsclDen, lsclRat, lsclTdNum, lsclTdDen;

@@ -60,7 +60,7 @@ endif;
 
 if (occurs(lsclQGVertex,lsclQGPropagator,lsclQGPolarization,lsclLorentzIndex,lsclPolVector,lsclVector)) exit "Missing some Feynman rules!";
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message Diagram `lsclDiaNumber':
 print;
 #endif

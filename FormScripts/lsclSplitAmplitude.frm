@@ -46,9 +46,8 @@ G s2dia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 
 * Collect the amplitude w.r.t. the loop integrals
 * The output might be too large for a log file ...
-
 b,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
+`lsclPprAdditionalBracketArguments'
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
@@ -65,7 +64,7 @@ print[];
 collect lsclWrapFun1,lsclWrapFun2;
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprDenNumFactorizeArguments');
 .sort
 
 

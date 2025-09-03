@@ -131,12 +131,11 @@ id lsclWrapFun2(lsclS?) = lsclS;
 
 
 b,
-lsclRawTopology, d_,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
-
 #do i=1, `lsclNLoops'
 k`i',
 #enddo
+lsclRawTopology, d_,
+`lsclPprAdditionalBracketArguments'
 ;
 
 .sort
@@ -146,7 +145,7 @@ collect lsclWrapFun1,lsclWrapFun2;
 #message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclInsertReductionTables: ... done.
 
@@ -161,7 +160,7 @@ argument lsclSkipNum,lsclSkipDen;
 * current and previous replacements. So we only process new functions, while leaving
 * the old ones unchanged.
 if (occurs(lsclWrapFun100));
-    if (occurs(`lsclFactorizationVariables') && occurs(lsclD,lsclEp));
+    if (occurs(`lsclPprFactorizationVariables') && occurs(lsclD,lsclEp));
         multiply lsclFlag100;
     endif;
 endif;
@@ -195,7 +194,7 @@ endif;
 if (occurs(lsclRawTopology)) exit "Failed to elimitate raw topology containers.";
 
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
@@ -223,7 +222,7 @@ CF lsclF1,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyRules
 #message lsclTopologyIdentification: ... done: `time_'
  
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 d_,
@@ -240,18 +239,18 @@ print[];
 #message lsclTopologyIdentification: 2nd Factorization
 #message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
-lsclSkipNum,lsclSkipDen,d_
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
+lsclSkipNum,lsclSkipDen,d_,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/partialFractioning.frm #lsclTopologyNames
+`lsclPprAdditionalBracketArguments'
 ;
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
  
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclInsertReductionTables: ... done.
 ******************************************************
@@ -282,7 +281,7 @@ CF
 #message lsclTopologyIdentification: ... done: `time_'
 
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
@@ -300,14 +299,14 @@ print[];
 #message lsclTopologyIdentification: Applying lsclApplyPolyRatFun and lsclNumDenFactorize to lsclWrapFun1,lsclWrapFun2: `time_' ...
 b,
 lsclSkipDen,lsclSkipNum,d_,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
+`lsclPprAdditionalBracketArguments'
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/topologyMappings.frm #lsclTopologyNames
 ;
 .sort
 collect lsclWrapFun1,lsclWrapFun2;
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclInsertReductionTables: ... done.
 ******************************************************
@@ -329,7 +328,7 @@ CF
 #message lsclTopologyIdentification: ... done: `time_'
 
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
@@ -425,7 +424,7 @@ moduleoption notinparallel;
 #message lsclTopologyIdentification: ... done: `time_'
 
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
@@ -450,7 +449,7 @@ endrepeat;
 #message lsclTopologyIdentification: ... done: `time_'
 
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclTopologyIdentification: Structure of the amplitude at this stage
 b,
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
@@ -498,12 +497,12 @@ collect lsclWrapFun3,lsclWrapFun4;
 #message lsclTopologyIdentification: 5th Factorization
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun3,lsclWrapFun4);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 id lsclG?{lsclWrapFun1,lsclWrapFun2}(lsclS?) = lsclS;
 FromPolynomial;
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclTopologyIdentification: ... done.
 ******************************************************
@@ -519,7 +518,7 @@ FromPolynomial;
 
 #message lsclTopologyIdentification: Merging inverse propgators into loop integrals: `time_' ...
 repeat;
-#do i=1,`LSCLMAXPROPAGATORS'
+#do i=1,`lsclPprMaxPropagators'
 id lsclF?{
  #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/augmentedTopologies.frm #lsclTopologyNames
 }(lsclX1?,...,lsclX`i'?)*lsclF?{
@@ -571,7 +570,7 @@ print[];
 *#call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun10,lsclWrapFun11);
 *.sort
 *
-*#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+*#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 *.sort
 *#message lsclInsertReductionTables: ... done.
 

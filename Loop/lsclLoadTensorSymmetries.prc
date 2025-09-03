@@ -17,7 +17,7 @@
 #endif
 
 #do j=``MINRANK'',``MAXRANK''
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclDoTensorReduction: Loading tensor reduction names, rank `j' and `i' loop(s)
 #endif
 

@@ -43,10 +43,10 @@ Load Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lscl
 
 
 
-#if (`LSCLADDDIAFLAG'==1)
+#if (`lsclPprAddDiaFlag'==1)
 G s2dia`lsclDiaNumber'L`lsclNLoops' = 
 #do i = `lsclIntNumberFrom', `lsclIntNumberTo'
-+ lsclDiaFlag`i'*s2dia`lsclDiaNumber'L`lsclNLoops'I`i'
++ lsclDiaFlag(`i')*s2dia`lsclDiaNumber'L`lsclNLoops'I`i'
 #enddo
 ;
 #else

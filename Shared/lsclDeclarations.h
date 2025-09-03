@@ -1,52 +1,53 @@
 #ifndef `LSCLDECLARATIONS'
 #define LSCLDECLARATIONS
 
-#ifndef `lsclDim'
-#define lsclDim "lsclD"
+* Increases the output verbosity of the main code
+#ifndef `lsclPprVerbosity'
+#define lsclPprVerbosity "0"
 #endif
 
-#ifndef `LSCLVERBOSITY'
-#define LSCLVERBOSITY "0"
+* Define whether each contribution from a separate diagram should
+* be multiplied by lsclDiaFlag(diaNumber)
+#ifndef `lsclPprAddDiaFlag'
+#define lsclPprAddDiaFlag "0"
 #endif
 
-#ifndef `LSCLADDDIAFLAG'
-#define LSCLADDDIAFLAG "0"
+* Defines the maximal index of each variable that has a suffix number,
+* e.g. p1,p2, ... p100 etc.
+#ifndef `lsclPprMaxIndex'
+#define lsclPprMaxIndex "100"
 #endif
 
-#ifndef `LSCLADDDIAFLAG'
-#define LSCLADDDIAFLAG "0"
+* Defines the max number of propagators that may appear in an amplitude.
+* Used by the topology identification code when merging propagators into
+* integral families.
+#ifndef `lsclPprMaxPropagators'
+#define lsclPprMaxPropagators "16"
 #endif
 
-#ifndef `LSCLMAXINDEX'
-#define LSCLMAXINDEX "100"
-#endif
-
-#ifndef `LSCLNOFACTORIZATION'
-#define LSCLNOFACTORIZATION "0"
-#endif
-
-#ifndef `LSCLMAXPROPAGATORS'
-#define LSCLMAXPROPAGATORS "16"
-#endif
-
+* Specifies whether lsclIsolate should isolate loop momenta k1,k2,... in addition
+* to the variables specified in the function call. This is needed e.g. for the
+* tensor reduction helper functions
 #ifndef `lsclPprIsolateLoopMomenta'
 #define lsclPprIsolateLoopMomenta "0"
 #endif
 
+* Increases the output verbosity of lsclApplyPolyRatFun
 #ifndef `lsclPprApplyPolyRatFunVerbosity'
 #define lsclPprApplyPolyRatFunVerbosity "0"
 #endif
 
+* Increases the output verbosity of lsclNumDenFactorize
 #ifndef `lsclPprNumDenFactorizeVerbosity'
 #define lsclPprNumDenFactorizeVerbosity "0"
 #endif
 
-#ifndef `lsclPprExportToMathematicaSuffix'
-#define lsclPprExportToMathematicaSuffix ""
-#endif
-
 #ifndef `lsclPprMaxDiracGammaLengthSimplification'
 #define lsclPprMaxDiracGammaLengthSimplification "0"
+#endif
+
+#ifndef `lsclPprGhostPropagatorSign'
+#define lsclPprGhostPropagatorSign "1"
 #endif
 
 

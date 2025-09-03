@@ -31,23 +31,42 @@ on fewerstatistics 0;
 
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/TopologyList.frm
 
+
+#ifdef `LSCLKIRA'
+
 #ifdef `LSCLEPEXPAND'
-    #message lsclInsertReductionTables: Using reduction tables expanded in ep
+    #message lsclInsertReductionTables: Using Kira reduction tables expanded in ep
     #ifndef `LSCLEPEXPANDORDER'
         #message lsclInsertReductionTables: Using the default expansion in ep
-        #define LSCLTBLFILENAME "tablebaseExpanded.tbl"
+        #define LSCLTBLFILENAME "tablebaseKiraExpanded.tbl"
     
     #else
         #message lsclInsertReductionTables: Using the tables expanded up to `LSCLEPEXPANDORDER'
-        #define LSCLTBLFILENAME "tablebaseExpanded`LSCLEPEXPANDORDER'.tbl"
+        #define LSCLTBLFILENAME "tablebaseKiraExpanded`LSCLEPEXPANDORDER'.tbl"
     #endif
 #else
-    #message lsclInsertReductionTables: Using ep-exact reduction tables
-    #define LSCLTBLFILENAME "tablebase.tbl"
+    #message lsclInsertReductionTables: Using Kira ep-exact reduction tables
+    #define LSCLTBLFILENAME "tablebaseKira.tbl"
 #endif
 
+#else 
 
+#ifdef `LSCLEPEXPAND'
+    #message lsclInsertReductionTables: Using FIRE reduction tables expanded in ep
+    #ifndef `LSCLEPEXPANDORDER'
+        #message lsclInsertReductionTables: Using the default expansion in ep
+        #define LSCLTBLFILENAME "tablebaseFireExpanded.tbl"
+    
+    #else
+        #message lsclInsertReductionTables: Using the tables expanded up to `LSCLEPEXPANDORDER'
+        #define LSCLTBLFILENAME "tablebaseFireExpanded`LSCLEPEXPANDORDER'.tbl"
+    #endif
+#else
+    #message lsclInsertReductionTables: Using FIRE ep-exact reduction tables
+    #define LSCLTBLFILENAME "tablebaseFire.tbl"
+#endif
 
+#endif
 
 CF
 #do i=1, `LSCLNTOPOLOGIES'
@@ -76,13 +95,12 @@ G s2dia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 
 * Collect the amplitude w.r.t. the loop integrals
 * The output might be too large for a log file ...
-
 b,
 d_,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
+`lsclPprAdditionalBracketArguments'
 ;
 #ifdef `LSCLONLYSHOWSTRUCTURE'
 #message lsclInsertReductionTables: Structure of this amplitude
@@ -102,7 +120,7 @@ print[];
 collect lsclWrapFun1,lsclWrapFun2;
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclInsertReductionTables: ... done.
 
@@ -117,7 +135,7 @@ argument lsclSkipNum,lsclSkipDen;
 * current and previous replacements. So we only process new functions, while leaving
 * the old ones unchanged.
 if (occurs(lsclWrapFun100));
-    if (occurs(`lsclFactorizationVariables') && occurs(lsclD,lsclEp));
+    if (occurs(`lsclPprFactorizationVariables') && occurs(lsclD,lsclEp));
         multiply lsclFlag100;
     endif;
 endif;
@@ -159,14 +177,11 @@ if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 * lsclNum and lsclDen. Otherwise we'll end up with a workspace overflow.
 #message lsclInsertReductionTables: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 b,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
-,
-lsclSkipNum,lsclSkipDen, d_,
-lsclWrapFun,lsclEp,lsclNum,lsclDen,
+lsclNum,lsclDen,lsclSkipNum,lsclSkipDen, d_, lsclWrapFun,lsclEp,
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
-
+`lsclPprAdditionalBracketArguments'
 ;
 
 #message lsclInsertReductionTables: Calling sort : `time_' ...
@@ -181,31 +196,22 @@ collect lsclWrapFun1,lsclWrapFun2;
 .sort
 #message lsclInsertReductionTables: ... done: `time_'
 
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 
 #message lsclInsertReductionTables: Calling sort : `time_' ...
 .sort
 #message lsclInsertReductionTables: ... done: `time_'
 
-
-
+* This bracketing is only done for cosmetic purposes to show the user an intermediate result
 b,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
 lsclEp,lsclWrapFun,
 #do i=1, `LSCLNTOPOLOGIES'
 `LSCLTOPOLOGY`i'',
 #enddo
+`lsclPprAdditionalBracketArguments'
 ;
 print[];
 .sort
-
-
-#ifdef `lsclPprExportToMathematica'
-#call lsclToFeynCalc(s2dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/ampL`lsclNLoops'From`lsclDiaNumber'To`lsclDiaNumber'`lsclPprExportToMathematicaSuffix'.m)
-#endif
-.sort
-#message lsclInsertReductionTables: ... done : `time_'
-
 
 delete storage;
 .sort

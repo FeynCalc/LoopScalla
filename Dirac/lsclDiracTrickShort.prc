@@ -16,19 +16,19 @@ repeat;
 #if (`j'>=1)
  
 	id lsclDiracTrace(?a,lsclP?,lsclMu?,lsclP?,?b) = 2*lsclP(lsclMu)*lsclDiracTrace(?a,lsclP,?b) - lsclP.lsclP*lsclDiracTrace(?a,lsclMu,?b);
-	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclMu?,?b) = -(`lsclDim'-2)*lsclDiracTrace(?a,lsclI1,?b);  
+	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclMu?,?b) = -(lsclD-2)*lsclDiracTrace(?a,lsclI1,?b);  
 #if (`j'>=2)
 	id lsclDiracTrace(?a,lsclP?,lsclMu?,lsclNu?,lsclP?,?b) = 2*lsclP(lsclMu)*lsclDiracTrace(?a,lsclNu,lsclP,?b) - 2*lsclP(lsclNu)*lsclDiracTrace(?a,lsclMu,lsclP,?b) + lsclP.lsclP*lsclDiracTrace(?a,lsclMu,lsclNu,?b);
-	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclMu?,?b) = (`lsclDim'-4)*lsclDiracTrace(?a,lsclI1,lsclI2,?b) + 4*d_(lsclI1,lsclI2)*lsclDiracTrace(?a,?b); 
+	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclMu?,?b) = (lsclD-4)*lsclDiracTrace(?a,lsclI1,lsclI2,?b) + 4*d_(lsclI1,lsclI2)*lsclDiracTrace(?a,?b); 
 #if (`j'>=3)
 	id lsclDiracTrace(?a,lsclP?,lsclMu1?,lsclMu2?,lsclMu3?,lsclP?,?b) = +2*lsclP(lsclMu1)*lsclDiracTrace(?a,lsclMu2,lsclMu3,lsclP,?b) - 2*lsclP(lsclMu2)*lsclDiracTrace(?a,lsclMu1,lsclMu3,lsclP,?b) +
   2*lsclP(lsclMu3)*lsclDiracTrace(?a,lsclMu1,lsclMu2,lsclP,?b) - lsclP.lsclP*lsclDiracTrace(?a,lsclMu1,lsclMu2,lsclMu3,?b);
-	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclI3?,lsclMu?,?b) = (4- `lsclDim')*lsclDiracTrace(?a,lsclI1,lsclI2,lsclI3,?b) - 2*lsclDiracTrace(?a,lsclI3,lsclI2,lsclI1,?b);
+	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclI3?,lsclMu?,?b) = (4- lsclD)*lsclDiracTrace(?a,lsclI1,lsclI2,lsclI3,?b) - 2*lsclDiracTrace(?a,lsclI3,lsclI2,lsclI1,?b);
 #if (`j'>=4)
   
 	id lsclDiracTrace(?a,lsclP?,lsclMu1?,lsclMu2?,lsclMu3?,lsclMu4?,lsclP?,?b) = +2*lsclP(lsclMu1)*lsclDiracTrace(?a,lsclMu2,lsclMu3,lsclMu4,lsclP,?b) - 2*lsclP(lsclMu2)*lsclDiracTrace(?a,lsclMu1,lsclMu3,lsclMu4,lsclP,?b) +
   2*lsclP(lsclMu3)*lsclDiracTrace(?a,lsclMu1,lsclMu2,lsclMu4,lsclP,?b)-  2*lsclP(lsclMu4)*lsclDiracTrace(?a,lsclMu1,lsclMu2,lsclMu3,lsclP,?b) + lsclP.lsclP*lsclDiracTrace(?a,lsclMu1,lsclMu2,lsclMu3,lsclMu4,?b);
-	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclI3?,lsclI4?,lsclMu?,?b) = (`lsclDim'-4)*lsclDiracTrace(?a,lsclI1,lsclI2,lsclI3,lsclI4,?b) 
+	id lsclDiracTrace(?a,lsclMu?,lsclI1?,lsclI2?,lsclI3?,lsclI4?,lsclMu?,?b) = (lsclD-4)*lsclDiracTrace(?a,lsclI1,lsclI2,lsclI3,lsclI4,?b) 
   + 2*lsclDiracTrace(?a,lsclI3,lsclI2,lsclI1,lsclI4,?b) + 2*lsclDiracTrace(?a,lsclI4,lsclI1,lsclI2,lsclI3,?b);
   
 #if (`j'>=5)  

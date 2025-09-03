@@ -11,7 +11,7 @@
 id lsclDiracGamma(?a,lsclMu?,lsclMu?,?b) = d_(lsclMu,lsclMu)*lsclDiracGamma(?a,?b);
 id lsclDiracGamma(?c1,lsclMu1?,lsclMu2?,?a,lsclMu1?,?c2) = sign_(nargs_(lsclMu2,?a))*
 lsclDiracGamma(?c1)*(
-	(`lsclDim'-2*nargs_(lsclMu2,?a))*lsclDiracGamma(lsclMu2,?a) + 
+	(lsclD-2*nargs_(lsclMu2,?a))*lsclDiracGamma(lsclMu2,?a) + 
 	4*distrib_(-1,2,lsclMetricTensor,lsclDiracGamma,lsclMu2,?a)
 )*lsclDiracGamma(?c2);
 
@@ -19,7 +19,7 @@ if(occurs(lsclDiracChainOpen));
 argument;
  id lsclDiracGamma(?a,lsclMu?,lsclMu?,?b) = d_(lsclMu,lsclMu)*lsclDiracGamma(?a,?b);
  id lsclDiracGamma(?c1,lsclMu1?,lsclMu2?,?a,lsclMu1?,?c2) = sign_(nargs_(lsclMu2,?a))*
- lsclDiracGamma(?c1)*((`lsclDim'-2*nargs_(lsclMu2,?a))*lsclDiracGamma(lsclMu2,?a) + 
+ lsclDiracGamma(?c1)*((lsclD-2*nargs_(lsclMu2,?a))*lsclDiracGamma(lsclMu2,?a) + 
 	4*distrib_(-1,2,lsclMetricTensor,lsclDiracGamma,lsclMu2,?a))*lsclDiracGamma(?c2);
 endargument;
 endif;
@@ -51,7 +51,7 @@ endif;
 
 endrepeat;
 
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclDiracTrickLong: Iteration `i'
 #endif
 

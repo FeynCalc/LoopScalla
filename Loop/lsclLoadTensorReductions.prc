@@ -62,7 +62,7 @@ exit "Unsupported number of legs";
 * Inner loop: number of loops
 #do j=1,`lsclNLoops'
 
-*#if (`LSCLVERBOSITY'>0)
+*#if (`lsclPprVerbosity'>0)
 #message lsclDoTensorReduction: Loading tensor reduction rules at `j' loop(s)
 *#endif
 
@@ -73,7 +73,7 @@ exit "Unsupported number of legs";
 #if (`j' <= `k')
 
 #do l=1, `$lsclDollarTdRank`k'L`j'NumTotal'
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclLoadTensorReductions: Loading tensor reduction rule: `LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`j'N`l''.frm
 #endif
 #include Tables/TensorReductions/`LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`j'N`l''.frm
@@ -84,7 +84,7 @@ label labelTdReductionDone;
 #else
 
 #do l=1, `$lsclDollarTdRank`k'L`k'NumTotal'
-#if (`LSCLVERBOSITY'>0)
+#if (`lsclPprVerbosity'>0)
 #message lsclLoadTensorReductions: Loading tensor reduction rule: `LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`k'N`l''.frm
 #endif
 #include Tables/TensorReductions/`LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`k'N`l''.frm
