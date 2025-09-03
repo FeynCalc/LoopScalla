@@ -2,7 +2,7 @@
 
 # This file is a part of LoopScalla, a framework for loop calculations
 # Loopscalla is covered by the GNU General Public License 3.
-# Copyright (C) 2019-2023 Vladyslav Shtabovenko
+# Copyright (C) 2019-2025 Vladyslav Shtabovenko
 
 if [[ $# -ne 1 ]] ; then
     echo 'You must specify the name of the environment file to link to'
