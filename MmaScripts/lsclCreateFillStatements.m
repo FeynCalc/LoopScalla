@@ -21,13 +21,14 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubar";
-lsclModelName="BToEtaC";
-lsclNLoops="3";
-lsclTopology="topology3688";
-lsclExpandInEp=1;
+lsclProject="MyHiggsProject";
+lsclProcessName="HToGlGl";
+lsclModelName="SM";
+lsclNLoops="1";
+lsclTopology="topology1";
+lsclExpandInEp=0;
 lsclEpExpandUpTo=0;
+lsclUsingKira=1;
 ];
 *)
 
@@ -68,15 +69,36 @@ If[ToString[lsclExpandInEp]==="lsclExpandInEp",
 	WriteString["stdout",lsclScriptName,": Error! You did not specify whether the tables should be expanded in ep."];
 	QuitAbort[]
 ];
+If[ToString[lsclUsingKira]==="lsclUsingKira",
+	WriteString["stdout",lsclScriptName,": Error! You did not specify whether FIRE or KIRA were used."];
+	QuitAbort[]
+];
+
+
+If[TrueQ[lsclUsingKira===1],
+	usingKIRA=True,
+	usingKIRA=False
+];
 
 
 filesLoaded=Catch[
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]],
 	If[lsclExpandInEp===0,
-		WriteString["stdout",lsclScriptName,": Loading the reduction rules (no expansion) ..."];
-		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRules.m"}]],
-		WriteString["stdout",lsclScriptName,": Loading ep-expanded reduction rules ..."];
-		reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
+		
+		If[!usingKIRA,
+			WriteString["stdout",lsclScriptName,": Loading the reduction rules from FIRE (no expansion) ..."];
+			reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRules.m"}]],
+			
+			WriteString["stdout",lsclScriptName,": Loading the reduction rules from KIRA (no expansion) ..."];
+			reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"KiraReductionRules.m"}]]
+		],
+		
+		If[!usingKIRA,
+			WriteString["stdout",lsclScriptName,": Loading ep-expanded reduction rules from FIRE ..."];
+			reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"FireReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]],
+			WriteString["stdout",lsclScriptName,": Loading ep-expanded reduction rules from KIRA ..."];
+			reductionRulesRaw0=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"KiraReductionRulesExpanded"<>ToString[lsclEpExpandUpTo]<>".m"}]]
+		]
 	];
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
 	,
@@ -206,9 +228,16 @@ If[!StringQ[formTopoNames]||!StringQ[formtabTopoName]||!StringQ[formFillStatemen
 ];
 
 
-If[lsclExpandInEp===0,		
-		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatements.frm"}]],		
-		file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
+If[!usingKIRA,
+	If[lsclExpandInEp===0,		
+			file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsFire.frm"}]],		
+			file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsFireExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
+	],
+	
+	If[lsclExpandInEp===0,		
+			file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsKira.frm"}]],		
+			file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions",lsclTopology,"fillStatementsKiraExpanded"<>ToString[lsclEpExpandUpTo]<>".frm"}]]
+	]
 ];
 WriteString[file,formTopoNames<>"\n"<>formtabTopoName<>"\n"<>formFillStatements<>"\n"];
 Close[file];

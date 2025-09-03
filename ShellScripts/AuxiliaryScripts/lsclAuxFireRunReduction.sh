@@ -27,7 +27,7 @@ if [[ -z "${LSCL_CONFIG_SUFFIX+x}" ]]; then
 fi
 
 
-${lsclFireCppPath} --calc flint -c ${lsclTopologyName}${LSCL_CONFIG_SUFFIX} & psrecord $! --include-children --interval 5 --log memory.txt
+${lsclFireCppPath} -c ${lsclTopologyName}${LSCL_CONFIG_SUFFIX} & psrecord $! --include-children --interval 5 --log memory.txt
 
 lsclStatus=$?
 

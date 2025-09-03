@@ -20,7 +20,7 @@ lsclNLoops="$4"
 set +e
 
 ${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFindIntegralMappings.m -run lsclProject="\"${lsclProjectName}\"" \
--run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclNKernels="\"{$lsclFeynCalcNumKernels}\""
+-run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" -run lsclNKernels="\"{$lsclFeynCalcNumKernels}\""  -run lsclUsingKira=${LSCL_FLAG_KIRA}
 
 lsclStatus=$?
 

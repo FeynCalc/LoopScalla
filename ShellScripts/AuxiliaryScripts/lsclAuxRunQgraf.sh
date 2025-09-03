@@ -27,7 +27,9 @@ cd $lsclRepoDir/Projects/$lsclProjectName/QGRAF
 
 rm -rf qgraf.dat lsclTempAmps.out lsclTempGraphs.out lsclTempTeX.out
 cp Input/"$lsclQgrafFile" qgraf.dat
-sed -i -e "s|model = 'xxx'|model = 'Models/$lsclModelFile'|" -e "s|loops = xxx|loops = $lsclNLoops|" qgraf.dat
+sed -i -e "s|model = 'DONTCHANGE'|model = 'Models/$lsclModelFile'|" -e "s|loops = DONTCHANGE|loops = $lsclNLoops|" qgraf.dat
+
+
 
 rm -rf $tfmRepoDir/Projects/$projectDir/QgOutput/$outputFile
 mkdir -p $lsclRepoDir/Projects/$lsclProjectName/QGRAF/Output/Files;

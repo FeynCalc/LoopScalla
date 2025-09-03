@@ -22,6 +22,9 @@ export lsclFireMmaPath="$HOME/.Mathematica/Applications/FIRE6/FIRE6.m"
 # Path to the FIRE6 C++ binary
 export lsclFireCppPath="$HOME/.Mathematica/Applications/FIRE6/bin/FIRE6"
 
+# Path to KIRA
+export lsclKiraPath="$HOME/bin/kira"
+
 # Path to pdfunite
 export lsclPdfunitePath="/usr/bin/pdfunite"
 

@@ -8,7 +8,7 @@
 set -e
 
 if [[ $# -lt 4 ]] ; then
-      echo "lsclAuxFireImportResults: You must specify the project, the process name, the model and the number of the loops."
+      echo "lsclAuxImportReductionResults: You must specify the project, the process name, the model and the number of the loops."
       exit 1
 fi
 
@@ -20,7 +20,7 @@ lsclTopologyName="$5"
 
 set +e
 
-${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclFireImportResults.m -run lsclProject="\"${lsclProjectName}\"" \
+${lsclMmaPath} -nopromt -script ${lsclRepoDir}/MmaScripts/lsclImportReductionResults.m -run lsclProject="\"${lsclProjectName}\"" \
 -run lsclProcessName="\"${lsclProcessName}\"" -run lsclModelName="\"${lsclModelName}\"" -run lsclNLoops="\"${lsclNLoops}\"" \
 -run lsclTopology="\"${lsclTopologyName}\"" -run lsclExpandInEp="${LSCL_FLAG_EXPAND_IN_EP}" -run lsclEpExpandUpTo=${LSCL_EP_EXPANSION_ORDER} \
 -run lsclNKernels=${lsclFeynCalcNumKernels} -run lsclUsingKira=${LSCL_FLAG_KIRA}
@@ -28,9 +28,9 @@ lsclStatus=$?
 
 echo
 if [[ $lsclStatus -eq 0 ]] ; then
-      echo "lsclFireImportResults: Import of reduction tables completed successfully."
+      echo "lsclImportReductionResults: Import of reduction tables completed successfully."
 else
-      echo "lsclFireImportResults: Import of reduction tables failed."
+      echo "lsclImportReductionResults: Import of reduction tables failed."
 fi
 
 exit $lsclStatus

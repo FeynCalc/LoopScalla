@@ -20,11 +20,12 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="ExampleQCD";
-lsclProcessName="GlToGl";
-lsclModelName="TwoFlavorQCD";
-lsclNLoops="1";
+lsclProject="MyHiggsProject";
+lsclProcessName="HToGlGl";
+lsclModelName="SM";
+lsclNLoops="2";
 lsclNKernels="8";
+lsclUsingKira=1;
 ];
 *)
 
@@ -56,6 +57,10 @@ If[ ToString[lsclNLoops]==="lsclNLoops",
 	WriteString["stdout",lsclScriptName,": Error! You did not specify the ","number of loops."];	
 	QuitAbort[]
 ];
+If[ToString[lsclUsingKira]==="lsclUsingKira",
+	WriteString["stdout",lsclScriptName,": Error! You did not specify whether FIRE or KIRA were used."];
+	QuitAbort[]
+];
 
 
 If[ ToString[lsclNKernels]==="lsclNKernels",
@@ -64,10 +69,20 @@ If[ ToString[lsclNKernels]==="lsclNKernels",
 ];
 
 
+If[TrueQ[lsclUsingKira===1],
+	usingKIRA=True,
+	usingKIRA=False
+];
+
+
 WriteString["stdout",lsclScriptName,": Loading the topologies and master integrals ..."];
 filesLoaded=Catch[
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];
-	fcMasters=Get/@FileNames["FireMasterIntegrals.m",{FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions","*"}]}];
+	If[!usingKIRA,
+	fcMastersList=FileNames["FireMasterIntegrals.m",{FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions","*"}]}],
+	fcMastersList=FileNames["KiraMasterIntegrals.m",{FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions","*"}]}]
+	];
+	fcMasters=Get/@fcMastersList;
 	,
 	$Failed
 ];
@@ -79,6 +94,12 @@ WriteString["stdout"," done\n"];
 
 
 glis=Cases2[fcMasters,GLI];
+
+
+If[Length[fcMasters]=!=Length[fcTopologies],
+	Print["ERROR! Missing some master integral files."];
+	QuitAbort[]
+];
 
 
 WriteString["stdout",lsclScriptName,": Naive number of master integrals: ", Length[glis] ,".\n"];
@@ -138,8 +159,12 @@ Table[
 (tmp=FCLoopTopologyNameToSymbol[aux3[[i]]]//ReplaceAll[#,GLI[s_Symbol,inds_List]:>s@@inds]&;
 tmp2=StringReplace["id "<>ToString[#,InputForm]<>";",{"->"->"=","["->"(","]"->")","formAnything"->"?a"}]&/@tmp;
 formMappings="*--#[ lsclMasterIntegralMappings:\n"<>StringRiffle[ToString/@(tmp2),"\n"]<>"\n*--#] lsclMasterIntegralMappings:\n";
+If[!usingKIRA,
 file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappings.frm"}]];
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappingsFire.frm"}]],
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappingsKira.frm"}]]
+];
 WriteString[file,formMappings];
 Close[file];),
 {i,1,Length[fcTopologies]}

@@ -122,12 +122,6 @@ while [[ ${#} -gt 0 ]]; do
       lsclBasicArguments+=("$1")
       shift;
       ;;
-
-    #Basic input parameters
-    *)
-      lsclBasicArguments+=("$1")
-      shift;
-      ;;
   esac
 done
 
