@@ -3,7 +3,7 @@
 
 * Definitions of normal and preprocessor variables specific to this process
 
-S gs,pp;
+S pp;
 * V myVector1, myVector2;
 
 CF lsclQuarkFlavorInvolved;
@@ -19,12 +19,12 @@ k`i',
 ;
 
 * Number of the initial and final states in the given process
-#define lsclNumberOfInitialStates "1"
-#define lsclNumberOfFinalStates "1"
+#define lsclPprNumOfInParticles "1"
+#define lsclPprNumOfOutParticles "1"
 
 * Set to "1" if we are using projectors, while "0" means tensor reduction
-#ifndef `LSCLINSERTPROJECTOR'
-#define LSCLINSERTPROJECTOR "0"
+#ifndef `lsclPprInsertProjector'
+#define lsclPprInsertProjector "0"
 #endif
 
 * Set to "1" if the Dirac spinors need to be removed.
@@ -284,8 +284,6 @@ endargument;
 repeat id lsclTdNum(lsclS?) = lsclS;
 repeat id lsclTdDen(lsclS?) = lsclDen(lsclS);
 
-
-
 #call lsclUnisolate(lsclWrapFun53,lsclWrapFun54)
 #call lsclUnisolate(lsclWrapFun52,lsclWrapFun51)
 
@@ -481,7 +479,7 @@ endrepeat;
 
 * Here one can specify some variables that should be bracketed when inserting
 * the reduction tables and simplifying the result using polyratfun
-gs,
+gs,el,lsclFermionLoop, mqu,mqd,mqs,mqc,mqb,mqt
 
 *--#] lsclAdditionalBracketArguments:
 
