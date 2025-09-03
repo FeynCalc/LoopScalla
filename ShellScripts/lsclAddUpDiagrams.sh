@@ -16,8 +16,7 @@ set -e
 export LSCL_SCRIPT_NAME="lsclAddUpDiagrams"
 
 if [[ $# -lt 4 ]] ; then
-    echo "${LSCL_SCRIPT_NAME}: You must specify the project, the process name, the model, and the number of the loops!"
-    echo "${LSCL_SCRIPT_NAME}: Current command line arguments: ${@}"
+    echo "${LSCL_SCRIPT_NAME}: You must specify the project, the process name, the model, and the number of the loops!"    
     exit 0
 fi
 
