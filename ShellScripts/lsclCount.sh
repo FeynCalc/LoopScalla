@@ -144,7 +144,7 @@ case ${lsclShowWhat} in
     showMissingVer=-1    
     ;;    
 
-  Reductions)    
+  CompletedReductions)    
     if [[ ${LSCL_FLAG_KIRA} -ne 1 ]] ; then
       lsclInputCount=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "LoopIntegrals.m" | wc -l)
       lsclOutputCount=$(find $lsclRepoDir/Projects/$lsclProjectName/Diagrams/$lsclProcessName/$lsclModelName/$lsclNLoops/Reductions/*/ -type f -name "*.tables" | wc -l)
