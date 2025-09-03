@@ -6,3 +6,4 @@ LoopScalla is a FORM- and FeynCalc-based framework for multiloop calculations
 - [Installation](Install.md)
 - [Notation and Conventions](NotationAndConventions.md)
 - [Workflow](Workflow.md)
+- [Creating new project](NewProject.md)

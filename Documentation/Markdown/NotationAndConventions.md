@@ -59,7 +59,11 @@ The rules for the package notation and conventions are listed below
 
 These variables are defined in `Shared/lsclDeclarations.h`. For your project-related definitions you should use the fold `lsclGeneric` in `Projects/ProjectName/Shared/ProcessName.h`
 
-The variables with a number suffix are defined from 1 to `LSCLMAXINDEX`. The latter is defined in `Shared/lsclDefinitions.h`. Notice that this file only contains default values for the relevant preprocessor variables. You can override them in your `Projects/ProjectName/Shared/ProcessName.h` file.
+The variables with a number suffix are defined from 1 to `lsclPprMaxIndex`. The latter is defined in `Shared/lsclDefinitions.h`. Notice that this file only contains default values for the relevant preprocessor variables. You can override them in your `Projects/ProjectName/Shared/ProcessName.h` file.
+
+The global preprocessor variables are called `lsclPprXYZ`.
+
+The number of space-time dimensions is called `lsclD`, while `lsclEp` for $\varepsilon$ in $4-2 \varepsilon$.
 
 ## Momenta
 
@@ -119,7 +123,7 @@ in terms of inverse propagators. The output should be free of any explicit loop 
 
 ## Command line parameters
 
-- Can add `-d LSCLVERBOSITY=1` to the bash scripts to have a more verbose output
+- Can add `-d lsclPprVerbosity=1` to the bash scripts to have a more verbose output
 
 
 ## Running jobs on a cluster where we reserve complete nodes
