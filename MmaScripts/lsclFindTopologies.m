@@ -111,7 +111,7 @@ finalSubstitutions="FinalSubstitutions"/.fcConfig;
 If[ToString[finalSubstitutions]==="finalSubstitutions",
 	finalSubstitutions={}
 ];
-WriteString["stdout",lsclScriptName,": Kinematic constraints: ", finalSubstitutions,".\n\n"];
+WriteString["stdout",lsclScriptName,": Kinematic constraints: ", ToString[finalSubstitutions,InputForm],".\n\n"];
 
 
 (*FromGFAD$InitialSubstitutions="FromGFAD$InitialSubstitutions"/.fcConfig;
