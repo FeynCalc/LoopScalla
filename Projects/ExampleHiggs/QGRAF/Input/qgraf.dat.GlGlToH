@@ -1,0 +1,21 @@
+ output = 'lsclTempAmps.out' ;
+ style = 'Styles/form.sty' ;
+
+ output = 'lsclTempGraphs.out' ;
+ style = 'Styles/graphviz.sty' ;
+
+ output = 'lsclTempTeX.out' ;
+ style = 'Styles/tikz-feynman.sty' ;
+
+ model = 'DONTCHANGE';
+
+ in = Gl,Gl;
+ out = H;
+
+ loops = DONTCHANGE;
+
+ loop_momentum = k;
+
+ options = notadpoles, onshell, nosnail;
+ true = vsum[gs,2,100];
+ true = vsum[el,1,1];

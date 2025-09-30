@@ -1,0 +1,314 @@
+[ model = 'Standard Model' ]
+
+
+% Possible colors for GraphViz
+% https://graphviz.org/doc/info/colors.html
+
+% ---------------------------
+%       Propagators
+% ---------------------------
+
+% Gauge bosons
+
+[Gl, Gl, +; color='crimson', style='dashed']
+[Ga, Ga, +; color='orange', style='dashed']
+[Wm, Wp, +; color='orchid', style='dashed']
+[Z, Z, +; color='mediumorchid', style='dashed']
+
+% Quarks
+
+[Qu, Qubar, -; color='tomato', style='solid']
+[Qd, Qdbar, -; color='firebrick', style='solid']
+[Qc, Qcbar, -; color='mediumseagreen',style='solid']
+[Qs, Qsbar, -; color='darkgreen', style='solid']
+[Qt, Qtbar, -; color='gold', style='solid']
+[Qb, Qbbar, -; color='goldenrod', style='solid']
+
+% Leptons
+
+[El, Ael, -; color='dodgerblue', style='solid']
+[Mu, Amu, -; color='royalblue', style='solid']
+[Tau, Atau, -; color='midnightblue', style='solid']
+[Nel, Anel, -; color='lightcyan', style='solid']
+[Nmu, Anmu, -; color='paleturquoise', style='solid']
+[Ntau, Antau, -; color='powderblue', style='solid']
+
+% Ghosts
+
+[Gh, Ghbar, -; color='dimgray', style='bold']
+[GhGa, GhGabar, -; color='plum', style='bold']
+[GhZ, GhZbar, -; color='mediumpurple', style='bold']
+[GhWp, GhWpbar, -; color='mediumslateblue', style='bold']
+[GhWm, GhWmbar, -; color='slateblue', style='bold']
+
+% Goldstones
+
+[H, H, +; color='deeppink', style='dotted']
+[Gb, Gb, +; color='palegoldenrod', style='dotted']
+[Gbp, Gbp, +; color='khaki', style='dotted']
+[Gbm, Gbm, +; color='darkkhaki', style='dotted']
+
+
+% gs counts the powers of the strong coupling constant
+% el counts the powers of the fine-structure constant
+
+% ---------------------------
+%      QCD Vertices
+% ---------------------------
+
+
+[Qubar, Qu, Gl; gs='1', el='0']
+[Qcbar, Qc, Gl; gs='1', el='0']
+[Qtbar, Qt, Gl; gs='1', el='0']
+[Qdbar, Qd, Gl; gs='1', el='0']
+[Qsbar, Qs, Gl; gs='1', el='0']
+[Qbbar, Qb, Gl; gs='1', el='0']
+
+[Gl, Gl, Gl, Gl; gs='2', el='0']
+[Gl, Gl, Gl; gs='1', el='0']
+[Ghbar, Gh, Gl; gs='1', el='0']
+
+
+% ---------------------------
+%      EW Vertices
+% ---------------------------
+
+% --------- VFF -------------
+
+% Lepton-photon
+
+[Ael,El,Ga; gs='0', el='1']
+[Amu,Mu,Ga; gs='0', el='1']
+[Atau,Tau,Ga; gs='0', el='1']
+
+% Leptonic charged current
+
+[Anel, El, Wp; gs='0', el='1']
+[Ael, Nel, Wm; gs='0', el='1']
+[Anmu, Mu, Wp; gs='0', el='1']
+[Amu, Nmu, Wm; gs='0', el='1']
+[Antau, Tau, Wp; gs='0', el='1']
+[Atau, Ntau, Wm; gs='0', el='1']
+
+% Lepton-neutrino neutral current
+
+[Anel, Nel, Z; gs='0', el='1']
+[Anmu, Nmu, Z; gs='0', el='1']
+[Antau, Ntau, Z; gs='0', el='1']
+[Ael, El, Z; gs='0', el='1']
+[Amu, Mu, Z; gs='0', el='1']
+[Atau, Tau, Z; gs='0', el='1']
+
+% Quark charged current
+
+[Qubar, Qd, Wp; gs='0', el='1']
+[Qubar, Qs, Wp; gs='0', el='1']
+[Qubar, Qb, Wp; gs='0', el='1']
+
+[Qcbar, Qd, Wp; gs='0', el='1']
+[Qcbar, Qs, Wp; gs='0', el='1']
+[Qcbar, Qb, Wp; gs='0', el='1']
+
+[Qtbar, Qd, Wp; gs='0', el='1']
+[Qtbar, Qs, Wp; gs='0', el='1']
+[Qtbar, Qb, Wp; gs='0', el='1']
+
+[Qdbar, Qu, Wm; gs='0', el='1']
+[Qdbar, Qc, Wm; gs='0', el='1']
+[Qdbar, Qt, Wm; gs='0', el='1']
+
+[Qsbar, Qu, Wm; gs='0', el='1']
+[Qsbar, Qc, Wm; gs='0', el='1']
+[Qsbar, Qt, Wm; gs='0', el='1']
+
+[Qbbar, Qu, Wm; gs='0', el='1']
+[Qbbar, Qc, Wm; gs='0', el='1']
+[Qbbar, Qt, Wm; gs='0', el='1']
+
+% Quark neutral current
+
+[Qubar, Qu, Z; gs='0', el='1']
+[Qcbar, Qc, Z; gs='0', el='1']
+[Qtbar, Qt, Z; gs='0', el='1']
+[Qdbar, Qd, Z; gs='0', el='1']
+[Qsbar, Qs, Z; gs='0', el='1']
+[Qbbar, Qb, Z; gs='0', el='1']
+
+% Quark-photon
+
+[Qubar, Qu, Ga; gs='0', el='1']
+[Qcbar, Qc, Ga; gs='0', el='1']
+[Qtbar, Qt, Ga; gs='0', el='1']
+[Qdbar, Qd, Ga; gs='0', el='1']
+[Qsbar, Qs, Ga; gs='0', el='1']
+[Qbbar, Qb, Ga; gs='0', el='1']
+
+% --------- SFF -------------
+
+% Yukawa interactions of leptons 
+
+[Ael, El, H; gs='0', el='1']
+[Amu, Mu, H; gs='0', el='1']
+[Atau, Tau, H; gs='0', el='1']
+ 
+[Ael, El, Gb; gs='0', el='1']
+[Amu, Mu, Gb; gs='0', el='1']
+[Atau, Tau, Gb; gs='0', el='1']
+
+[Anel, El, Gbp; gs='0', el='1']
+[Ael, Nel, Gbm; gs='0', el='1']
+[Anmu, Mu, Gbp; gs='0', el='1']
+[Amu, Nmu, Gbm; gs='0', el='1']
+[Antau, Tau, Gbp; gs='0', el='1']
+[Atau, Ntau, Gbm; gs='0', el='1']
+
+% If the neutrinos are treated as massless, 
+% these interactions proportional
+% to the neutrino mass and do not contribute
+
+% [Anel, Nel, H; gs='0', el='1']
+% [Anmu, Nmu, H; gs='0', el='1']
+% [Antau, Ntau, H; gs='0', el='1']
+
+% [Anel, Nel, Gb; gs='0', el='1']
+% [Anmu, Nmu, Gb; gs='0', el='1']
+% [Antau, Ntau, Gb; gs='0', el='1']
+ 
+% Yukawa interactions of quarks
+
+% Quark charged current
+
+[Qubar, Qd, Gbp; gs='0', el='1']
+[Qubar, Qs, Gbp; gs='0', el='1']
+[Qubar, Qb, Gbp; gs='0', el='1']
+
+[Qcbar, Qd, Gbp; gs='0', el='1']
+[Qcbar, Qs, Gbp; gs='0', el='1']
+[Qcbar, Qb, Gbp; gs='0', el='1']
+
+[Qtbar, Qd, Gbp; gs='0', el='1']
+[Qtbar, Qs, Gbp; gs='0', el='1']
+[Qtbar, Qb, Gbp; gs='0', el='1']
+
+[Qdbar, Qu, Gbm; gs='0', el='1']
+[Qdbar, Qc, Gbm; gs='0', el='1']
+[Qdbar, Qt, Gbm; gs='0', el='1']
+
+[Qsbar, Qu, Gbm; gs='0', el='1']
+[Qsbar, Qc, Gbm; gs='0', el='1']
+[Qsbar, Qt, Gbm; gs='0', el='1']
+
+[Qbbar, Qu, Gbm; gs='0', el='1']
+[Qbbar, Qc, Gbm; gs='0', el='1']
+[Qbbar, Qt, Gb; gs='0', el='1']
+
+% Quark neutral current
+
+[Qubar, Qu, H; gs='0', el='1']
+[Qcbar, Qc, H; gs='0', el='1']
+[Qtbar, Qt, H; gs='0', el='1']
+[Qdbar, Qd, H; gs='0', el='1']
+[Qsbar, Qs, H; gs='0', el='1']
+[Qbbar, Qb, H; gs='0', el='1']
+
+[Qubar, Qu, Gb; gs='0', el='1'] 
+[Qcbar, Qc, Gb; gs='0', el='1'] 
+[Qtbar, Qt, Gb; gs='0', el='1']
+[Qdbar, Qd, Gb; gs='0', el='1']
+[Qsbar, Qs, Gb; gs='0', el='1'] 
+[Qbbar, Qb, Gb; gs='0', el='1']
+
+% --------- VVV and VVVV -------------
+
+% Gauge interactions of weak gauge bosons
+
+[Wp, Wm, Ga; gs='0', el='1']
+[Wp, Wm, Z; gs='0', el='1']
+
+[Wp, Wm, Ga, Ga; gs='0', el='2']
+[Wp, Wm, Ga, Z; gs='0', el='2']
+[Wp, Wm, Ga, Z; gs='0', el='2']
+[Wp, Wp, Wm, Wm; gs='0', el='2']
+
+% --------- SSS and SSSS -------------
+
+% Self-interactions of Higgs and Goldstone bosons 
+
+[H, H, H; gs='0', el='1']
+[H, Gb, Gb; gs='0', el='1']
+[H, Gbm, Gbp; gs='0', el='1']
+
+[H, H, H, H; gs='0', el='2']
+[Gb, Gb, Gb, Gb; gs='0', el='2']
+[H, H, Gb, Gb; gs='0', el='2'] 
+[H, H, Gbm, Gbp; gs='0', el='2']
+[Gb, Gb, Gbm, Gbp; gs='0', el='2']
+[Gbm, Gbp, Gbm, Gbp; gs='0', el='2']
+
+% --------- SVV, SSV and SSVV -------------
+
+% Gauge interactions of Higgs and Goldstone bosons 
+
+[H, Z, Z; gs='0', el='1']
+[H, Wp, Wm; gs='0', el='1']
+[Gbp, Wm, Ga; gs='0', el='1']
+[Gbm, Wp, Ga; gs='0', el='1']
+[Gbp, Wm, Z; gs='0', el='1']
+[Gbm, Wp, Z; gs='0', el='1']
+
+[Z, Gb, H; gs='0', el='1']
+[Ga, Gbp, Gbm; gs='0', el='1']
+[Z, Gbp, Gbm; gs='0', el='1']
+[Wp, Gbm, H; gs='0', el='1']
+[Wm, Gbp, H; gs='0', el='1']
+[Wp, Gbm, Gb; gs='0', el='1']
+[Wm, Gbp, Gb; gs='0', el='1']
+
+[Z, Z, H, H; gs='0', el='2']
+[Z, Z, Gb, Gb; gs='0', el='2']
+[Wp, Wm, H, H; gs='0', el='2']
+[Wp, Wm, Gb, Gb; gs='0', el='2']
+[Wp, Wm, Gbp, Gbm; gs='0', el='2']
+[Ga, Ga, Gbp, Gbm; gs='0', el='2']
+[Z, Z, Gbp, Gbm; gs='0', el='2']
+[Z, Ga, Gbp, Gbm; gs='0', el='2']
+[Wp, Ga, Gbm, H; gs='0', el='2']
+[Wm, Ga, Gbp, H; gs='0', el='2']
+[Wp, Ga, Gbm, H; gs='0', el='2']
+[Wm, Ga, Gbp, H; gs='0', el='2']
+[Wp, Z, Gbm, H; gs='0', el='2']
+[Wm, Z, Gbp, H; gs='0', el='2']
+[Wp, Z, Gbm, Gb; gs='0', el='2']
+[Wm, Z, Gbp, Gb; gs='0', el='2']
+
+% --------- GGV -------------
+
+% Gauge interactions of ghosts
+
+[GhWpbar, GhWp, Ga; gs='0', el='1']
+[GhWmbar, GhWm, Ga; gs='0', el='1']
+[GhWpbar, GhWp, Z; gs='0', el='1']
+[GhWmbar, GhWm, Z; gs='0', el='1']
+[GhGabar, GhWm, Wp; gs='0', el='1']
+[GhGabar, GhWp, Wm; gs='0', el='1']
+[GhWmbar, GhGa, Wm; gs='0', el='1']
+[GhWpbar, GhGa, Wp; gs='0', el='1']
+[GhZbar, GhWm, Wp; gs='0', el='1']
+[GhZbar, GhWp, Wm; gs='0', el='1']
+[GhWmbar, GhZ, Wm; gs='0', el='1']
+[GhWpbar, GhZ, Wp; gs='0', el='1']
+
+% --------- GGS -------------
+
+% Interactions of ghosts with Higgs and Goldstones
+
+[GhWpbar, GhWp, H; gs='0', el='1']
+[GhWmbar, GhWm, H; gs='0', el='1']
+[GhWpbar, GhWp, Gb; gs='0', el='1']
+[GhWmbar, GhWm, Gb; gs='0', el='1']
+[GhWpbar, GhGa, Gbp; gs='0', el='1']
+[GhWmbar, GhGa, Gbm; gs='0', el='1']
+[GhWpbar, GhZ, Gbp; gs='0', el='1']
+[GhWmbar, GhZ, Gbm; gs='0', el='1']
+[GhZbar, GhWp, Gbm; gs='0', el='1']
+[GhZbar, GhWm, Gbp; gs='0', el='1']
