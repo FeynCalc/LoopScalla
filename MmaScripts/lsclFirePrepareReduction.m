@@ -21,12 +21,12 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="BToEtaC";
-lsclProcessName="QbQubarToWQQubarFull";
-lsclModelName="BToEtaCLCG";
-lsclNLoops="1";
-lsclTopologyName="topology1";
-lsclNoLiteRed="0";
+lsclProject="ExampleHiggs";
+lsclProcessName="GlGlToH";
+lsclModelName="SM";
+lsclNLoops="2";
+lsclTopologyName="topologyGlGlToH2L1";
+lsclNoLiteRed="1";
 ];
 *)
 
@@ -77,7 +77,7 @@ filesLoaded=Catch[
 	file=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"LoopIntegrals","Mma",lsclTopologyName<>".m"}];
 	fcConfig=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Shared","lsclMmaConfig.m"}]];
 	lsclSymbolicTopologyName=ToExpression[lsclTopologyName];
-	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclTopologyName,{inds}];
+	integrals=Cases2[Get[file],lsclSymbolicTopologyName]/. lsclSymbolicTopologyName[inds__Integer]:> GLI[lsclSymbolicTopologyName,{inds}];
 	fcTopologies=Get[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","FCTopologies.m"}]];	
 	,
 	$Failed
@@ -125,7 +125,7 @@ If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
 dirReductions=FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Reductions"}];
 
 
-currentTopology=SelectNotFree[fcTopologies,lsclTopologyName];
+currentTopology=SelectNotFree[fcTopologies,lsclSymbolicTopologyName];
 
 
 WriteString["stdout","lsclFirePrepareReduction: Preparing start files ... ","\n\n"];
@@ -155,7 +155,7 @@ FIREFthreads->2 NumberOfCoresForReduction,
 FIRELthreads->8,
 FIRESthreads->NumberOfCoresForReduction,
 FIREThreads->NumberOfCoresForReduction
-];
+];(*
 FIRECreateConfigFile[currentTopology,{FileNameJoin[{dirReductions,topoNameAsString,topoNameAsString<>"-16c.config"}]},
 Variables->fcVariables,
 FIREUseLiteRed->usingLiteRed,
@@ -204,7 +204,7 @@ FIRESthreads->8,
 FIREThreads->8,
 FIREDatabase->"/formswap/shtabovenko/"<>topoNameAsString
 ];
-
+*)
 WriteString["stdout","done\n"];
 
 

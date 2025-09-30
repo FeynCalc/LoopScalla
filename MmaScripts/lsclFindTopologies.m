@@ -27,7 +27,16 @@ lsclNLoops="MyNumberOfLoops";
 lsclNDiagrams="MyNumberOfDiagrams";
 lsclNKernels="MyNumberOfParallelKernels";
 ];
-*)
+*)(*
+$lsclDEBUG=True;
+If[TrueQ[$lsclDEBUG],
+lsclProject="MyHiggsProject";
+lsclProcessName="GlGlToH";
+lsclModelName="SM";
+lsclNLoops="2";
+lsclNDiagrams="126";
+lsclNKernels="8";
+]*)
 
 
 lsclScriptName="lsclFindTopologies";
@@ -156,7 +165,7 @@ Flatten[Table[(Total/@ReleaseHold[Flatten[Outer[Hold[Times],Subsets[lmoms,{i}],T
 intSubstsForQuadraticEikonalPropagators=Map[ExpandScalarProduct[SPD[#]] -> SPD[#]&,generateLoopMomSums[lmoms]];
 
 
-rawTopologiesFC=FCLoopReplaceQuadraticEikonalPropagators[rawTopologiesFC$0, LoopMomenta -> {k1, k2, k3}, 
+rawTopologiesFC=FCLoopReplaceQuadraticEikonalPropagators[rawTopologiesFC$0, LoopMomenta -> lmoms, 
 InitialSubstitutions -> intSubstsForQuadraticEikonalPropagators, IntermediateSubstitutions -> FRH[finalSubstitutions]];
 
 
@@ -186,7 +195,7 @@ If[!MatchQ[rawTopologiesCheck,{1..}],
 
 WriteString["stdout",lsclScriptName,": Applying FCLoopFindTopologies.","\n\n"];
 aux1=FCLoopFindTopologies[rawTopologiesFC$3,lmoms,FCLoopIsolate->loopHead,FCLoopBasisOverdeterminedQ->True,FinalSubstitutions->finalSubstitutions,
-Names->"preTopoDia",Head->Identity,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False,FCParallelize->True];
+Names->preTopoDia,Head->Identity,FCLoopGetKinematicInvariants->False,FCLoopScalelessQ->False,FCParallelize->True];
 
 
 WriteString["stdout","\n",lsclScriptName,": Done applying FCLoopFindTopologies.","\n\n"];
@@ -335,7 +344,7 @@ pfrTopos=Union[pfrToposPre,First/@newNoPfrTopos];
 
 
 (* Replacement rule for renaming preTopo-topologies (with PFR-suffixes from partial fractioning) to pfrTopo topologies *)
-pfrToposNew=Table["pfrTopo"<>ToString[i],{i,1,Length[pfrTopos]}];
+pfrToposNew=Table[ToExpression["pfrTopo"<>ToString[i]],{i,1,Length[pfrTopos]}];
 pfrRenRu=Thread[Rule[pfrTopos,pfrToposNew]];
 
 
@@ -457,7 +466,7 @@ Put[mappedTopos,FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lscl
 
 (* An extra rule for introducing new names for the final topologies *)
 finTopoNames=First/@mappedTopos[[2]];
-finTopoNamesNew=Table["finTopo"<>ToString[i],{i,1,Length[finTopoNames]}];
+finTopoNamesNew=Table[ToExpression["finTopo"<>ToString[i]],{i,1,Length[finTopoNames]}];
 finRenRu=Thread[Rule[finTopoNames,finTopoNamesNew]];
 auxRu=StringReplace["id "<>ToString[#[[1]],InputForm]<>"(?a) = "<>ToString[#[[2]],InputForm]<>"(?a);",
 {"->"->"=","["->"(","]"->")","formAnything"->"?a","formReplace"->"replace_","$QM"->"?"}]&/@(finRenRu/.s_String:>ToExpression[s]);
@@ -583,7 +592,10 @@ formTopoIDRuleRaw=StringReplace["id "<>ToString[#,InputForm]<>";",{"=="->"=","["
 ultimateTopos=finToposRenamed/.Thread[Rule[incompleteTopos,completedTopos]];
 
 
-ultimateToposNewNames=Table["topology"<>ToString[i],{i,1,Length[finToposRenamed]}];
+lsclProcessName
+
+
+ultimateToposNewNames=Table[ToExpression["topology"<>lsclProcessName<>lsclNLoops<>"L"<>ToString[i]],{i,1,Length[finToposRenamed]}];
 ultimateToposRenamingRule=Thread[Rule[First/@ultimateTopos,ultimateToposNewNames]];
 
 

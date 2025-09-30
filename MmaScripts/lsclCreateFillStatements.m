@@ -118,13 +118,13 @@ If[ToString[fcVariables]=!="fcVariables" && MatchQ[fcVariables,{__Symbol}],
 ];
 
 
-reductionRulesRaw1=Select[reductionRulesRaw0,(#[[1]][[1]]===lsclTopology)&];
+reductionRulesRaw1=Select[reductionRulesRaw0,(#[[1]][[1]]===ToExpression[lsclTopology])&];
 allGLIs=Cases2[reductionRulesRaw1,GLI];
 allGLIsConv=Map[#[[1]]@@#[[2]]&,FCLoopTopologyNameToSymbol[allGLIs]];
 convRule=Dispatch[Thread[Rule[allGLIs,allGLIsConv]]];
 
 
-currentTopo=SelectNotFree[fcTopologies,lsclTopology];
+currentTopo=SelectNotFree[fcTopologies,ToExpression[lsclTopology]];
 If[ Length[currentTopo]=!=1,	
 	WriteString["stdout",lsclScriptName,": Error! Cannot find the requested topology in the list."];
 	QuitAbort[]

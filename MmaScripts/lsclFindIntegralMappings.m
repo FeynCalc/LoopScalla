@@ -20,8 +20,8 @@ Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
 (*
 $lsclDEBUG=True;
 If[TrueQ[$lsclDEBUG],
-lsclProject="MyHiggsProject";
-lsclProcessName="HToGlGl";
+lsclProject="ExampleHiggs";
+lsclProcessName="GlGlToH";
 lsclModelName="SM";
 lsclNLoops="2";
 lsclNKernels="8";
@@ -161,9 +161,9 @@ tmp2=StringReplace["id "<>ToString[#,InputForm]<>";",{"->"->"=","["->"(","]"->")
 formMappings="*--#[ lsclMasterIntegralMappings:\n"<>StringRiffle[ToString/@(tmp2),"\n"]<>"\n*--#] lsclMasterIntegralMappings:\n";
 If[!usingKIRA,
 file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappingsFire.frm"}]],
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",ToString[allTopoNames[[i]]],"MasterIntegralMappingsFire.frm"}]],
 file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,
-	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",allTopoNames[[i]],"MasterIntegralMappingsKira.frm"}]]
+	"Diagrams",lsclProcessName,lsclModelName,lsclNLoops,"Reductions",ToString[allTopoNames[[i]]],"MasterIntegralMappingsKira.frm"}]]
 ];
 WriteString[file,formMappings];
 Close[file];),
