@@ -111,6 +111,7 @@ k`i',
 
 *--#[ lsclBeforeInsertingFeynmanRules:
 
+
 * Here we filter out true self-energy corrections on
 * external legs while keeping those, where the incoming
 * and outgoing particles are different so that we have 
@@ -224,8 +225,18 @@ repeat id lsclTdDen(lsclS?) = lsclDen(lsclS);
 #call lsclUnisolate(lsclWrapFun53,lsclWrapFun54)
 #call lsclUnisolate(lsclWrapFun52,lsclWrapFun51)
 
+* If needed one could extract the unprocessed amplitude here to compare it with 
+* other results
+*print;
+*.sort
+*#call lsclToFeynCalc(s0dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/s0dia`lsclDiaNumber'L`lsclNLoops'-tr.m)
+*.end
 
 #message `lsclProcessName': lsclDoTensorReduction: All done : `time_'
+
+*b lsclGaugeXi,lsclFermionLoop,gs,lsclCA,lsclCF;
+*print[];
+*.sort
 
 *--#] lsclDoTensorReduction:
 
@@ -368,6 +379,13 @@ endargument;
 
 
 #message `lsclProcessName': lsclCodeBlock1: All done : `time_'
+
+* If needed one could extract the unprocessed amplitude here to compare it with 
+* other results
+*print;
+*.sort
+*#call lsclToFeynCalc(s0dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/s0dia`lsclDiaNumber'L`lsclNLoops'.m)
+*.end
 
 *--#] lsclCodeBlock1:
 

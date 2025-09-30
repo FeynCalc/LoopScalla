@@ -217,6 +217,8 @@ delete storage;
 .sort
 .store
 
+* TODO: Allow adding suffixes
+
 #ifdef `LSCLREDUCESINGLEINTEGRAL'
 save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/SplitStage2/`lsclDiaNumber'/stage2_dia`lsclDiaNumber'L`lsclNLoops'_p`lsclIntegralNumber'.res;
 #else

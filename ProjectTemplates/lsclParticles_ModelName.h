@@ -57,6 +57,7 @@ set lsclEWBosonFields: Ga, Wp, Wm, Z;
 
 set lsclScalarFields: H, Gb, Gbp, Gbm;
 set lsclVectorFields: Ga, Gl, Wp, Wm, Z;
+set lsclBosonFields: H, Gb, Gbp, Gbm, Ga, Gl, Wp, Wm, Z;
 set lsclFermionFields: Qu, Qd, Qs, Qc, Qt, Qb, Qi, Qj, El, Mu, Tau, Lei, Lej, Nel, Nmu, Ntau, Nlei, Nlej;
 set lsclAntiFermionFields: Qubar, Qdbar, Qsbar, Qcbar, Qtbar, Qbbar, Qibar, Qjbar, Ael, Amu, Atau, Alei, Alej, Anel, Anmu, Antau, Anlei, Anlej;
 set lsclGhostFields: Gh, GhGa, GhZ, GhWp, GhWm;
