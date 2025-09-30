@@ -6,7 +6,7 @@
 * via MAXRANK, MINRANK, MAXNLEGS and MINNLEGS.
 
 * Here we determine the highest number of legs and tensor rank in the amplitude
-#`MAXRANK'=0;
+#`MAXRANK'=1;
 #`MAXNLEGS'=0;
 
 id lsclTensRedRank(lsclS?) = lsclS30^lsclS*lsclTensRedRank(lsclS);
@@ -25,7 +25,7 @@ ModuleOption, maximum, `MAXRANK', `MAXNLEGS';
 #`MINRANK'=`MAXRANK';
 #`MINNLEGS'=`MAXNLEGS';
 
-if ( count(lsclS30,1) < `MINRANK' ) `MINRANK' = count_(lsclS30,1);
+if ( count(lsclS30,1) < `MINRANK' && count(lsclS30,1)!=0 ) `MINRANK' = count_(lsclS30,1);
 if ( count(lsclS31,1) < `MINNLEGS' ) `MINNLEGS' = count_(lsclS31,1);
 
 ModuleOption, minimum, `MINRANK', `MINNLEGS';
@@ -37,9 +37,5 @@ ModuleOption, minimum, `MINRANK', `MINNLEGS';
 
 id lsclS30^lsclS?!{,0} = 1;
 id lsclS31^lsclS?!{,0} = 1;
-
-#if (``MINRANK'' == 0)
-#`MINRANK' = 1;
-#endif
 
 #endprocedure

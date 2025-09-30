@@ -169,7 +169,7 @@ id lsclFermionLine(?a)  = 1;
 #define lsclPprIsolateLoopMomenta "1"
 
 #message `lsclProcessName':: lsclDoTensorReduction: Calling lsclIsolate : `time_' ...
-#call lsclIsolate(lsclWrapFun51,lsclWrapFun52,lsclFAD, lsclGFAD, lsclDiracGamma, lsclDiracTrace)
+#call lsclIsolate(lsclWrapFun51,lsclWrapFun52,lsclFAD, lsclGFAD, lsclDiracGamma, lsclDiracTrace,lsclEps)
 #message `lsclProcessName':: lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Calling sort : `time_' ...
@@ -185,7 +185,7 @@ id lsclFermionLine(?a)  = 1;
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName':: lsclDoTensorReduction: Calling lsclIsolate again: `time_' ...
-#call lsclIsolate(lsclWrapFun53,lsclWrapFun54,lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType)
+#call lsclIsolate(lsclWrapFun53,lsclWrapFun54,lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType,lsclDontIsolateCF,lsclDontIsolateF)
 #message `lsclProcessName':: lsclDoTensorReduction: ... done : `time_'
 
 b lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType;
@@ -198,7 +198,7 @@ print[];
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Calling lsclIdentifyPresentTensors: `time_' ...
-#call lsclIdentifyPresentTensors($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMinNLegs,$lsclDollarMaxNLegs)
+#call lsclIdentifyPresentTensors($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMaxNLegs,$lsclDollarMinNLegs)
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Tensor ranks: from `$lsclDollarMinTensorRank' to `$lsclDollarMaxTensorRank'
@@ -209,10 +209,15 @@ print[];
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Calling lsclLoadTensorReductions: `time_' ...
-#call lsclLoadTensorReductions($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMinNLegs,$lsclDollarMaxNLegs)
+#call lsclLoadTensorReductions($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMaxNLegs,$lsclDollarMinNLegs)
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Doing index contractions:  `time_' ...
+
+repeat;
+id lsclDontIsolateCF(lsclS?) = lsclS;
+id lsclDontIsolateF(lsclS?) = lsclS;
+endrepeat;
 
 id lsclTensRedRank(lsclS1?)*lsclTensRedNLegs(lsclS2?)*lsclTensorStructure(lsclS3?) = lsclS3;
 
@@ -366,8 +371,9 @@ endargument;
 
 .sort
 
-* Print the intermediate result. Can be also shortened using bracket and print[];
-print;
+* Can print the intermediate result here.
+* b lsclFAD,lsclGaugeXi,lsclFermionLoop;
+* print[];
 
 
 #message `lsclProcessName': lsclCodeBlock1: All done : `time_'

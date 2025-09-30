@@ -19,6 +19,9 @@
 
 #message lsclPrepareTensorReduction: Preparing loop integrals in the expression for the tensor reduction: `time_' ...
 
+*******************************************************************************
+* Here we extract the dependence of propagators on external momenta
+
 id lsclF?{lsclFAD,lsclGFAD}(?a) = `NAME1'(lsclF(?a));
 
 * lsclFAD format is lsclFAD(v1+v2-v3 ..., m^2)
@@ -53,23 +56,24 @@ endrepeat;
 
 id lsclTensRedMomentaRaw(?a) = lsclTensRedMomenta(?a)*lsclTensRedNLegs(nargs_(?a));
 
-
+*******************************************************************************
 
 * At this point every integral is multiplied by a lsclTensRedMomentaSorted(...) function containing the external momenta it
 * depends on. The next step is to handle loop momenta contractions
-* .sort
+* Notice that uncontracted tensors should not go into functions to whose argument we apply argtoextrasymbols. Otherwise
+* the indices will get messed up, cf. https://github.com/form-dev/form/issues/344
 
 * Dirac matrices. Since lsclDiracGamma is noncom tensor, linear combinations of momenta are being expanded automatically.
 * Hence, we may only have something like lsclDiracGamma(...,k1,...) but not lsclDiracGamma(...,k1+p1,...) 
 repeat;
-id, once lsclDiracGamma(?a,lsclV1?lsclLoopMomenta,?b) = lsclDiracGamma(?a,N101_?,?b)*lsclTensRedLoopRaw(lsclV1(N101_?));
-id, once lsclDiracTrace(lsclDiracGamma(?a,lsclV1?lsclLoopMomenta,?b)) = lsclDiracTrace(lsclDiracGamma(?a,N102_?,?b))*lsclTensRedLoopRaw(lsclV1(N102_?));
+id, once lsclDiracGamma(?a,lsclV1?lsclLoopMomenta,?b) = lsclDontIsolateF(lsclDiracGamma(?a,N101_?,?b))*lsclTensRedLoopRaw(lsclV1(N101_?));
+id, once lsclDiracTrace(lsclDiracGamma(?a,lsclV1?lsclLoopMomenta,?b)) = lsclDontIsolateCF(lsclDiracTrace(lsclDiracGamma(?a,N102_?,?b)))*lsclTensRedLoopRaw(lsclV1(N102_?));
 renumber;
 endrepeat;
 
 * Scalar products
 repeat;
-id, once lsclV1?lsclLoopMomenta.lsclV2?!lsclLoopMomenta = lsclTensRedLoopRaw(lsclV1(N101_?))*lsclV2(N101_?);
+id, once lsclV1?lsclLoopMomenta.lsclV2?!lsclLoopMomenta = lsclTensRedLoopRaw(lsclV1(N101_?))*lsclDontIsolateCF(lsclV2(N101_?));
 renumber;
 endrepeat;
 

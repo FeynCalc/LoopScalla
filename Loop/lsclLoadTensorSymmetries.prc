@@ -22,6 +22,7 @@
 #endif
 
 #if (`i' <= `j')
+* The number of loops is smaller than the rank
 #include Tables/TensorReductions/TdNames/lsclAllTdNamesRank`j'L`i'.frm
 #else 
 #include Tables/TensorReductions/TdNames/lsclAllTdNamesRank`j'L`j'.frm
