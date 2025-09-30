@@ -94,7 +94,8 @@ k`i',
 * while qi momenta are always outgoing
 
 * Furthermore, we need to insert masses of the particles appearing in the internal lines
-* and define all scalar products made of external momenta
+* and define all scalar products made of external momenta. If on-shell external states are
+* involved, we may need to set the values of scalar products involving polarization vectors.
 
 * repeat;
 * id q1 = p1+p2-q2-q3;
@@ -561,7 +562,7 @@ id lsclTdDen(lsclS?) = lsclDen(lsclS);
 
 #message lsclAddUpDiagramsCode: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 b,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
+`lsclPprAdditionalBracketArguments'
 ,
 lsclSkipNum,lsclSkipDen,d_
 lsclWrapFun,lsclEp,lsclDiaFlag,lsclNum,lsclDen,
@@ -577,7 +578,7 @@ collect lsclWrapFun1,lsclWrapFun2;
 
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclAddUpDiagramsCode: ... done.
 #if (`lsclNLoops' > 0)
