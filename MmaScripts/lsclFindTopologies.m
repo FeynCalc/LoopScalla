@@ -13,7 +13,7 @@ SetDirectory[projectDirectory];
 
 
 $FeynCalcStartupMessages=False;
-Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]];
+Quiet[Get[FileNameJoin[{projectDirectory,"FeynCalc","FeynCalc.m"}]],FrontEndObject::notavail];
 
 
 (*For debugging purposes*)
@@ -80,8 +80,8 @@ WriteString["stdout","done.\n\n"];
 
 
 WriteString["stdout",lsclScriptName,": Launching ", lsclNKernels, " parallel kernels ..."];
-CloseKernels[Kernels[]];
-LaunchKernels[ToExpression[lsclNKernels]];
+Quiet[CloseKernels[Kernels[]],FrontEndObject::notavail];
+Quiet[LaunchKernels[ToExpression[lsclNKernels]],FrontEndObject::notavail];
 $ParallelizeFeynCalc=True;
 WriteString["stdout"," done\n"];
 
@@ -91,6 +91,22 @@ lmoms=FCMakeSymbols[k,Range[1,ToExpression[lsclNLoops]],List];
 
 WriteString["stdout",lsclScriptName,": Loaded ", Length[rawTopologies], " amplitude topologies.","\n\n"]
 WriteString["stdout",lsclScriptName,": Loop momenta: ", lmoms,".\n\n"]
+
+
+If[Length[rawTopologies]===0,
+WriteString["stdout",lsclScriptName,": No topologies to analyze.\n"];
+WriteString["stdout",lsclScriptName,": Most likely all amplitudes from this set evaluate to zero.\n"];
+
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.txt"}]];
+Close[file];
+
+file=OpenWrite[FileNameJoin[{Directory[],"Projects",lsclProject,"Diagrams",lsclProcessName,lsclModelName, lsclNLoops,"Topologies","TopologyList.frm"}]];
+WriteString[file,"#define LSCLNTOPOLOGIES \"0\""];
+Close[file];
+
+WriteString["stdout","\n",lsclScriptName,": All done.","\n\n"];
+Quit[];
+];
 
 
 fcVariables="FCVariables"/.fcConfig;
