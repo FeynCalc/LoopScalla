@@ -7,6 +7,8 @@ id lsclQGPropagator(lsclF1?lsclQuarkFields[lsclS](lsclS1?,lsclP1?), lsclF2?lsclA
  lsclDiracChain(lsclNCHold(g_(100,lsclP1))+lsclMass(lsclF1),lsclDiracIndex(lsclS1),lsclDiracIndex(lsclS2))*lsclFAD(lsclP1,lsclMass(lsclF1));
 
 * Gluon propagator
+* Notice that FeynArts uses (1-GaugeXiFA) instead of lsclGaugeXi
+* So we need to do the replacement GaugeXiFA -> 1 - lsclGaugeXi when comparing both amplitudes
 id lsclQGPropagator(Gl(lsclS1?,lsclP1?), Gl(lsclS2?,lsclP2?)) = 
  -i_*lsclSUNDelta(lsclAdjColorIndex(lsclS1),lsclAdjColorIndex(lsclS2))*lsclHold(
  lsclMetricTensor(lsclLorentzIndex(lsclS1),lsclLorentzIndex(lsclS2))*lsclFAD(lsclP1,0) 
