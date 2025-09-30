@@ -131,11 +131,13 @@ save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lscl
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 
-delete storage;
+G lidia`lsclDiaNumber'L`lsclNLoops' = s1dia`lsclDiaNumber'L`lsclNLoops';
 
 #message lsclTopologyIdentification: Calling sort: `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
+
+delete storage;
 
 .store
 #message lsclTopologyIdentification: Saving loop integrals to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res
