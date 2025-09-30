@@ -71,11 +71,12 @@ Auto S lsclFlag;
 CF lsclEpHelpFlag, lsclDiaFlag;
 
 * Feynman rules
-F lsclNCHold, lsclQGPropagator, lsclQGVertex, lsclQGPolarization, 
+F lsclNCHold, lsclQGPropagator, lsclQGVertex, lsclQGPolarization,
 lsclDiracU, lsclDiracUBar, lsclDiracV, lsclDiracVBar, lsclPolVector;
 CF lsclSUNDelta(S), lsclSUNFDelta(S), lsclFunColorIndex, lsclAdjColorIndex,  lsclSUNTF, lsclSUNF, lsclSUND,
 lsclMass, lsclHold, lsclDiracChain, lsclDiracChainHold,  lsclFAD, lsclDiracIndex, lsclLorentzIndex,  
-lsclVector, lsclMetricTensor(S),  lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD
+lsclVector, lsclMetricTensor(S),  lsclDiracTrace, lsclDiracTraceRotated, lsclGFAD,
+lsclPropagatorLine(S),lsclVertexBlob,lsclVertexBlobExternal;
 S lsclGaugeXi;
 
 * Insertion of reduction tables
@@ -104,10 +105,15 @@ CF lsclNum, lsclDen, lsclRat, lsclTdNum, lsclTdDen;
 CF lsclHoldNum, lsclHoldDen, lsclHoldRat, lsclSkipNum, lsclSkipDen;
 
 * Tensor reduction functions
+F lsclDontIsolateF;
+CF lsclDontIsolateCF;
 CF lsclTensRedMomentaRaw, lsclTensRedMomenta(S), lsclTensRedLoopRaw, lsclTensRedLoop(S), 
 lsclTensRedHold, lsclTensRedRank, lsclTensRedNLegs, lsclTensRedTypeRaw, lsclTensRedType(S), 
 lsclTensorStructure;
 Auto S lsclTd;
+
+* Special tensors
+ct lsclEps(A);
 
 * Topology identification functions
 CF lsclRawTopology,lsclSPD,lsclGLI;

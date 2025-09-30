@@ -77,8 +77,9 @@ k`i',
 * the terms will be collected with respect to these variables in addition to other variabels already
 * specified in the relevant code. There is no need to specify topology names, d_, lsclD, lsclEp,
 * lsclNum or lsclDen as those are normally already included in right places. What can be useful to
-* specify are coupling constants appearing in the numerators, e.g. gs or el.
-#define lsclPprAdditionalBracketArguments "gs,el,"
+* specify are coupling constants appearing in the numerators, e.g. gs or el as well as the gauge
+* paramaters e.g. lsclGaugeXi
+#define lsclPprAdditionalBracketArguments "gs,el,lsclGaugeXi"
 
 *--#] lsclGeneric:
 
@@ -110,39 +111,28 @@ k`i',
 
 *--#[ lsclBeforeInsertingFeynmanRules:
 
-* This code recognizes closed fermion loops and adds the flavor of 
-* the fermion F running inside it into the multiplicative factor 
-* lsclFermionLoop(F). Here we assume that the vertices involved are 
-* of the type FFS or FFV.
+* Here we filter out true self-energy corrections on
+* external legs while keeping those, where the incoming
+* and outgoing particles are different so that we have 
+* a genuine contribution.
 
-* Other vertices will probably require changes in the code
+#call lsclResolveDiagramStructure(lsclQGVertex,lsclQGPropagator,lsclVertexBlob,lsclVertexBlobExternal,lsclPropagatorLine);
 
-id (lsclQGPropagator(lsclF1?lsclQuarkFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclAntiQuarkFields[lsclS](lsclS2?,lsclP2?))) = 
- lsclFermionLine(lsclF1,lsclS1,lsclS2)*lsclQGPropagator(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2));
-id (lsclQGPropagator(lsclF1?lsclLeptonFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclAntiLeptonFields[lsclS](lsclS2?,lsclP2?))) = 
- lsclFermionLine(lsclF1,lsclS1,lsclS2)*lsclQGPropagator(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2));
- 
-id (lsclQGVertex(lsclF1?lsclAntiQuarkFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclQuarkFields[lsclS](lsclS2?,lsclP2?),
-lsclF3?lsclScalarFields(lsclS3?,lsclP3?))) = 
- lsclFermionLine(lsclF2,lsclS1,lsclS2)*lsclQGVertex(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2),lsclF3(lsclS3,lsclP3));
-id (lsclQGVertex(lsclF1?lsclAntiQuarkFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclQuarkFields[lsclS](lsclS2?,lsclP2?),
-lsclF3?lsclVectorFields(lsclS3?,lsclP3?))) = 
- lsclFermionLine(lsclF2,lsclS1,lsclS2)*lsclQGVertex(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2),lsclF3(lsclS3,lsclP3));
+* A self-energy is an lsclVertexBlobExternal with two identical fields,
+* where one of them has a negative index, meaning that it connects to an 
+* external rather than internal line. We set such diagrams to zero straight away.
 
-
-id (lsclQGVertex(lsclF1?lsclAntiLeptonFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclLeptonFields[lsclS](lsclS2?,lsclP2?),
-lsclF3?lsclScalarFields(lsclS3?,lsclP3?))) = 
-  lsclFermionLine(lsclF2,lsclS1,lsclS2)*lsclQGVertex(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2),lsclF3(lsclS3,lsclP3));
-id (lsclQGVertex(lsclF1?lsclAntiLeptonFields[lsclS](lsclS1?,lsclP1?),lsclF2?lsclLeptonFields[lsclS](lsclS2?,lsclP2?),
-lsclF3?lsclVectorFields(lsclS3?,lsclP3?))) = 
-  lsclFermionLine(lsclF2,lsclS1,lsclS2)*lsclQGVertex(lsclF1(lsclS1,lsclP1),lsclF2(lsclS2,lsclP2),lsclF3(lsclS3,lsclP3));  
- 
-repeat id lsclFermionLine(lsclF1?,lsclS1?,lsclS2?)*lsclFermionLine(lsclF1?,lsclS2?,lsclS3?) = lsclFermionLine(lsclF1,lsclS1,lsclS3);
-repeat id lsclFermionLine(lsclF1?,lsclS1?,lsclS1?) = lsclFermionLoop(lsclF1);
-
+id lsclVertexBlobExternal(lsclF1?(lsclS1?neg_,lsclP1?),lsclF1?(lsclS2?,lsclP2?)) =0;
+id lsclVertexBlobExternal(lsclF1?(lsclS1?,lsclP1?),lsclF1?(lsclS2?neg_,lsclP2?)) =0;
+.sort
+#if (`ZERO_origDiag' == 1)
+#message lsclInsertFeynmanRules: Detected true self-energy correction, discarding the diagram.
+#else 
+id lsclVertexBlobExternal(?a) = 1;
+#endif
 .sort
 
-id lsclFermionLine(?a)  = 1;
+#call lsclMarkFermionLoops(lsclQGVertex,lsclQGPropagator,lsclFermionLine,lsclFermionLoop);
 
 *--#] lsclBeforeInsertingFeynmanRules:
 
