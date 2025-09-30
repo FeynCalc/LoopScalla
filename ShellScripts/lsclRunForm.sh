@@ -28,14 +28,16 @@ if [ -z ${lsclTformTmpDir} ]; then
     #exit 1;
 fi
 
-if [[ -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then
-    lsclPsRecordLogPath=${LSCL_PARALLEL_JOBLOG_PATH}/MemoryUsage
+if [[ -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then    
+    lsclPsRecordLogPath=${LSCL_PARALLEL_JOBLOG_PATH}/MemoryUsage    
 else
     lsclPsRecordLogPath=${LSCL_SLURM_LOG_DIR}/MemoryUsage
 fi
 
 if [[ ! -d ${lsclPsRecordLogPath}} ]]; then
-      mkdir -p ${lsclPsRecordLogPath};
+    if [[  ! -z "${LSCL_SLURM_LOG_DIR+x}" ]]; then
+        mkdir -p ${lsclPsRecordLogPath};
+    fi
 fi
 
 echo lsclRunForm: Log for psrecord: ${lsclPsRecordLogPath}
