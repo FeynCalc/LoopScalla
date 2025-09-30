@@ -7,7 +7,7 @@ id lsclQGVertex(lsclF1?lsclAntiQuarkFields[lsclS](lsclS1?,lsclP1?), lsclF2?lsclQ
  lsclSUNTF(lsclAdjColorIndex(lsclS3),lsclFunColorIndex(lsclS1),lsclFunColorIndex(lsclS2));
  
 * Gluon-ghost vertex
-id lsclQGVertex(Ghbar(lsclS1?,lsclP1?), Gl(lsclS2?,lsclP2?), Gh(lsclS3?,lsclP3?)) = 
+id lsclQGVertex(Ghbar(lsclS1?,lsclP1?), Gh(lsclS3?,lsclP3?), Gl(lsclS2?,lsclP2?)) = 
 	-`lsclPprGhostPropagatorSign'*gs*lsclSUNF(lsclAdjColorIndex(lsclS1),lsclAdjColorIndex(lsclS2),lsclAdjColorIndex(lsclS3))*(-lsclVector(lsclP1,lsclLorentzIndex(lsclS2)));
 
 * 3-gluon vertex
