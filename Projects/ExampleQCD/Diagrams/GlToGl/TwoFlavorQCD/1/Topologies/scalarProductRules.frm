@@ -1,19 +1,19 @@
 
 
 
-*--#[ lsclScalarProductRulesFortopology1 : 
+*--#[ lsclScalarProductRulesFortopologyGlToGl1L1 : 
 
 
-id k1(k1)*topology1(?a) = (topology1(?a)*topology1(-1, 0));
+id k1(k1)*topologyGlToGl1L1(?a) = (topologyGlToGl1L1(?a)*topologyGlToGl1L1(-1, 0));
 
-id k1(p1)*topology1(?a) = (topology1(?a)*(lsclNum(pp)/2 + topology1(-1, 0)/2 - topology1(0, -1)/2));
+id k1(p1)*topologyGlToGl1L1(?a) = (topologyGlToGl1L1(?a)*(lsclNum(pp)/2 + topologyGlToGl1L1(-1, 0)/2 - topologyGlToGl1L1(0, -1)/2));
 
-*--#] lsclScalarProductRulesFortopology1 : 
+*--#] lsclScalarProductRulesFortopologyGlToGl1L1 : 
 
 
-id k1(k1)*topology1(?a) = (topology1(?a)*topology1(-1, 0));
+id k1(k1)*topologyGlToGl1L1(?a) = (topologyGlToGl1L1(?a)*topologyGlToGl1L1(-1, 0));
 
-id k1(p1)*topology1(?a) = (topology1(?a)*(lsclNum(pp)/2 + topology1(-1, 0)/2 - topology1(0, -1)/2));
+id k1(p1)*topologyGlToGl1L1(?a) = (topologyGlToGl1L1(?a)*(lsclNum(pp)/2 + topologyGlToGl1L1(-1, 0)/2 - topologyGlToGl1L1(0, -1)/2));
 
 
 

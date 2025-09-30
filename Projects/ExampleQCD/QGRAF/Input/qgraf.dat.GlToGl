@@ -7,13 +7,13 @@
  output = 'lsclTempTeX.out' ;
  style = 'Styles/tikz-feynman.sty' ;
 
- model = 'xxx' ;
+ model = 'DONTCHANGE';
 
  in = Gl;
  out = Gl;
 
- loops = xxx;
+ loops = DONTCHANGE;
 
- loop_momentum = k ;
+ loop_momentum = k;
 
  options = notadpoles, onshell, nosnail;

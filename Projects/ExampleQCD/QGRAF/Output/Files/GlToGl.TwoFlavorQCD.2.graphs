@@ -4,11 +4,16 @@ graph "1" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 1 (factor = +1/6)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(k1+k2-p1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (k1+k2-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -16,12 +21,18 @@ graph "2" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 2 (factor = +1/2)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  3--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--3 [label="Gl(-k1+k2)", fontsize=3, color=red];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  3--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k1+k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -29,12 +40,18 @@ graph "3" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 3 (factor = +1/2)";
-  in1--3 [label="I Gl(p1)", fontsize=3, color=red];
-  1--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1+q1)", fontsize=3, color=red];
-  2--3 [label="Gl(-k1+k2)", fontsize=3, color=red];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--3 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  1--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k1+k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -42,12 +59,18 @@ graph "4" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 4 (factor = +1/4)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  1--3 [label="Gl(-k1)", fontsize=3, color=red];
-  2--3 [label="Gl(k2+q1)", fontsize=3, color=red];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (k2+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -55,13 +78,20 @@ graph "5" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 5 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Qi(-k1)", fontsize=3, color=blue];
-  4--1 [label="Qi(-k1+p1)", fontsize=3, color=blue];
-  3--2 [label="Qi(k2)", fontsize=3, color=blue];
-  2--4 [label="Qi(k2+q1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k1-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Qi (-k1)", fontsize=3,  style=solid,
+color=gold];
+  4--1 [label="Qi (-k1+p1)", fontsize=3,  style=solid,
+color=gold];
+  3--2 [label="Qi (k2)", fontsize=3,  style=solid,
+color=gold];
+  2--4 [label="Qi (k2+q1)", fontsize=3,  style=solid,
+color=gold];
+  3--4 [label="Gl (-k1-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -69,13 +99,20 @@ graph "6" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 6 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Qi(-k1)", fontsize=3, color=blue];
-  4--1 [label="Qi(-k1+p1)", fontsize=3, color=blue];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
-  2--4 [label="Gl(k2+q1)", fontsize=3, color=red];
-  3--4 [label="Qi(-k1-k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Qi (-k1)", fontsize=3,  style=solid,
+color=gold];
+  4--1 [label="Qi (-k1+p1)", fontsize=3,  style=solid,
+color=gold];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (k2+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Qi (-k1-k2)", fontsize=3,  style=solid,
+color=gold];
 }
 
 //===//
@@ -83,13 +120,20 @@ graph "7" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 7 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Qj(-k1)", fontsize=3, color=blue];
-  4--1 [label="Qj(-k1+p1)", fontsize=3, color=blue];
-  3--2 [label="Qj(k2)", fontsize=3, color=blue];
-  2--4 [label="Qj(k2+q1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k1-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Qj (-k1)", fontsize=3,  style=solid,
+color=firebrick];
+  4--1 [label="Qj (-k1+p1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--2 [label="Qj (k2)", fontsize=3,  style=solid,
+color=firebrick];
+  2--4 [label="Qj (k2+q1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--4 [label="Gl (-k1-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -97,13 +141,20 @@ graph "8" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 8 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Qj(-k1)", fontsize=3, color=blue];
-  4--1 [label="Qj(-k1+p1)", fontsize=3, color=blue];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
-  2--4 [label="Gl(k2+q1)", fontsize=3, color=red];
-  3--4 [label="Qj(-k1-k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Qj (-k1)", fontsize=3,  style=solid,
+color=firebrick];
+  4--1 [label="Qj (-k1+p1)", fontsize=3,  style=solid,
+color=firebrick];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (k2+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Qj (-k1-k2)", fontsize=3,  style=solid,
+color=firebrick];
 }
 
 //===//
@@ -111,13 +162,20 @@ graph "9" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 9 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gh(-k1)", fontsize=3, color=purple];
-  4--1 [label="Gh(-k1+p1)", fontsize=3, color=purple];
-  3--2 [label="Gh(k2)", fontsize=3, color=purple];
-  2--4 [label="Gh(k2+q1)", fontsize=3, color=purple];
-  3--4 [label="Gl(-k1-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gh (-k1)", fontsize=3,  style=bold,
+color=dimgray];
+  4--1 [label="Gh (-k1+p1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--2 [label="Gh (k2)", fontsize=3,  style=bold,
+color=dimgray];
+  2--4 [label="Gh (k2+q1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--4 [label="Gl (-k1-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -125,13 +183,20 @@ graph "10" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 10 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gh(-k1)", fontsize=3, color=purple];
-  4--1 [label="Gh(-k1+p1)", fontsize=3, color=purple];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
-  2--4 [label="Gl(k2+q1)", fontsize=3, color=red];
-  3--4 [label="Gh(-k1-k2)", fontsize=3, color=purple];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gh (-k1)", fontsize=3,  style=bold,
+color=dimgray];
+  4--1 [label="Gh (-k1+p1)", fontsize=3,  style=bold,
+color=dimgray];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (k2+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Gh (-k1-k2)", fontsize=3,  style=bold,
+color=dimgray];
 }
 
 //===//
@@ -139,13 +204,20 @@ graph "11" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 11 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gl(-k1)", fontsize=3, color=red];
-  1--4 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--3 [label="Qi(-k2)", fontsize=3, color=blue];
-  4--2 [label="Qi(-k2-q1)", fontsize=3, color=blue];
-  3--4 [label="Qi(-k1-k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--4 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Qi (-k2)", fontsize=3,  style=solid,
+color=gold];
+  4--2 [label="Qi (-k2-q1)", fontsize=3,  style=solid,
+color=gold];
+  3--4 [label="Qi (-k1-k2)", fontsize=3,  style=solid,
+color=gold];
 }
 
 //===//
@@ -153,13 +225,20 @@ graph "12" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 12 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gl(-k1)", fontsize=3, color=red];
-  1--4 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--3 [label="Qj(-k2)", fontsize=3, color=blue];
-  4--2 [label="Qj(-k2-q1)", fontsize=3, color=blue];
-  3--4 [label="Qj(-k1-k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--4 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Qj (-k2)", fontsize=3,  style=solid,
+color=firebrick];
+  4--2 [label="Qj (-k2-q1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--4 [label="Qj (-k1-k2)", fontsize=3,  style=solid,
+color=firebrick];
 }
 
 //===//
@@ -167,13 +246,20 @@ graph "13" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 13 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gl(-k1)", fontsize=3, color=red];
-  1--4 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--3 [label="Gh(-k2)", fontsize=3, color=purple];
-  4--2 [label="Gh(-k2-q1)", fontsize=3, color=purple];
-  3--4 [label="Gh(-k1-k2)", fontsize=3, color=purple];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--4 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gh (-k2)", fontsize=3,  style=bold,
+color=dimgray];
+  4--2 [label="Gh (-k2-q1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--4 [label="Gh (-k1-k2)", fontsize=3,  style=bold,
+color=dimgray];
 }
 
 //===//
@@ -181,13 +267,20 @@ graph "14" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 14 (factor = +1/2)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--3 [label="Gl(-k1)", fontsize=3, color=red];
-  1--4 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--3 [label="Gl(-k2)", fontsize=3, color=red];
-  2--4 [label="Gl(k2+q1)", fontsize=3, color=red];
-  3--4 [label="Gl(-k1-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--3 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--4 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--3 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (k2+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Gl (-k1-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -195,13 +288,20 @@ graph "15" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 15 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Qi(-k1)", fontsize=3, color=blue];
-  3--1 [label="Qi(-k1+p1)", fontsize=3, color=blue];
-  2--4 [label="Qi(-k1+q1)", fontsize=3, color=blue];
-  4--3 [label="Qi(-k1-k2+p1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Qi (-k1)", fontsize=3,  style=solid,
+color=gold];
+  3--1 [label="Qi (-k1+p1)", fontsize=3,  style=solid,
+color=gold];
+  2--4 [label="Qi (-k1+q1)", fontsize=3,  style=solid,
+color=gold];
+  4--3 [label="Qi (-k1-k2+p1)", fontsize=3,  style=solid,
+color=gold];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -209,13 +309,20 @@ graph "16" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 16 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  2--1 [label="Qi(k1)", fontsize=3, color=blue];
-  1--3 [label="Qi(k1-p1)", fontsize=3, color=blue];
-  4--2 [label="Qi(k1-q1)", fontsize=3, color=blue];
-  3--4 [label="Qi(k1+k2-p1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  2--1 [label="Qi (k1)", fontsize=3,  style=solid,
+color=gold];
+  1--3 [label="Qi (k1-p1)", fontsize=3,  style=solid,
+color=gold];
+  4--2 [label="Qi (k1-q1)", fontsize=3,  style=solid,
+color=gold];
+  3--4 [label="Qi (k1+k2-p1)", fontsize=3,  style=solid,
+color=gold];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -223,13 +330,20 @@ graph "17" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 17 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Qj(-k1)", fontsize=3, color=blue];
-  3--1 [label="Qj(-k1+p1)", fontsize=3, color=blue];
-  2--4 [label="Qj(-k1+q1)", fontsize=3, color=blue];
-  4--3 [label="Qj(-k1-k2+p1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Qj (-k1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--1 [label="Qj (-k1+p1)", fontsize=3,  style=solid,
+color=firebrick];
+  2--4 [label="Qj (-k1+q1)", fontsize=3,  style=solid,
+color=firebrick];
+  4--3 [label="Qj (-k1-k2+p1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -237,13 +351,20 @@ graph "18" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 18 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  2--1 [label="Qj(k1)", fontsize=3, color=blue];
-  1--3 [label="Qj(k1-p1)", fontsize=3, color=blue];
-  4--2 [label="Qj(k1-q1)", fontsize=3, color=blue];
-  3--4 [label="Qj(k1+k2-p1)", fontsize=3, color=blue];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  2--1 [label="Qj (k1)", fontsize=3,  style=solid,
+color=firebrick];
+  1--3 [label="Qj (k1-p1)", fontsize=3,  style=solid,
+color=firebrick];
+  4--2 [label="Qj (k1-q1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--4 [label="Qj (k1+k2-p1)", fontsize=3,  style=solid,
+color=firebrick];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -251,13 +372,20 @@ graph "19" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 19 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gh(-k1)", fontsize=3, color=purple];
-  3--1 [label="Gh(-k1+p1)", fontsize=3, color=purple];
-  2--4 [label="Gh(-k1+q1)", fontsize=3, color=purple];
-  4--3 [label="Gh(-k1-k2+p1)", fontsize=3, color=purple];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gh (-k1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--1 [label="Gh (-k1+p1)", fontsize=3,  style=bold,
+color=dimgray];
+  2--4 [label="Gh (-k1+q1)", fontsize=3,  style=bold,
+color=dimgray];
+  4--3 [label="Gh (-k1-k2+p1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -265,13 +393,20 @@ graph "20" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 20 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  2--1 [label="Gh(k1)", fontsize=3, color=purple];
-  1--3 [label="Gh(k1-p1)", fontsize=3, color=purple];
-  4--2 [label="Gh(k1-q1)", fontsize=3, color=purple];
-  3--4 [label="Gh(k1+k2-p1)", fontsize=3, color=purple];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  2--1 [label="Gh (k1)", fontsize=3,  style=bold,
+color=dimgray];
+  1--3 [label="Gh (k1-p1)", fontsize=3,  style=bold,
+color=dimgray];
+  4--2 [label="Gh (k1-q1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--4 [label="Gh (k1+k2-p1)", fontsize=3,  style=bold,
+color=dimgray];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 //===//
@@ -279,13 +414,20 @@ graph "21" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 21 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--4 [label="Gl(-k1+q1)", fontsize=3, color=red];
-  3--4 [label="Qi(k1+k2-p1)", fontsize=3, color=blue];
-  4--3 [label="Qi(k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (-k1+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Qi (k1+k2-p1)", fontsize=3,  style=solid,
+color=gold];
+  4--3 [label="Qi (k2)", fontsize=3,  style=solid,
+color=gold];
 }
 
 //===//
@@ -293,13 +435,20 @@ graph "22" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 22 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--4 [label="Gl(-k1+q1)", fontsize=3, color=red];
-  3--4 [label="Qj(k1+k2-p1)", fontsize=3, color=blue];
-  4--3 [label="Qj(k2)", fontsize=3, color=blue];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (-k1+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Qj (k1+k2-p1)", fontsize=3,  style=solid,
+color=firebrick];
+  4--3 [label="Qj (k2)", fontsize=3,  style=solid,
+color=firebrick];
 }
 
 //===//
@@ -307,13 +456,20 @@ graph "23" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 23 (factor = -1)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--4 [label="Gl(-k1+q1)", fontsize=3, color=red];
-  3--4 [label="Gh(k1+k2-p1)", fontsize=3, color=purple];
-  4--3 [label="Gh(k2)", fontsize=3, color=purple];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (-k1+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Gh (k1+k2-p1)", fontsize=3,  style=bold,
+color=dimgray];
+  4--3 [label="Gh (k2)", fontsize=3,  style=bold,
+color=dimgray];
 }
 
 //===//
@@ -321,13 +477,20 @@ graph "24" {
   graph [overlap=false,fontsize=3,penwidth=0.5];
   node [shape=point];
   label="diagram 24 (factor = +1/2)";
-  in1--1 [label="I Gl(p1)", fontsize=3, color=red];
-  2--out1 [label="O Gl(q1)", fontsize=3, color=red];
-  1--2 [label="Gl(-k1)", fontsize=3, color=red];
-  1--3 [label="Gl(k1-p1)", fontsize=3, color=red];
-  2--4 [label="Gl(-k1+q1)", fontsize=3, color=red];
-  3--4 [label="Gl(k1+k2-p1)", fontsize=3, color=red];
-  3--4 [label="Gl(-k2)", fontsize=3, color=red];
+  in1--1 [label="I:  Gl (p1)", fontsize=3, style=dashed,
+color=crimson];
+  2--out1 [label="O:  Gl (q1)", fontsize=3, style=dashed,
+color=crimson];
+  1--2 [label="Gl (-k1)", fontsize=3,  style=dashed,
+color=crimson];
+  1--3 [label="Gl (k1-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  2--4 [label="Gl (-k1+q1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Gl (k1+k2-p1)", fontsize=3,  style=dashed,
+color=crimson];
+  3--4 [label="Gl (-k2)", fontsize=3,  style=dashed,
+color=crimson];
 }
 
 

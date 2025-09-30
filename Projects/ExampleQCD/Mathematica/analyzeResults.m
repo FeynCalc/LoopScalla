@@ -10,13 +10,13 @@ amp1LRaw=Get[FileNameJoin[{ParentDirectory[Directory[]],"Diagrams","GlToGl","Two
 amp2LRaw=Get[FileNameJoin[{ParentDirectory[Directory[]],"Diagrams","GlToGl","TwoFlavorQCD","2","Results","ampL2From1To24.m"}]];
 
 
-amp1L=amp1LRaw/.{lsclNum[x_]->x,lsclDen[x_]->1/x,lsclQuarkFlavorInvolved[x_]^n_:>lsclQuarkFlavorInvolved[x]};
-amp2L=amp2LRaw/.{lsclNum[x_]->x,lsclDen[x_]->1/x,lsclQuarkFlavorInvolved[x_]^n_:>lsclQuarkFlavorInvolved[x]};
+amp1L=amp1LRaw/.{lsclNum[x_]->x,lsclDen[x_]->1/x};
+amp2L=amp2LRaw/.{lsclNum[x_]->x,lsclDen[x_]->1/x};
 
 
 ruleMasters={
-GLI[topology1, {0, 1, 1, 1, 0}] -> (-pp)^(1 - 2*ep)*(13/8 + 1/(4*ep) + (115*ep)/16 + (49*ep^2)/2 - (ep*Zeta2)/4 - (13*ep^2*Zeta2)/8 + (9*ep^2*(9/4 - 2*Zeta[3]))/8 - (5*ep^2*Zeta[3])/12), 
- GLI[topology1, {1, 1, 1,0, 1}] -> (2 + ep^(-1) + 4*ep + (16*ep^2)/3 - (ep*Zeta2)/2 - ep^2*Zeta2 + (4*ep^2*(2 - 2*Zeta[3]))/3 + (ep^2*Zeta[3])/3)^2/(-pp)^(2*ep)
+GLI[topologyGlToGl2L1, {0, 1, 1, 1, 0}] -> (-pp)^(1 - 2*ep)*(13/8 + 1/(4*ep) + (115*ep)/16 + (49*ep^2)/2 - (ep*Zeta2)/4 - (13*ep^2*Zeta2)/8 + (9*ep^2*(9/4 - 2*Zeta[3]))/8 - (5*ep^2*Zeta[3])/12), 
+ GLI[topologyGlToGl2L1, {1, 1, 1,0, 1}] -> (2 + ep^(-1) + 4*ep + (16*ep^2)/3 - (ep*Zeta2)/2 - ep^2*Zeta2 + (4*ep^2*(2 - 2*Zeta[3]))/3 + (ep^2*Zeta[3])/3)^2/(-pp)^(2*ep)
 }
 
 
@@ -30,7 +30,7 @@ resEpPre=FCReplaceD[resFinal/.ruleMasters,D->4-2ep];
 
 
 resEp=Series[FCReplaceD[Cancel[resEpPre/(-pp)^(-2ep)],D->4-2ep],{ep,0,0}]//Normal//SUNSimplify[#,SUNNToCACF->False]&//ReplaceAll[#,{GaugeXi->0,
-lsclQuarkFlavorInvolved[Qj]->0,lsclQuarkFlavorInvolved[Qi]->1}]&//Collect2[#,ep]&
+lsclFermionLoop[Qj]->0,lsclFermionLoop[Qi]->1}]&//Collect2[#,ep]&
 
 
 resLit=(((-5*I)/12)*gs^4*SUNN*(-2 + 5*SUNN))/ep^2 - ((I/72)*gs^4*(36 - 238*SUNN^2 + 583*SUNN^3))/(ep*SUNN) + 
@@ -44,6 +44,7 @@ FCCompareResults[resLit, resEp,
      Factoring -> Simplify]; 
 Print["\tCPU Time used: ", Round[N[TimeUsed[], 4], 0.001], 
      " s."];
+
 
 
 

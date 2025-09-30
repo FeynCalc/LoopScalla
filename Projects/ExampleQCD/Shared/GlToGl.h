@@ -1,15 +1,12 @@
 
 *--#[ lsclGeneric:
 
-* Definitions of normal and preprocessor variables specific to this process
+* Definitions of normal and preprocessor variables specific
+* to this process
 
-S pp;
+* S mySymbol1, mySymbols2;
 * V myVector1, myVector2;
-
-CF lsclQuarkFlavorInvolved;
-
-* Set of kinematic invariants
-Set lsclKinematicInvariants: pp;
+S pp;
 
 * A set of all loop momenta
 set lsclLoopMomenta: 
@@ -18,41 +15,114 @@ k`i',
 #enddo
 ;
 
-* Number of the initial and final states in the given process
+* You need to put the correct number of initial and final states here. This can
+* be useful later if you want to loop over the external momenta.
 #define lsclPprNumOfInParticles "1"
 #define lsclPprNumOfOutParticles "1"
 
-* Set to "1" if we are using projectors, while "0" means tensor reduction
+* If you are using projectors, set lsclPprInsertProjector to 1. The projector
+* must be introduced in the lsclInsertProjector fold. Otherwise the code will
+* perform tensor reduction using the code from the lsclDoTensorReduction fold.
 #ifndef `lsclPprInsertProjector'
 #define lsclPprInsertProjector "0"
 #endif
 
-* Set to "1" if the Dirac spinors need to be removed.
-#ifndef `LSCLTRUNCATESPINORS'
-#define LSCLTRUNCATESPINORS "1"
+* By default no polarization vectors or spinors are truncated. If you want to
+* have amplitudes with open Dirac or Lorentz indices (e.g. for applying specific
+* projectors), you can set these preprocessor variables to 1. The code responsible
+* for the truncation is located in FeynmanRules/lsclCommonFeynmanRules.h. If you are
+* not using those Feynman rules at all, you will need to do the truncation by hand.
+
+#ifndef `lsclPprTruncateSpinors'
+#define lsclPprTruncateSpinors "1"
 #endif
 
-* Set to "1" if the polarization vectors need to be removed.
-#ifndef `LSCLTRUNCATEPOLVECTORS'
-#define LSCLTRUNCATEPOLVECTORS "1"
+#ifndef `lsclPprTruncatePolVectors'
+#define lsclPprTruncatePolVectors "1"
 #endif
 
-* Define a list of arguments that can be passed to lsclNumDenFactorize to be pulled out of lsclNum and lsclDen
-#define lsclDenNumFactorizeArguments "{gs\,}"
+* When loading reduction tables in the lsclProcessReducedAmplitude fold, there is an
+* option to limit the number of entries loaded from IBP tables at once. The default
+* value of 100 means that we first reduce 100 loop integrals appearing in the amtplitude,
+* then do .sort (and possibly other manipulations) and only then load the next batch until
+* there are no unreduced integrals left. This procedure can be helpful when the reduction
+* rules are so complicated that loading all of them at once would lead to an exterme expression
+* swell.
+#define lsclPprNumOfLoopIntsToReduceAtOnce "100"
 
-* Define variables contained in lsclNum and lsclDen that will trigger a factorization of those terms.
-* This definition is important and helps to avoid workspace overflows when using factorization.
-#define lsclFactorizationVariables "pp,lsclD,lsclSUNN,lsclNA,lsclCF,lsclCA,lsclCRmCA2"
+* Define a list of arguments that can be passed to lsclNumDenFactorize to be pulled out of lsclNum 
+* and lsclDen. For example, specifying
+* #define lsclDenNumFactorizeArguments "{gs\,el\,}"
+* means that every lsclNum(gs) or lsclDen(gs) will be converted to gs and 1/gs respectively when
+* calling lsclNumDenFactorize. This is helpful to avoid expression swell due to simple symbols
+* being trapped in lsclNum and lsclDen. We recommend to put at least all coupling constants into 
+* this list. Masses or scalar product values that might appear in the tensor reduction or the 
+* IBP reduction tables should not be included here. 
+#define lsclPprNumDenFactorizeArguments "{gs\,el\,mw\,sW\,cW\,}"
 
+* Define variables contained in lsclNum and lsclDen that will trigger another factorization of those 
+* terms using polyratfun. Attempting factorization increases the chance of simplifying the expression
+* by cancelling some terms in the numerator against those in the denominator. However, when there is 
+* already a large number of lsclNum and lsclDen terms with very complicated arguments, calling
+* polyratfun can easily result into FORM crashing due to a workspace overflow. This is why it is useful
+* not to involve all lsclNum and lsclDen into the factorization process but to select only those
+* where we expect some cancellations to happen. To this aim we define the "trigger" variables in
+* the list below. If none of those are contained in lsclNum and lsclDen, no factorization of those
+* terms will take place. Typically, one would want to put into this list the number of dimensions,
+* SU(N) constants and masses or scalar product values that might appear in the tensor reduction or the 
+* IBP reduction tables. 
+#define lsclPprFactorizationVariables "lsclD,lsclSUNN,lsclNA,lsclCF,lsclCA,lsclCRmCA2,pp,"
+
+* Here one can specify some variables that should be bracketed when extracting integral families or
+* inserting the reduction tables and simplifying the result using polyratfun. Bracketing means that
+* the terms will be collected with respect to these variables in addition to other variabels already
+* specified in the relevant code. There is no need to specify topology names, d_, lsclD, lsclEp,
+* lsclNum or lsclDen as those are normally already included in right places. What can be useful to
+* specify are coupling constants appearing in the numerators, e.g. gs or el as well as the gauge
+* paramaters e.g. lsclGaugeXi
+#define lsclPprAdditionalBracketArguments "gs,el,lsclGaugeXi"
 
 *--#] lsclGeneric:
+
+*--#[ lsclKinematics:
+
+* Here we define the kinematics of the amplitude and introduce
+* the 4-momentum conservation. This might be called multiple times
+* during different execution stages.
+
+
+* QGRAF does not automatically enforce momentum conservation among external momenta,
+* so it is a good idea to specify it here. Remember, that pi momenta are always incoming,
+* while qi momenta are always outgoing
+
+* Furthermore, we need to insert masses of the particles appearing in the internal lines
+* and define all scalar products made of external momenta. If on-shell external states are
+* involved, we may need to set the values of scalar products involving polarization vectors.
+
+repeat;
+id q1 = p1;
+id p1.p1^lsclS?pos_ = pp^lsclS;
+id lsclMass(Qi) = 0;
+id lsclMass(Qj) = 0;
+endrepeat;
+
+
+*--#] lsclKinematics:
+
 
 
 *--#[ lsclBeforeInsertingFeynmanRules:
 
-id lsclQGPropagator(lsclF?lsclQuarkFields(?a),?b) = lsclQuarkFlavorInvolved(lsclF)*lsclQGPropagator(lsclF(?a),?b);
+
+* Here we filter out true self-energy corrections on
+* external legs while keeping those, where the incoming
+* and outgoing particles are different so that we have 
+* a genuine contribution.
+
+#call lsclMarkFermionLoops(lsclQGVertex,lsclQGPropagator,lsclFermionLine,lsclFermionLoop);
 
 *--#] lsclBeforeInsertingFeynmanRules:
+
 
 *--#[ lsclInsertProjector:
 
@@ -60,13 +130,14 @@ id lsclQGPropagator(lsclF?lsclQuarkFields(?a),?b) = lsclQuarkFlavorInvolved(lscl
 * introduced here. The insertion of projectors usually occurs at a
 * very early stage of the evaluation, just after loading the amplitude
 
-* projector=MTD[Lor1,Lor2] 1/((D-1)SPD[p])1/(2CA CF) SUNDelta[Glu1,Glu2]
-
+* Here is an example projector
 * multiply lsclSUNDelta(lsclCAj1, lsclCAj2)*d_(lsclNu1,lsclNu2)*1/(lsclD-1)*1/p1.p1*1/(lsclSUNN^2-1);
 
 
 *--#] lsclInsertProjector:
 
+* This is a rather generic code for doing tensor reduction that should work
+* in most normal cases. Of course, edge cases might require additional optimizations
 *--#[ lsclDoTensorReduction:
 
 * When doing tensor reduction, the corresponding code from this fold
@@ -76,7 +147,7 @@ id lsclQGPropagator(lsclF?lsclQuarkFields(?a),?b) = lsclQuarkFlavorInvolved(lscl
 #define lsclPprIsolateLoopMomenta "1"
 
 #message `lsclProcessName':: lsclDoTensorReduction: Calling lsclIsolate : `time_' ...
-#call lsclIsolate(lsclWrapFun51,lsclWrapFun52,lsclFAD, lsclGFAD, lsclDiracGamma, lsclDiracTrace)
+#call lsclIsolate(lsclWrapFun51,lsclWrapFun52,lsclFAD, lsclGFAD, lsclDiracGamma, lsclDiracTrace,lsclEps)
 #message `lsclProcessName':: lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName': lsclDoTensorReduction: Calling sort : `time_' ...
@@ -92,7 +163,7 @@ id lsclQGPropagator(lsclF?lsclQuarkFields(?a),?b) = lsclQuarkFlavorInvolved(lscl
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
 #message `lsclProcessName':: lsclDoTensorReduction: Calling lsclIsolate again: `time_' ...
-#call lsclIsolate(lsclWrapFun53,lsclWrapFun54,lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType)
+#call lsclIsolate(lsclWrapFun53,lsclWrapFun54,lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType,lsclDontIsolateCF,lsclDontIsolateF)
 #message `lsclProcessName':: lsclDoTensorReduction: ... done : `time_'
 
 b lsclTensRedLoop,lsclTensRedMomenta,lsclTensRedRank,lsclTensRedNLegs,lsclTensRedType;
@@ -104,176 +175,29 @@ print[];
 .sort
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
-* Here we determine the highest number of legs and tensor rank in the amplitude
-#$lslcDollarMaxTensorRank=0;
-#$lslcDollarMaxNLegs=0;
-
-id lsclTensRedRank(lsclS?) = lsclS30^lsclS*lsclTensRedRank(lsclS);
-id lsclTensRedNLegs(lsclS?) = lsclS31^lsclS*lsclTensRedNLegs(lsclS);
-
-if ( count(lsclS30,1) > $lslcDollarMaxTensorRank ) $lslcDollarMaxTensorRank = count_(lsclS30,1);
-if ( count(lsclS31,1) > $lslcDollarMaxNLegs ) $lslcDollarMaxNLegs = count_(lsclS31,1);
-
-
-ModuleOption, maximum, $lslcDollarMaxTensorRank, $lslcDollarMaxNLegs;
-
-
-#message `lsclProcessName': lsclDoTensorReduction: Calling sort : `time_' ...
-.sort
+#message `lsclProcessName': lsclDoTensorReduction: Calling lsclIdentifyPresentTensors: `time_' ...
+#call lsclIdentifyPresentTensors($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMaxNLegs,$lsclDollarMinNLegs)
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
-* Here we determine the lowest number of legs and tensor rank in the amplitude
-#$lslcDollarMinTensorRank=$lslcDollarMaxTensorRank;
-#$lslcDollarMinNLegs=$lslcDollarMaxNLegs;
+#message `lsclProcessName': lsclDoTensorReduction: Tensor ranks: from `$lsclDollarMinTensorRank' to `$lsclDollarMaxTensorRank'
+#message `lsclProcessName': lsclDoTensorReduction: Number of legs: from `$lsclDollarMinNLegs' to `$lsclDollarMaxNLegs'
 
-if ( count(lsclS30,1) < $lslcDollarMinTensorRank ) $lslcDollarMinTensorRank = count_(lsclS30,1);
-if ( count(lsclS31,1) < $lslcDollarMinNLegs ) $lslcDollarMinNLegs = count_(lsclS31,1);
-
-ModuleOption, minimum, $lslcDollarMinTensorRank, $lslcDollarMinNLegs;
-
-#message `lsclProcessName': lsclDoTensorReduction: Calling sort : `time_' ...
-.sort
+#message `lsclProcessName': lsclDoTensorReduction: Calling lsclLoadTensorSymmetries: `time_' ...
+#call lsclLoadTensorSymmetries($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank)
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
-
-id lsclS30^lsclS?!{,0} = 1;
-id lsclS31^lsclS?!{,0} = 1;
-
-
-
-#if (`$lslcDollarMinTensorRank' == 0)
-#$lslcDollarMinTensorRank = 1;
-#endif
-
-#message `lsclProcessName': lsclDoTensorReduction: Tensor ranks: from `$lslcDollarMinTensorRank' to `$lslcDollarMaxTensorRank'
-#message `lsclProcessName': lsclDoTensorReduction: Number of legs: from `$lslcDollarMinNLegs' to `$lslcDollarMaxNLegs'
-
-
-#message `lsclProcessName': lsclDoTensorReduction: Loading symmetry relations between numerators : `time_' ...
-
-#do i=1,`lsclNLoops'
-
-#include Tables/TensorReductions/TDRules/lsclRulesRedTypeToTdRank1To10L`i'.frm
-
-#if (`$lslcDollarMaxTensorRank' > 10)
-#include Tables/TensorReductions/TDRules/lsclRulesRedTypeToTdRank11To20L`i'.frm
-#endif
-
-#do j=`$lslcDollarMinTensorRank',`$lslcDollarMaxTensorRank'
-#if (`LSCLVERBOSITY'>0)
-#message `lsclProcessName': lsclDoTensorReduction: Loading tensor reduction names, rank `j' and `i' loop(s)
-#endif
-
-#if (`i' <= `j')
-#include Tables/TensorReductions/TdNames/lsclAllTdNamesRank`j'L`i'.frm
-#else 
-#include Tables/TensorReductions/TdNames/lsclAllTdNamesRank`j'L`j'.frm
-#endif
-
-
-label labelTdMappingDone;
-.sort
-
-#enddo
-
-#enddo
-
-
+#message `lsclProcessName': lsclDoTensorReduction: Calling lsclLoadTensorReductions: `time_' ...
+#call lsclLoadTensorReductions($lsclDollarMaxTensorRank,$lsclDollarMinTensorRank,$lsclDollarMaxNLegs,$lsclDollarMinNLegs)
 #message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
 
+#message `lsclProcessName': lsclDoTensorReduction: Doing index contractions:  `time_' ...
 
+repeat;
+id lsclDontIsolateCF(lsclS?) = lsclS;
+id lsclDontIsolateF(lsclS?) = lsclS;
+endrepeat;
 
-#message `lsclProcessName': lsclDoTensorReduction: Loading reduction rules : `time_' ...
-
-* Loading reduction rules
-
-* Outer loop: number of legs
-#do i=`$lslcDollarMinNLegs',`$lslcDollarMaxNLegs'
-
-* First we map the number of legs to the corresponding directory
-#switch `i'
-
-#case 0
-#define LSCLTDECDIRNAME "Tadpole";
-#break
-
-#case 1
-#define LSCLTDECDIRNAME "Bubble";
-#break
-
-#case 2
-#define LSCLTDECDIRNAME "Triangle";
-#break
-
-#case 3
-#define LSCLTDECDIRNAME "Box";
-#break
-
-#default
-exit "Unsupported number of legs";
-#break
-
-#endswitch
-
-
-* Inner loop: number of loops
-#do j=1,`lsclNLoops'
-
-#if (`LSCLVERBOSITY'>0)
-#message `lsclProcessName': lsclDoTensorReduction: Loading tensor reduction rules at `j' loop(s)
-#endif
-
-* Inner loop: tensor rank
-#do k=`$lslcDollarMinTensorRank',`$lslcDollarMaxTensorRank'
-
-
-#if (`j' <= `k')
-
-#do l=1, `$lsclDollarTdRank`k'L`j'NumTotal'
-#if (`LSCLVERBOSITY'>0)
-#message `lsclProcessName': lsclDoTensorReduction: Loading tensor reduction rule: `LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`j'N`l''.frm
-#endif
-#include Tables/TensorReductions/`LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`j'N`l''.frm
-label labelTdReductionDone;
-.sort
-#enddo
-
-#else
-
-#do l=1, `$lsclDollarTdRank`k'L`k'NumTotal'
-#if (`LSCLVERBOSITY'>0)
-#message `lsclProcessName': lsclDoTensorReduction: Loading tensor reduction rule: `LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`k'N`l''.frm
-#endif
-#include Tables/TensorReductions/`LSCLTDECDIRNAME'/`$lsclDollarTdRank`k'L`k'N`l''.frm
-label labelTdReductionDone;
-.sort
-#enddo
-
-#endif
-
-
-
-#enddo
-#enddo
-#enddo
-
-#message `lsclProcessName': lsclDoTensorReduction: ... done : `time_'
-
-* Remove the flags multiplying the scalar piece
-multiply replace_(lsclTensRedMomenta,lsclTensRedMomentaRaw);
-id lsclTensRedLoop()*lsclTensRedRank(0)*lsclTensRedNLegs(lsclS?)*lsclTensRedMomentaRaw(?b)*lsclTensRedType() = 1;
-
-
-
-if (occurs(lsclTensRedLoop,lsclTensRedMomenta));
-print "`lsclProcessName': lsclDoTensorReduction: Error, tensor integrals were not reduced, e.g.: %t";
-endif;
-if (occurs(lsclTensRedLoop,lsclTensRedMomenta)) exit;
-
-
-#message `lsclProcessName': lsclDoTensorReduction: Doing contractions:  `time_' ...
 id lsclTensRedRank(lsclS1?)*lsclTensRedNLegs(lsclS2?)*lsclTensorStructure(lsclS3?) = lsclS3;
-
 
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclKinematics
 
@@ -287,41 +211,109 @@ repeat id lsclTdDen(lsclS?) = lsclDen(lsclS);
 #call lsclUnisolate(lsclWrapFun53,lsclWrapFun54)
 #call lsclUnisolate(lsclWrapFun52,lsclWrapFun51)
 
+* If needed one could extract the unprocessed amplitude here to compare it with 
+* other results
+*print;
+*.sort
+*#call lsclToFeynCalc(s0dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/s0dia`lsclDiaNumber'L`lsclNLoops'-tr.m)
+*.end
 
 #message `lsclProcessName': lsclDoTensorReduction: All done : `time_'
 
+*b lsclGaugeXi,lsclFermionLoop,gs,lsclCA,lsclCF;
+*print[];
+*.sort
+
 *--#] lsclDoTensorReduction:
+
+
+*--#[ lsclBeforeTopologyExtraction:
+
+* Here one can add some code to be executed before extracting the list of topologies from the amplitudes
+
+*--#] lsclBeforeTopologyExtraction:
+
+
+*--#[ lsclDiracTraceSimplify:
+
+* This code is called upon right before evaluating Dirac traces.
+* Here one e.g. set some noncontributing traces to zero to facilitate
+* the job of of FORM's trace/tracen functions.
+
+* repeat id lsclDiracTrace(?a,n,n,?a) = 0;
+
+*--#] lsclDiracTraceSimplify:
+
+
+*--#[ lsclPowerCounting:
+
+* This is a special block that is relevant only for calculations
+* where the amplitude gets expanded prior to topology identification
+
+*--#] lsclPowerCounting:
+
+
+*--#[ lsclSimplifyPropagators:
+
+* Here one can simplify the propagators (i.e. pull out a global factor
+* out of eikonals) before extracting the topologies present in the amplitudes
+
+*--#] lsclSimplifyPropagators:
+
 
 *--#[ lsclCodeBlock0:
 
-* Remove holds that prevent the inserted Feynman rules from swelling up immediately
+* Here comes the code that gets executed right after inserting the 
+* projectors. Some typical instructions would be to set the gauge
+* parameter to some specific value or to multiply the amplitude with
+* some prefactors
 
+* Without auxiliary functions (lsclHold,lsclNCHold) wrapped around some terms of 
+* the Feynman rules, the expressions would swell up enormously after inserting the 
+* rules. To prevent this, we remove the auxiliay functions only when actually 
+* calculating the amplitude here
+
+if (occurs(lsclNCHold,lsclHold));
 argument;
 id lsclNCHold(lsclS?) = lsclS;
 id lsclHold(lsclS?) = lsclS;
 endargument;
-
+endif;
 
 * Since some terms contain multiple holds with long linear combinations of 4-momenta,
-* e.g. gluonic diagrams, we need to remove the holds step by step
+* especially diagrams containing interactions of gauge bosons with each other, 
+* we need to remove the holds step by step. Removing all of them at one would lead
+* to a significant slow down.
 #do i = 1,1
 id,once, lsclHold(lsclS?) = lsclS;
 if (occurs(lsclHold)) redefine i "0";
 .sort
 #enddo
 
-if (occurs(lsclHold,lsclNCHold)) exit "lsclCodeBlock0: Something went wrong removing holds.";
+if (occurs(lsclHold,lsclNCHold)) exit "`lsclProcessName': lsclCodeBlock0: Something went wrong when removing holds.";
 
-* Set the outgoing momentum equal to the incoming one
-id q1 = p1;
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclKinematics
+
 argument;
-id q1 = p1;
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclKinematics
 endargument;
+
+* It is expected, that upon loading the Kinematics fold for the first time, all lsclMass
+* placeholders should be eliminated. Otherwise, we won't be able to run IBP reduction at
+* a later stage. The following check enforces this requirement
+
+if (occurs(lsclMass));
+print "`lsclProcessName': lsclCodeBlock0: Error, some lsclMass placeholders are still present, e.g.: %t";
+endif;
+if (occurs(lsclMass)) exit;
+
 
 *--#] lsclCodeBlock0:
 
 
 *--#[ lsclCodeBlock1:
+
+* This fold mainly contains Dirac and color algebra simplifications.
 
 * Dirac algebra simplifications
 
@@ -336,6 +328,7 @@ endargument;
 
 
 * Color algebra simplifications
+
 #message `lsclProcessName': lsclCodeBlock1: Calling lsclColorIsolate : `time_' ...
 #call lsclColorIsolate(lsclNonColorPiece1,lsclNonColorPiece2)
 #message `lsclProcessName': lsclCodeBlock1: ... done : `time_' ...
@@ -344,63 +337,9 @@ endargument;
 .sort
 #message `lsclProcessName': lsclCodeBlock1: ... done : `time_'
 
-* Using color.h
-* =========================================================================
-
-#include color.h
-
-* Redeclare color indices here, cf. https://github.com/vermaseren/form/issues/414
-I lsclCFi=NR, <lsclCFi1=NR> , ... ,<lsclCFi`LSCLMAXINDEX'=NR>;
-I lsclCFj=NR, <lsclCFj1=NR>, ... , <lsclCFj`LSCLMAXINDEX'=NR>;
-I lsclCAi=NA, <lsclCAi1=NA>, ... , <lsclCAi`LSCLMAXINDEX'=NA>;
-I lsclCAj=NA, <lsclCAj1=NA>, ... , <lsclCAj`LSCLMAXINDEX'=NA>; 
- 
-repeat;
-id lsclSUNDelta(lsclCAi?,lsclCAj?) = d_(lsclCAi,lsclCAj);
-id lsclSUNFDelta(lsclCFi?,lsclCFj?) = d_(lsclCFi,lsclCFj);
-id lsclSUNTF(lsclCAi?,lsclCFi?,lsclCFj?) = T(lsclCFi,lsclCFj,lsclCAi);
-id lsclSUNF(lsclCAi1?,lsclCAi2?,lsclCAi3?) = f(lsclCAi1,lsclCAi2,lsclCAi3);
-endrepeat;
-
-if (occurs(lsclSUNDelta,lsclSUNFDelta,lsclSUNTF,lsclSUNF,lsclSUND));
-print "lsclProcessStage0: Error, some quantities were not converted to the color.h notation, e.g.: %t";
-endif;
-if (occurs(lsclSUNDelta,lsclSUNFDelta,lsclSUNTF,lsclSUNF,lsclSUND)) exit;
-
-#call docolor
-
-repeat;
-id NA = lsclNA;
-id NR = lsclSUNN;
-id I2R = 1/2;
-id cR = lsclCF;
-id cA = lsclCA;
-id [cR-cA/2] = lsclCRmCA2;
-id d_(lsclCAi?,lsclCAj?) = lsclSUNDelta(lsclCAi,lsclCAj);
-id d_(lsclCFi?,lsclCFj?) = lsclSUNFDelta(lsclCFi,lsclCFj);
-id T(lsclCFi?,lsclCFj?,lsclCAi?) = lsclSUNTF(lsclCAi,lsclCFi,lsclCFj);
-id f(lsclCAi1?,lsclCAi2?,lsclCAi3?) = lsclSUNF(lsclCAi1,lsclCAi2,lsclCAi3);
-endrepeat;
-
-#message `lsclProcessName': lsclCodeBlock1: Calling sort : `time_' ...
-.sort
-
-* Fix the dimension upon using color.h
-Dimension `lsclDim';
-
-* Redeclare color indices again
-I lsclCFi, lsclCFi1, ... , lsclCFi`LSCLMAXINDEX';
-I lsclCFj, lsclCFj1, ... , lsclCFj`LSCLMAXINDEX';
-I lsclCAi, lsclCAi1, ... , lsclCAi`LSCLMAXINDEX';
-I lsclCAj, lsclCAj1, ... , lsclCAj`LSCLMAXINDEX';
-
-if (occurs(T,f,NA,NR,I2R,cR,cA,[cR-cA/2]));
-print "lsclProcessStage0: Error, some quantities were not converted from the color.h notation, e.g.: %t";
-endif;
-if (occurs(T,f,NA,NR,I2R,cR,cA,[cR-cA/2])) exit;
-
-* =========================================================================
-
+#message `lsclProcessName': lsclCodeBlock1: Calling lsclApplyColorH : `time_' ...
+#call lsclApplyColorH()
+#message `lsclProcessName': lsclCodeBlock1: ... done : `time_'
 
 #message `lsclProcessName': lsclCodeBlock1: Calling lsclUnisolate : `time_' ...
 #call lsclUnisolate(lsclNonColorPiece1,lsclNonColorPiece2)
@@ -420,73 +359,26 @@ endargument;
 
 .sort
 
-* Print the intermediate result. Can be also shortened using bracket and print[];
-print;
+* Can print the intermediate result here.
+* b lsclFAD,lsclGaugeXi,lsclFermionLoop;
+* print[];
 
 
 #message `lsclProcessName': lsclCodeBlock1: All done : `time_'
 
+* If needed one could extract the unprocessed amplitude here to compare it with 
+* other results
+*print;
+*.sort
+*#call lsclToFeynCalc(s0dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/s0dia`lsclDiaNumber'L`lsclNLoops'.m)
+*.end
+
 *--#] lsclCodeBlock1:
-
-*--#[ lsclBeforeTopologyExtraction:
-
- 	
-* Here one can add some code to be executed before extracting the list of topologies from the amplitudes
-
-*--#] lsclBeforeTopologyExtraction:
-
-
-*--#[ lsclDiracTraceSimplify:
-
-* This code is called upon right before evaluating Dirac traces.
-* Here one e.g. set some noncontributing traces to zero to facilitate
-* the job of of FORM's trace/tracen functions.
-
-* repeat id lsclDiracTrace(?a,n,n,?a) = 0;
-
-*--#] lsclDiracTraceSimplify:
-
-*--#[ lsclKinematics:
-
-* Here we define the kinematics of the amplitude and introduce
-* the 4-momentum conservation. This might be called multiple times
-* during different execution stages.
-
-* repeat;
-* id q1 = p1+p2-q2-q3;
-* id p1 = lsclMass(Qb)*(n+nb)/2;
-* id n.n^lsclS?pos_ = 0;
-* endrepeat;
-
-* Set the quark masses to zero and define p1.p1 = pp
-repeat;
-id  lsclMass(Qi) = 0;
-id  lsclMass(Qj) = 0;
-id p1.p1^lsclS?!{,0} = pp^lsclS;
-endrepeat;
-
-*--#] lsclKinematics:
-
-
-*--#[ lsclSimplifyPropagators:
-
-* Here one can simplify the propagators (e.g. pull out a global factor
-* out of eikonals) before extracting the topologies present in the amplitudes
-
-*--#] lsclSimplifyPropagators:
-
-*--#[ lsclAdditionalBracketArguments:
-
-* Here one can specify some variables that should be bracketed when inserting
-* the reduction tables and simplifying the result using polyratfun
-gs,el,lsclFermionLoop, mqu,mqd,mqs,mqc,mqb,mqt
-
-*--#] lsclAdditionalBracketArguments:
 
 *--#[ lsclSimplifyAmplitudeBeforeReduction:
 
 * This defines simplifications to be applied to the amplitude before inserting
-* the reduction tables. For example, one could set some debugging flags to 1
+* the reduction tables
 * repeat id lsclDen(lsclS?{la,lsclSUNN}) = 1/lsclS;
 
 *--#] lsclSimplifyAmplitudeBeforeReduction:
@@ -528,10 +420,8 @@ endif;
 moduleoption notinparallel;
 .sort
 
-
-
 #message
-#message lsclIsolateLoopIntegralPrefactors: ... done : `time_'
+#message `lsclProcessName': lsclIsolateLoopIntegralPrefactors: ... done : `time_'
 #message
 
 #do i=1, `LSCLNTOPOLOGIES'
@@ -557,8 +447,6 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
 
 *--#[ lsclProcessReducedAmplitude:
 
-#define LSCLREDUCEINTSATONCE "50"
-
 #do i=1, `LSCLNTOPOLOGIES'
     #do j=1,$topoPresent`i'
         
@@ -576,9 +464,9 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
         TableBase "Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/`LSCLTBLFILENAME'" enter;
         .sort: TableBase;
 
-        #do k=`LSCLSTARTWITHINTEGRALNO',$topoIntegralCounter`i',`LSCLREDUCEINTSATONCE'
+        #do k=`LSCLSTARTWITHINTEGRALNO',$topoIntegralCounter`i',`lsclPprNumOfLoopIntsToReduceAtOnce'
            
-           #do l=1,`LSCLREDUCEINTSATONCE'
+           #do l=1,`lsclPprNumOfLoopIntsToReduceAtOnce'
                #message lsclInsertReductionTables: Reducing the integral {`k'+`l'}/`$topoIntegralCounter`i'' from `LSCLTOPOLOGY`i''
                repeat id lsclIntegralNumber(`i',{`k'+`l'})*lsclIntegral(`LSCLTOPOLOGY`i''(?a)) = tabIBP`LSCLTOPOLOGY`i''(?a);
            #enddo
@@ -607,9 +495,15 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
             
             #message
             #message lsclInsertReductionTables: Loading mappings for `LSCLTOPOLOGY`i'' and calling sort : `time_' ...
+            #ifdef `LSCLKIRA'
             repeat;
-            #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/MasterIntegralMappings.frm #lsclMasterIntegralMappings
+            #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/MasterIntegralMappingsKira.frm #lsclMasterIntegralMappings
             endrepeat;
+            #else
+            repeat;
+            #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Reductions/`LSCLTOPOLOGY`i''/MasterIntegralMappingsFire.frm #lsclMasterIntegralMappings
+            endrepeat;
+            #endif
             .sort: Mappings;
             #message lsclInsertReductionTables: ... done.
 
@@ -625,15 +519,13 @@ id `LSCLTOPOLOGY`i''(?a) = lsclIntegral(`LSCLTOPOLOGY`i''(?a));
     #enddo
 #enddo
 
-*******************************************************************************
 
 
-
-    if(occurs(lsclIntegralNumber,lsclIntegral));
-    print "lsclInsertReductionTables: Warning: Some integrals were not reduced, e.g.: %t";
-    endif;
-    if(occurs(lsclIntegralNumber,lsclIntegral)) exit;
-    .sort
+if(occurs(lsclIntegralNumber,lsclIntegral));
+print "lsclInsertReductionTables: Warning: Some integrals were not reduced, e.g.: %t";
+endif;
+if(occurs(lsclIntegralNumber,lsclIntegral)) exit;
+.sort
 
 
 id lsclHoldNum(lsclS?) = lsclNum(lsclS);
@@ -664,7 +556,7 @@ id lsclTdDen(lsclS?) = lsclDen(lsclS);
 
 #message lsclAddUpDiagramsCode: Applying lsclApplyPolyRatFun and lsclNumDenFactorize: `time_' ...
 b,
-#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAdditionalBracketArguments
+`lsclPprAdditionalBracketArguments'
 ,
 lsclSkipNum,lsclSkipDen,d_
 lsclWrapFun,lsclEp,lsclDiaFlag,lsclNum,lsclDen,
@@ -680,7 +572,7 @@ collect lsclWrapFun1,lsclWrapFun2;
 
 #call lsclApplyPolyRatFun(lsclNum,lsclDen,lsclRat,lsclWrapFun1,lsclWrapFun2);
 .sort
-#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclDenNumFactorizeArguments');
+#call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
 #message lsclAddUpDiagramsCode: ... done.
 #if (`lsclNLoops' > 0)

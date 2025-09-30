@@ -3,11 +3,11 @@
 *
 *  output = 'lsclTempAmps.out' ;
 *  style = 'Styles/form.sty' ;
-*  model = 'Models/TwoFlavorQCD' ;
+*  model = 'Models/TwoFlavorQCD';
 *  in = Gl;
 *  out = Gl;
 *  loops = 2;
-*  loop_momentum = k ;
+*  loop_momentum = k;
 *  options = notadpoles, onshell, nosnail;
 *
 
@@ -150,10 +150,10 @@ lsclQGPropagator(Gh(3,-k1+p1), Ghbar(4,k1-p1))*
 lsclQGPropagator(Gh(5,k2), Ghbar(6,-k2))*
 lsclQGPropagator(Gh(7,k2+q1), Ghbar(8,-k2-q1))*
 lsclQGPropagator(Gl(9,-k1-k2), Gl(10,k1+k2))*
-lsclQGVertex(Ghbar(4,k1-p1), Gl(-1,p1), Gh(1,-k1))*
-lsclQGVertex(Ghbar(6,-k2), Gl(-2,-q1), Gh(7,k2+q1))*
-lsclQGVertex(Ghbar(2,k1), Gl(9,-k1-k2), Gh(5,k2))*
-lsclQGVertex(Ghbar(8,-k2-q1), Gl(10,k1+k2), Gh(3,-k1+p1))
+lsclQGVertex(Ghbar(4,k1-p1), Gh(1,-k1), Gl(-1,p1))*
+lsclQGVertex(Ghbar(6,-k2), Gh(7,k2+q1), Gl(-2,-q1))*
+lsclQGVertex(Ghbar(2,k1), Gh(5,k2), Gl(9,-k1-k2))*
+lsclQGVertex(Ghbar(8,-k2-q1), Gh(3,-k1+p1), Gl(10,k1+k2))
 
 *
 *--#] d9:
@@ -167,10 +167,10 @@ lsclQGPropagator(Gh(3,-k1+p1), Ghbar(4,k1-p1))*
 lsclQGPropagator(Gl(5,-k2), Gl(6,k2))*
 lsclQGPropagator(Gl(7,k2+q1), Gl(8,-k2-q1))*
 lsclQGPropagator(Gh(9,-k1-k2), Ghbar(10,k1+k2))*
-lsclQGVertex(Ghbar(4,k1-p1), Gl(-1,p1), Gh(1,-k1))*
+lsclQGVertex(Ghbar(4,k1-p1), Gh(1,-k1), Gl(-1,p1))*
 lsclQGVertex(Gl(-2,-q1), Gl(5,-k2), Gl(7,k2+q1))*
-lsclQGVertex(Ghbar(2,k1), Gl(6,k2), Gh(9,-k1-k2))*
-lsclQGVertex(Ghbar(10,k1+k2), Gl(8,-k2-q1), Gh(3,-k1+p1))
+lsclQGVertex(Ghbar(2,k1), Gh(9,-k1-k2), Gl(6,k2))*
+lsclQGVertex(Ghbar(10,k1+k2), Gh(3,-k1+p1), Gl(8,-k2-q1))
 
 *
 *--#] d10:
@@ -219,9 +219,9 @@ lsclQGPropagator(Gh(5,-k2), Ghbar(6,k2))*
 lsclQGPropagator(Gh(7,-k2-q1), Ghbar(8,k2+q1))*
 lsclQGPropagator(Gh(9,-k1-k2), Ghbar(10,k1+k2))*
 lsclQGVertex(Gl(-1,p1), Gl(1,-k1), Gl(3,k1-p1))*
-lsclQGVertex(Ghbar(8,k2+q1), Gl(-2,-q1), Gh(5,-k2))*
-lsclQGVertex(Ghbar(6,k2), Gl(2,k1), Gh(9,-k1-k2))*
-lsclQGVertex(Ghbar(10,k1+k2), Gl(4,-k1+p1), Gh(7,-k2-q1))
+lsclQGVertex(Ghbar(8,k2+q1), Gh(5,-k2), Gl(-2,-q1))*
+lsclQGVertex(Ghbar(6,k2), Gh(9,-k1-k2), Gl(2,k1))*
+lsclQGVertex(Ghbar(10,k1+k2), Gh(7,-k2-q1), Gl(4,-k1+p1))
 
 *
 *--#] d13:
@@ -320,10 +320,10 @@ lsclQGPropagator(Gh(3,-k1+p1), Ghbar(4,k1-p1))*
 lsclQGPropagator(Gh(5,-k1+q1), Ghbar(6,k1-q1))*
 lsclQGPropagator(Gh(7,-k1-k2+p1), Ghbar(8,k1+k2-p1))*
 lsclQGPropagator(Gl(9,-k2), Gl(10,k2))*
-lsclQGVertex(Ghbar(4,k1-p1), Gl(-1,p1), Gh(1,-k1))*
-lsclQGVertex(Ghbar(2,k1), Gl(-2,-q1), Gh(5,-k1+q1))*
-lsclQGVertex(Ghbar(8,k1+k2-p1), Gl(9,-k2), Gh(3,-k1+p1))*
-lsclQGVertex(Ghbar(6,k1-q1), Gl(10,k2), Gh(7,-k1-k2+p1))
+lsclQGVertex(Ghbar(4,k1-p1), Gh(1,-k1), Gl(-1,p1))*
+lsclQGVertex(Ghbar(2,k1), Gh(5,-k1+q1), Gl(-2,-q1))*
+lsclQGVertex(Ghbar(8,k1+k2-p1), Gh(3,-k1+p1), Gl(9,-k2))*
+lsclQGVertex(Ghbar(6,k1-q1), Gh(7,-k1-k2+p1), Gl(10,k2))
 
 *
 *--#] d19:
@@ -337,10 +337,10 @@ lsclQGPropagator(Gh(3,k1-p1), Ghbar(4,-k1+p1))*
 lsclQGPropagator(Gh(5,k1-q1), Ghbar(6,-k1+q1))*
 lsclQGPropagator(Gh(7,k1+k2-p1), Ghbar(8,-k1-k2+p1))*
 lsclQGPropagator(Gl(9,-k2), Gl(10,k2))*
-lsclQGVertex(Ghbar(2,-k1), Gl(-1,p1), Gh(3,k1-p1))*
-lsclQGVertex(Ghbar(6,-k1+q1), Gl(-2,-q1), Gh(1,k1))*
-lsclQGVertex(Ghbar(4,-k1+p1), Gl(9,-k2), Gh(7,k1+k2-p1))*
-lsclQGVertex(Ghbar(8,-k1-k2+p1), Gl(10,k2), Gh(5,k1-q1))
+lsclQGVertex(Ghbar(2,-k1), Gh(3,k1-p1), Gl(-1,p1))*
+lsclQGVertex(Ghbar(6,-k1+q1), Gh(1,k1), Gl(-2,-q1))*
+lsclQGVertex(Ghbar(4,-k1+p1), Gh(7,k1+k2-p1), Gl(9,-k2))*
+lsclQGVertex(Ghbar(8,-k1-k2+p1), Gh(5,k1-q1), Gl(10,k2))
 
 *
 *--#] d20:
@@ -390,8 +390,8 @@ lsclQGPropagator(Gh(7,k1+k2-p1), Ghbar(8,-k1-k2+p1))*
 lsclQGPropagator(Gh(9,k2), Ghbar(10,-k2))*
 lsclQGVertex(Gl(-1,p1), Gl(1,-k1), Gl(3,k1-p1))*
 lsclQGVertex(Gl(-2,-q1), Gl(2,k1), Gl(5,-k1+q1))*
-lsclQGVertex(Ghbar(10,-k2), Gl(4,-k1+p1), Gh(7,k1+k2-p1))*
-lsclQGVertex(Ghbar(8,-k1-k2+p1), Gl(6,k1-q1), Gh(9,k2))
+lsclQGVertex(Ghbar(10,-k2), Gh(7,k1+k2-p1), Gl(4,-k1+p1))*
+lsclQGVertex(Ghbar(8,-k1-k2+p1), Gh(9,k2), Gl(6,k1-q1))
 
 *
 *--#] d23:

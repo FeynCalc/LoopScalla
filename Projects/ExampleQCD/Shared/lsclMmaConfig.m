@@ -7,7 +7,11 @@
 (*
   Replacement rules for external momenta defining the kinematics of the process
 *)
-"FinalSubstitutions" -> {SPD[p1]->pp},
+"FinalSubstitutions" -> {Hold[SPD][p1]->pp},
+(*
+  Mass dimensions of variables in the integral families passed to KIRA
+*)
+"KiraMassDimensions" -> {pp->2},
 (*
   In the case of expansions performed on the level of amplitudes, the propagators get rewritten
   as GFADs. For the sake of topology identification they should be mapped back to SFADs or CFADs.

@@ -2,24 +2,19 @@
 
 % Propagators:
 
-[Qi, Qibar, -; mass='QGMassQ1', pid='Qi',
-pattr=', fontsize=3, color=blue']
-[Qj, Qjbar, -; mass='QGMassQ2', pid='Qj',
-pattr=', fontsize=3, color=blue']
-[Gh, Ghbar, -; mass='0', pid='Gh',
-pattr=', fontsize=3, color=purple']
-[Gl, Gl, +;  mass='0',  pid='Gl',
-pattr=', fontsize=3, color=red']
-[Ga, Ga, +, external; mass='0',  pid='Ga',
-pattr=', fontsize=3, color=orange']
-
+[Qi, Qibar, -; color='gold', style='solid']
+[Qj, Qjbar, -; color='firebrick', style='solid']
+[Gh, Ghbar, -; color='dimgray', style='bold']
+[Gl, Gl, +; color='crimson', style='dashed']
+% external photon for e^+ e^- to partons
+[Ga, Ga, +, external; color='orange', style='dashed']
 
 % Vertices:
 
-[Qibar, Qi, Gl; gvattrib=', fontsize=3, color=black']
-[Qjbar, Qj, Gl; gvattrib=', fontsize=3, color=black']
-[Gl, Gl, Gl, Gl; gvattrib=', fontsize=3, color=black']
-[Gl, Gl, Gl; gvattrib=', fontsize=3, color=black']
-[Ghbar, Gl, Gh; gvattrib=', fontsize=3, color=black']
-[Qibar, Qi, Ga; gvattrib=', fontsize=3, color=black']
-[Qjbar, Qj, Ga; gvattrib=', fontsize=3, color=black']
+[Qibar, Qi, Gl; gs='1', el='0']
+[Qjbar, Qj, Gl; gs='1', el='0']
+[Gl, Gl, Gl, Gl; gs='2', el='0']
+[Gl, Gl, Gl; gs='1', el='0']
+[Ghbar, Gh, Gl; gs='1', el='0']
+[Qibar, Qi, Ga; gs='0', el='1']
+[Qjbar, Qj, Ga; gs='0', el='1']
