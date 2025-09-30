@@ -59,6 +59,8 @@ set lsclScalarFields: H, Gb, Gbp, Gbm;
 set lsclVectorFields: Ga, Gl, Wp, Wm, Z;
 set lsclFermionFields: Qu, Qd, Qs, Qc, Qt, Qb, Qi, Qj, El, Mu, Tau, Lei, Lej, Nel, Nmu, Ntau, Nlei, Nlej;
 set lsclAntiFermionFields: Qubar, Qdbar, Qsbar, Qcbar, Qtbar, Qbbar, Qibar, Qjbar, Ael, Amu, Atau, Alei, Alej, Anel, Anmu, Antau, Anlei, Anlej;
+set lsclGhostFields: Gh, GhGa, GhZ, GhWp, GhWm;
+set lsclAntiGhostFields: Ghbar, GhGabar, GhZbar, GhWpbar, GhWmbar;
 
 * Here we define the coupling constants and masses
 * It is better to define everything that may appear inside a reduction
