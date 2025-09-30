@@ -4,7 +4,7 @@ on HighFirst;
 #include lsclDeclarations.h
 #include lsclDefinitions.h
 #$testID=0;
-
+.end
 *********************************************************************
 #$testID=`$testID'+1;
 .sort
