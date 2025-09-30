@@ -609,8 +609,16 @@ delete storage;
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
 
+#if (`lsclPprDebugWithFeynCalc'>0)
+#message lsclTopologyIdentification: Debugging mode activated. Exporting intermediate result to Results/debug-s1dia`lsclDiaNumber'L`lsclNLoops'.m
+#call lsclToFeynCalc(s1dia`lsclDiaNumber'L`lsclNLoops',Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Results/debug-s1dia`lsclDiaNumber'L`lsclNLoops'.m)
+.end
+#endif 
+
+
 .global
 .store
+
 
 #message lsclTopologyIdentification: Saving results to: Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res
 save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;

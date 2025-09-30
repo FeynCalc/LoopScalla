@@ -6,6 +6,12 @@
 #define lsclPprVerbosity "0"
 #endif
 
+* Allows to export intermediate results to compare 
+* them with a FeynCalc calculation
+#ifndef `lsclPprDebugWithFeynCalc'
+#define lsclPprDebugWithFeynCalc "0"
+#endif
+
 * Define whether each contribution from a separate diagram should
 * be multiplied by lsclDiaFlag(diaNumber)
 #ifndef `lsclPprAddDiaFlag'
