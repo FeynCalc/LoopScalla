@@ -32,6 +32,10 @@ L origDiag =
 #include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclBeforeInsertingFeynmanRules
 #message lsclInsertFeynmanRules: ... done: `time_'
 
+.sort
+
+#if (`ZERO_origDiag' != 1)
+
 #include Projects/`lsclProjectName'/FeynmanRules/lsclFeynmanRules_`lsclModelName'.h
 
 if (occurs(lsclQGVertex));
@@ -60,9 +64,8 @@ endif;
 
 if (occurs(lsclQGVertex,lsclQGPropagator,lsclQGPolarization,lsclLorentzIndex,lsclPolVector,lsclVector)) exit "Missing some Feynman rules!";
 
-#if (`lsclPprVerbosity'>0)
-#message Diagram `lsclDiaNumber':
-print;
+#else
+#message lsclInsertFeynmanRules: Skipping the Feynman rules as the diagram `lsclDiaNumber' was filtered out and set to zero.
 #endif
 
 .sort
@@ -70,10 +73,6 @@ print;
 #write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm> "%+e", origDiag
 #write <Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Input/dia`lsclDiaNumber'L`lsclNLoops'.frm> "*--#] dia`lsclDiaNumber'L`lsclNLoops' :"
 
-
-* drop origDiag;
-
-* #enddo 
 
 #message lsclInsertFeynmanRules: Done processing diagram `lsclDiaNumber' at `lsclNLoops' loop(s)
 #message lsclInsertFeynmanRules: Insertion of Feynman rules completed successfully.

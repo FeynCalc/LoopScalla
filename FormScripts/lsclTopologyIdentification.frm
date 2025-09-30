@@ -118,10 +118,36 @@ format Mathematica;
 #message lsclTopologyIdentification: Calling sort : `time_' ...
 .sort
 #message lsclTopologyIdentification: ... done: `time_'
+
+#if (`ZERO_s1dia`lsclDiaNumber'L`lsclNLoops'' == 1)
+#message lsclTopologyIdentification: The diagram is zero, skipping unneded operations
+
+.global
+.store
+
+#message lsclTopologyIdentification: Saving results to: Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Stage1/stage1_dia`lsclDiaNumber'L`lsclNLoops'.res;
+#message lsclTopologyIdentification: Calling sort: `time_' ...
+.sort
+#message lsclTopologyIdentification: ... done: `time_'
+
+delete storage;
+
+#message lsclTopologyIdentification: Calling sort: `time_' ...
+.sort
+#message lsclTopologyIdentification: ... done: `time_'
+
+.store
+#message lsclTopologyIdentification: Saving loop integrals to Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res
+save Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/LoopIntegrals/Form/dia`lsclDiaNumber'L`lsclNLoops'.res;
+
+.end
+#endif
+
+
 CF
 #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/preTopologies.frm #lsclTopologyNames
 ;
-
 
 ******************************************************
 * the prefactors of the propagators are now all inside lsclWrapFun1 and lsclWrapFun2
@@ -147,10 +173,10 @@ collect lsclWrapFun1,lsclWrapFun2;
 .sort
 #call lsclNumDenFactorize(lsclNum,lsclDen,lsclRat,`lsclPprNumDenFactorizeArguments');
 .sort
-#message lsclInsertReductionTables: ... done.
+#message lsclTopologyIdentification: ... done.
 
 
-#message lsclInsertReductionTables: Excluding mixed numerators and denominators from factorization: `time_' ...
+#message lsclTopologyIdentification: Excluding mixed numerators and denominators from factorization: `time_' ...
 
 repeat id lsclNum(?a) = lsclSkipNum(lsclWrapFun100(?a));
 repeat id lsclDen(?a) = lsclSkipDen(lsclWrapFun100(?a));
@@ -180,7 +206,7 @@ endif;
 if (occurs(lsclFlag100)) exit "Failed to mask mixed propagators!";
 
 .sort
-#message lsclInsertReductionTables: ... done.
+#message lsclTopologyIdentification: ... done.
 
 ******************************************************
 
@@ -435,9 +461,9 @@ print;
 
 #do i=`lsclToposFrom',`lsclToposTo'
 #message lsclTopologyIdentification: Calling the #lsclScalarProductRulesFor`$lsclTopoName`i'' fold from scalarProductRules.frm: `time_' ...
-repeat;
-#include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/scalarProductRules.frm #lsclScalarProductRulesFor`$lsclTopoName`i''
-endrepeat;
+ repeat;
+ #include Projects/`lsclProjectName'/Diagrams/`lsclProcessName'/`lsclModelName'/`lsclNLoops'/Topologies/scalarProductRules.frm #lsclScalarProductRulesFor`$lsclTopoName`i''
+ endrepeat;
 
 * If the scalarProductRules.frm id-statements are already wrapped with lsclNum and lsclDen, 
 * then this should help to avoid expression swell!
@@ -471,11 +497,11 @@ print;
 
 
 
-if (occurs(
-#do i=1, `lsclNLoops'
-k`i',
-#enddo
-)) exit "Error, failed to eliminate all loop momenta.";
+  if (occurs(
+  #do i=1, `lsclNLoops'
+  k`i',
+  #enddo
+  )) exit "Error, failed to eliminate all loop momenta.";
 
 
 
