@@ -382,6 +382,18 @@ endargument;
 
 *--#] lsclCodeBlock1:
 
+*--#[ lsclAfterCompletingStage0:
+
+* Here we can execute some code after completing all Stage 0 evaluation steps
+* but before saving the result to Stage0/stage0_dia`lsclDiaNumber'L`lsclNLoops'.res;
+* For example, we can print the output collected w.r.t. some useful objects
+
+*b lsclDiracSpinor;
+*print;
+*.sort
+
+*--#] lsclAfterCompletingStage0:
+
 *--#[ lsclSimplifyAmplitudeBeforeReduction:
 
 * This defines simplifications to be applied to the amplitude before inserting

@@ -118,6 +118,10 @@ endargument;
 #endif
 #endif
 
+#message lsclProcessStage0: Calling the AfterCompletingStage0 fold : `time_' ...
+#include Projects/`lsclProjectName'/Shared/`lsclProcessName'.h #lsclAfterCompletingStage0
+#message lsclProcessStage0: ... done: `time_'
+
 delete storage;
 .sort
 .store
