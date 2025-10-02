@@ -49,8 +49,8 @@ CF lsclF, lsclF1, ... , lsclF`lsclPprMaxIndex';
 CF lsclG, lsclG1, ... , lsclG`lsclPprMaxIndex';
 
 * Generic noncommutative functions
-CF lsclNF, lsclNF1, ... , lsclNF`lsclPprMaxIndex';
-CF lsclNG, lsclNG1, ... , lsclNG`lsclPprMaxIndex';
+F lsclNF, lsclNF1, ... , lsclNF`lsclPprMaxIndex';
+F lsclNG, lsclNG1, ... , lsclNG`lsclPprMaxIndex';
 
 * Generic commutative tensors
 CT lsclT, lsclT1, ... , lsclT`lsclPprMaxIndex';
@@ -84,6 +84,7 @@ CF lsclIntegralNumber, lsclIntegral, lsclIsolateFlag;
 
 * When we need to wrap something into something else
 Auto CF lsclWrapFun, lsclIsoFun;
+Auto F lsclWrapNFun;
 CF lsclNonColorPiece1, lsclNonColorPiece2;
 
 CF lsclFermionLine,lsclFermionLoop;
@@ -93,7 +94,6 @@ F lsclDiracSpinor, lsclDiracChainNC, lsclDiracMatrix;
 CF lsclDiracChainOpen, lsclDiracFlag1, lsclDCh; 
 nt lsclDiracGammaOpen, lsclDiracGammaChiralOpen, lsclDiracGamma, lsclDiracGammaChiral;
 CF lsclDiracGammaHold;
-CF lsclAuxHoldFunction;
 nt lsclVecFu;
 Auto CF lsclNonDiracPiece;
 

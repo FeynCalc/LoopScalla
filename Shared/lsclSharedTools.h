@@ -19,7 +19,7 @@ off statistics;
 *--#[ lsclDebuggingDiracAlgebra:
 
 .sort
-b lsclDiracTrace,lsclDiracGamma,lsclDiracSpinor,lsclDiracGammaOpen,lsclDiracChainNC,lsclDiracChainOpen,lsclDiracChain;
+b lsclDiracTrace,lsclDiracGamma,lsclDiracSpinor,lsclDiracGammaOpen,lsclDiracChainOpen,lsclDiracChain;
 print[];
 .sort
 .end
