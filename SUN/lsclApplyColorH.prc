@@ -35,7 +35,7 @@ id cA = lsclCA;
 id [cR-cA/2] = lsclCRmCA2;
 id d_(lsclCAi?,lsclCAj?) = lsclSUNDelta(lsclCAi,lsclCAj);
 id d_(lsclCFi?,lsclCFj?) = lsclSUNFDelta(lsclCFi,lsclCFj);
-id T(lsclCFi?,lsclCFj?,lsclCAi?) = lsclSUNTF(lsclCAi,lsclCFi,lsclCFj);
+id T(lsclCFi?,lsclCFj?,lsclCAi?,?a) = lsclSUNTF(lsclCAi,?a,lsclCFi,lsclCFj);
 id f(lsclCAi1?,lsclCAi2?,lsclCAi3?) = lsclSUNF(lsclCAi1,lsclCAi2,lsclCAi3);
 endrepeat;
 
