@@ -18,16 +18,26 @@ id lsclDiracChainHold(?a) = lsclDiracChainHold(nargs_(?a)-2,?a);
 
 * The input expression may contain very long chains with thousands of terms. Linearizing them at once
 * will cause an explosion in complexity. Instead, we do the linearization in chunks
-* TODO Find a way to make this number variable
 #do i = 1,1
-#do j = 1,50
-id  lsclDiracChainHold(lsclS?,<lsclS1?>,...,<lsclS50?>,?a,lsclI1?,lsclI2?) =  <lsclDiracChain(lsclS1,lsclI1,lsclI2)>+ ...+<lsclDiracChain(lsclS50,lsclI1,lsclI2)> + lsclDiracChainHold(lsclS-50,?a,lsclI1,lsclI2);
-repeat id lsclDiracChainHold(lsclS?{,<2>,...,<49>},lsclS1?,lsclS2?,?a,lsclI1?,lsclI2?) =  lsclDiracChain(lsclS1,lsclI1,lsclI2)+  lsclDiracChain(lsclS2,lsclI1,lsclI2) + lsclDiracChainHold(lsclS-2,?a,lsclI1,lsclI2); 
+#do j = 1,`lsclPprDiracChainMaxTermsToLinearize'
+id  lsclDiracChainHold(lsclS?,<lsclS1?>,...,<lsclS`lsclPprDiracChainMaxTermsToLinearize'?>,?c,lsclI1?,lsclI2?) =  <lsclDiracChain(lsclS1,lsclI1,lsclI2)>+ ...+<lsclDiracChain(lsclS`lsclPprDiracChainMaxTermsToLinearize',lsclI1,lsclI2)> + 
+    lsclDiracChainHold(lsclS-50,?c,lsclI1,lsclI2);
+
+id  lsclDiracChainHold(lsclS?,<lsclS1?>,...,<lsclS50?>,?c,lsclNF1?(?a),lsclNF2?(?b)) =  <lsclDiracChain(lsclS1,lsclNF1(?a),lsclNF2(?b))>+ ...+<lsclDiracChain(lsclS`lsclPprDiracChainMaxTermsToLinearize',lsclNF1(?a),lsclNF2(?b))> + 
+    lsclDiracChainHold(lsclS-`lsclPprDiracChainMaxTermsToLinearize',?c,lsclNF1(?a),lsclNF2(?b));
+
+repeat id lsclDiracChainHold(lsclS?{,<2>,...,<{`lsclPprDiracChainMaxTermsToLinearize'-1}>},lsclS1?,lsclS2?,?c,lsclI1?,lsclI2?) =  lsclDiracChain(lsclS1,lsclI1,lsclI2)+  lsclDiracChain(lsclS2,lsclI1,lsclI2) + 
+    lsclDiracChainHold(lsclS-2,?c,lsclI1,lsclI2); 
+repeat id lsclDiracChainHold(lsclS?{,<2>,...,<{`lsclPprDiracChainMaxTermsToLinearize'-1}>},lsclS1?,lsclS2?,?c,lsclNF1?(?a),lsclNF2?(?b)) =  lsclDiracChain(lsclS1,lsclNF1(?a),lsclNF2(?b)) +  lsclDiracChain(lsclS2,lsclNF1(?a),lsclNF2(?b)) + 
+    lsclDiracChainHold(lsclS-2,?c,lsclNF1(?a),lsclNF2(?b)); 
+
 repeat id  lsclDiracChainHold(1,lsclS1?,lsclI1?,lsclI2?) =  lsclDiracChain(lsclS1,lsclI1,lsclI2);
+repeat id  lsclDiracChainHold(1,lsclS1?,lsclNF1?(?a),lsclNF2?(?b)) =  lsclDiracChain(lsclS1,lsclNF1(?a),lsclNF2(?b));
 * Very important, without this id statement the final result will be wrong
 id lsclDiracChain(lsclI1?,lsclI2?) = 0;
 id lsclDiracChain(0,lsclI1?,lsclI2?) = 0;
 id lsclDiracChainHold(0,lsclI1?,lsclI2?) = 0;
+id lsclDiracChainHold(0,lsclNF1?(?a),lsclNF2?(?b)) = 0;
 #enddo
 
 if (occurs(lsclDiracChainHold) ) redefine i "0";
@@ -35,7 +45,11 @@ if (occurs(lsclDiracChainHold) ) redefine i "0";
 
 #enddo
 
-if (occurs(lsclDiracChainHold)) exit "Something went wrong while linearizing the chains.";
+if (occurs(lsclDiracChainHold));
+print "`lsclProcessName': lsclDiracChainLinearize: Error, some lsclDiracChainHold functions are still present after linearizing the chains e.g.: %t";
+endif;
+if (occurs(lsclDiracChainHold)) exit;
+
 
 .sort
 

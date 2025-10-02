@@ -24,6 +24,13 @@
 #define lsclPprMaxIndex "100"
 #endif
 
+* Defines the maximal number of terms in a Dirac chain to be linerized
+* at once using lsclDiracChainLinearize
+#ifndef `lsclPprDiracChainMaxTermsToLinearize'
+#define lsclPprDiracChainMaxTermsToLinearize "50"
+#endif
+
+
 * Defines the max number of propagators that may appear in an amplitude.
 * Used by the topology identification code when merging propagators into
 * integral families.
