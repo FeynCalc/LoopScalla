@@ -4,6 +4,8 @@
 
 LoopScalla is a software framework that uses FORM, Mathematica and FeynCalc to calculate multiloop diagrams.
 
+![Logo](Logo.png)
+
 The goal of the package is to automatize all steps between generating amplitudes for the given process and expressing them in terms of master integrals as much as possible.
 
 ## Documentation
